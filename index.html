@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge & Snap - Prototype</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #f1c40f;
+            margin-bottom: 5px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .studio-container {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-template-rows: repeat(4, 80px);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .cell {
+            background-color: #1abc9c;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .item {
+            width: 70px;
+            height: 70px;
+            background-color: #fff;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+        
+        /* Niveaux des items */
+        .item[data-level="1"] { border: 3px solid #e74c3c; } /* Chambre Noire */
+        .item[data-level="2"] { border: 3px solid #e67e22; } /* Daguerréotype */
+        .item[data-level="3"] { border: 3px solid #f1c40f; } /* Stéréoscope */
+        
+        .item-icon {
+            font-size: 28px;
+            margin-bottom: 2px;
+        }
+        .item-level {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #message {
+            margin-top: 15px;
+            height: 20px;
+            color: #f1c40f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Merge & Snap</h1>
+    <p>Glissez et déposez deux appareils de même niveau pour les fusionner !</p>
+
+    <div class="studio-container">
+        <div class="grid" id="grid">
+            <!-- Les cellules seront générées ici -->
+        </div>
+        
+        <div class="controls">
+            <button onclick="spawnItem(1)">+ Appareil Lvl 1</button>
+        </div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const gridElement = document.getElementById('grid');
+        const gridSize = 16; // 4x4
+        let draggedItem = null;
+        let sourceCell = null;
+
+        const itemTypes = {
+            1: { icon: '📦', name: 'Chambre Noire' },
+            2: { icon: '📷', name: 'Daguerréotype' },
+            3: { icon: '👓', name: 'Stéréoscope' }
+        };
+
+        // Initialisation de la grille
+        function initGrid() {
+            for (let i = 0; i < gridSize; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = i;
+                
+                // Événements pour la cellule (zone de dépôt)
+                cell.addEventListener('dragover', handleDragOver);
+                cell.addEventListener('dragenter', handleDragEnter);
+                cell.addEventListener('dragleave', handleDragLeave);
+                cell.addEventListener('drop', handleDrop);
+                
+                gridElement.appendChild(cell);
+            }
+            // Ajouter quelques items de départ
+            spawnItem(1);
+            spawnItem(1);
+            spawnItem(2);
+            spawnItem(2);
+        }
+
+        // Créer un item
+        function createItemElement(level) {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.draggable = true;
+            item.dataset.level = level;
+            
+            const icon = document.createElement('div');
+            icon.className = 'item-icon';
+            icon.textContent = itemTypes[level] ? itemTypes[level].icon : '✨';
+            
+            const lvlText = document.createElement('div');
+            lvlText.className = 'item-level';
+            lvlText.textContent = `Lvl ${level}`;
+            
+            item.appendChild(icon);
+            item.appendChild(lvlText);
+
+            // Événements de Drag
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragend', handleDragEnd);
+
+            return item;
+        }
+
+        // Faire apparaître un nouvel item dans la première cellule vide
+        function spawnItem(level) {
+            const cells = document.querySelectorAll('.cell');
+            for (let cell of cells) {
+                if (!cell.hasChildNodes()) {
+                    cell.appendChild(createItemElement(level));
+                    showMessage(`Nouvel item Lvl ${level} ajouté !`);
+                    return;
+                }
+            }
+            showMessage('La grille est pleine !');
+        }
+
+        function showMessage(msg) {
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = msg;
+            setTimeout(() => { msgEl.textContent = ''; }, 2000);
+        }
+
+        // Drag & Drop Handlers
+        function handleDragStart(e) {
+            draggedItem = this;
+            sourceCell = this.parentElement;
+            setTimeout(() => this.style.opacity = '0.5', 0); // Rend l'item semi-transparent pendant le drag
+        }
+
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+            draggedItem = null;
+            sourceCell = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault(); // Nécessaire pour autoriser le drop
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            if(this !== sourceCell) {
+                this.style.backgroundColor = '#16a085'; // Feedback visuel
+            }
+        }
+
+        function handleDragLeave(e) {
+            this.style.backgroundColor = ''; // Enlève le feedback visuel
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.style.backgroundColor = '';
+
+            if (this === sourceCell) return; // Drop sur la même case = annuler
+
+            // Si la case cible contient déjà un item
+            if (this.hasChildNodes()) {
+                const targetItem = this.firstChild;
+                const draggedLevel = parseInt(draggedItem.dataset.level);
+                const targetLevel = parseInt(targetItem.dataset.level);
+
+                // Conditions de fusion
+                if (draggedLevel === targetLevel) {
+                    if (draggedLevel >= 3) {
+                        showMessage('Niveau max atteint pour le prototype !');
+                        return; // Limite du prototype
+                    }
+                    
+                    // FUSION REUSSIE
+                    this.removeChild(targetItem); // On supprime l'ancien
+                    const newItemLevel = draggedLevel + 1;
+                    this.appendChild(createItemElement(newItemLevel)); // On crée le niveau supérieur
+                    sourceCell.removeChild(draggedItem); // On enlève l'item de sa case source
+                    showMessage(`Fusion ! Nouvel item Lvl ${newItemLevel}`);
+                } else {
+                    // Échange de place (Swap) si niveaux différents
+                    sourceCell.appendChild(targetItem);
+                    this.appendChild(draggedItem);
+                }
+            } else {
+                // Déplacement simple vers une case vide
+                this.appendChild(draggedItem);
+            }
+        }
+
+        // Lancement
+        window.onload = initGrid;
+    </script>
+</body>
+</html>
