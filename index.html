@@ -464,6 +464,147 @@
             box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0,0,0,0.3);
         }
 
+
+        /* Narration & Dialog */
+        .dialog-zone {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #ff4081;
+            border-radius: 15px;
+            padding: 10px;
+            margin: 10px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ddd;
+            border: 3px solid white;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .dialog-text {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-size: 14px;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .dialog-name {
+            font-weight: bold;
+            color: #ff4081;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        /* Missions & Validation */
+        .mission-status {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+            margin-bottom: 5px;
+        }
+
+        .btn-validate {
+            background: linear-gradient(180deg, #d3d3d3, #a9a9a9);
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-weight: bold;
+            cursor: not-allowed;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0 #808080;
+            margin-left: 10px;
+            pointer-events: none;
+        }
+
+        .btn-validate.active {
+            background: linear-gradient(180deg, #ffeb3b, #ffb300);
+            box-shadow: 0 4px 0 #f39c12, 0 0 15px rgba(255, 235, 59, 0.8);
+            cursor: pointer;
+            pointer-events: auto;
+            animation: pulse 1.5s infinite;
+        }
+
+        .btn-validate.active:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #f39c12;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Backgrounds based on level */
+        body.level-1 {
+            background: linear-gradient(to bottom, #d7ccc8, #a1887f); /* Old Paris Studio */
+        }
+        body.level-1::before {
+            background: none; /* remove default clouds */
+        }
+        body.level-1 .fence {
+            background: repeating-linear-gradient(90deg, #5d4037, #5d4037 20px, transparent 20px, transparent 40px);
+            height: 40px;
+            bottom: 30%;
+        }
+
+        body.level-2 {
+            background: linear-gradient(to bottom, #bbdefb, #c8e6c9); /* Flowery street */
+        }
+
+        body.level-3 {
+            background: linear-gradient(to bottom, #fff9c4, #ffcc80); /* Chic Exam Room */
+        }
+        body.level-3::before {
+            background: none;
+        }
+        body.level-3 .fence {
+            display: none;
+        }
+
+
         /* L'éclair au-dessus d'un objet prêt à être spawner */
         .spawn-highlight {
             position: relative;
@@ -506,35 +647,32 @@
     <div class="fence"></div>
 
     <!-- Badge Niveau Joueur -->
-    <div class="level-badge">19<span class="level-star">⭐</span></div>
+    <div class="level-badge" id="ui-level">C<span class="level-star">⭐</span></div>
+
 
     <!-- Top HUD -->
     <div class="hud">
         <div style="flex-grow: 1;"></div> <!-- Spacer -->
         <div class="hud-stats">
             <div class="hud-item"><div class="hud-icon energy-icon">⚡</div> 457</div>
-            <div class="hud-item"><div class="hud-icon coin-icon">🪙</div> 427</div>
+            <div class="hud-item"><div class="hud-icon coin-icon">🪙</div> <span id="ui-coins">427</span></div>
             <div class="hud-item"><div class="hud-icon gem-icon">💎</div> 18</div>
         </div>
     </div>
 
-    <!-- Recipe Zone -->
-    <div style="width: 100%; max-width: 500px;">
-        <div class="recipe-zone">
-            <div class="recipe-avatar"></div>
-            <div class="recipe-reward">+1.1k 🪙</div>
-            <div class="recipe-items">
-                <div class="recipe-item-box">
-                    <!-- Mini icone d'objectif dessinée en CSS -->
-                    <div style="width: 15px; height: 15px; background: #000; border-radius: 50%; border: 2px solid #80deea;"></div>
-                </div>
-                <div class="recipe-item-box">
-                    <!-- Mini icone de pellicule -->
-                    <div style="width: 15px; height: 15px; background: #f1c40f; border: 1px solid #d35400;"></div>
-                </div>
-            </div>
+    <!-- Dialog & Mission Zone -->
+    <div class="dialog-zone">
+        <div class="avatar" id="mentor-avatar">👨‍🦳</div>
+        <div class="dialog-text">
+            <div class="dialog-name" id="mentor-name">Prof. Alistair</div>
+            <div id="dialog-content">Fusionne 2 boîtiers pour créer un 35mm !</div>
+            <div class="mission-status" id="mission-status">Mission 1/3</div>
         </div>
+        <button class="btn-validate" id="btn-validate" onclick="validateMission()">Valider la photo</button>
     </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti"></div>
 
     <!-- Grille de Jeu -->
     <div class="studio-container">
@@ -561,7 +699,178 @@
         let draggedItem = null;
         let sourceCell = null;
 
-        const itemTypes = {
+
+        // --- GAME STATE & SAVE SYSTEM ---
+        let currentLevel = 1;
+        let coins = 427;
+        let currentMissionIndex = 0; // 0, 1, 2 for the 3 missions per level
+
+        const levelsData = {
+            1: {
+                mentor: 'Prof. Alistair',
+                avatar: '👨‍🦳',
+                missions: [
+                    { text: 'Fusionne 2 boîtiers en bois pour créer un 35mm argentique !', req: { family: 'A', level: 2 }, reward: 100 },
+                    { text: 'Il me faut un objectif vintage. (Niv 2)', req: { family: 'B', level: 2 }, reward: 150 },
+                    { text: 'Prépare une pellicule noire. (Niv 1)', req: { family: 'D', level: 1 }, reward: 200 }
+                ]
+            },
+            2: {
+                mentor: 'Prof. Elena',
+                avatar: '👩‍🏫',
+                missions: [
+                    { text: 'Passons aux choses sérieuses. Un grand objectif Zoom !', req: { family: 'B', level: 3 }, reward: 300 },
+                    { text: 'Trouve-moi un Trépied en aluminium !', req: { family: 'C', level: 2 }, reward: 300 },
+                    { text: 'Une pellicule diapo fera l\'affaire. (Niv 2)', req: { family: 'D', level: 2 }, reward: 400 }
+                ]
+            },
+            3: {
+                mentor: 'Examen Final',
+                avatar: '🎓',
+                missions: [
+                    { text: 'Prouve ta valeur ! Appareil Argentique Vintage (Niv 3)', req: { family: 'A', level: 3 }, reward: 1000 },
+                    { text: 'Et un Flash Cobra moderne ! (Niv 3)', req: { family: 'C', level: 3 }, reward: 1000 },
+                    { text: 'Enfin, un Ordinateur portable pour le traitement !', req: { family: 'E', level: 3 }, reward: 2000 }
+                ]
+            }
+        };
+
+        function saveGame() {
+            const state = {
+                level: currentLevel,
+                coins: coins,
+                mission: currentMissionIndex,
+                // Ideally save grid too, but keeping it simple as requested
+            };
+            localStorage.setItem('mergeGameSave', JSON.stringify(state));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('mergeGameSave');
+            if (saved) {
+                const state = JSON.parse(saved);
+                currentLevel = state.level || 1;
+                coins = state.coins || 427;
+                currentMissionIndex = state.mission || 0;
+
+                // Cap level if needed
+                if(currentLevel > 3) {
+                    currentLevel = 3;
+                    currentMissionIndex = 2;
+                }
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update Background
+            document.body.className = `level-${currentLevel}`;
+
+            // Update HUD
+            document.getElementById('ui-level').innerHTML = `Lvl ${currentLevel}<span class="level-star">⭐</span>`;
+            document.getElementById('ui-coins').textContent = coins;
+
+            // Update Dialog/Mission
+            const levelData = levelsData[currentLevel];
+            if(!levelData) return; // End of game
+
+            document.getElementById('mentor-name').textContent = levelData.mentor;
+            document.getElementById('mentor-avatar').textContent = levelData.avatar;
+
+            const currentMission = levelData.missions[currentMissionIndex];
+            document.getElementById('dialog-content').textContent = currentMission.text;
+            document.getElementById('mission-status').textContent = `Mission ${currentMissionIndex + 1}/3`;
+
+            checkMissionStatus();
+        }
+
+        function checkMissionStatus() { console.log("checkMissionStatus called");
+            const req = levelsData[currentLevel].missions[currentMissionIndex].req;
+            const itemsOnGrid = document.querySelectorAll('.item');
+            let hasItem = false;
+
+            itemsOnGrid.forEach(item => {
+                if (item.dataset.family === req.family && parseInt(item.dataset.level) === req.level) {
+                    hasItem = true;
+                }
+            });
+
+            const btn = document.getElementById('btn-validate');
+            if (hasItem) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+
+        function validateMission() {
+            const btn = document.getElementById('btn-validate');
+            if (!btn.classList.contains('active')) return;
+
+            const mission = levelsData[currentLevel].missions[currentMissionIndex];
+
+            // Find and consume the item
+            const itemsOnGrid = document.querySelectorAll('.item');
+            let itemConsumed = false;
+            itemsOnGrid.forEach(item => {
+                if (!itemConsumed && item.dataset.family === mission.req.family && parseInt(item.dataset.level) === mission.req.level) {
+                    item.parentElement.removeChild(item);
+                    itemConsumed = true;
+                }
+            });
+
+            if (itemConsumed) {
+                // Reward
+                coins += mission.reward;
+
+                // Advance Mission
+                currentMissionIndex++;
+                if (currentMissionIndex >= 3) {
+                    currentMissionIndex = 0;
+                    currentLevel++;
+                    showLevelUp();
+                }
+
+                if (currentLevel > 3) {
+                    currentLevel = 3; // Max level reached
+                    currentMissionIndex = 2;
+                    showMessage("Jeu Terminé ! Félicitations !");
+                }
+
+                saveGame();
+                updateUI();
+            }
+        }
+
+        function showLevelUp() {
+            showMessage(`Félicitations Clara ! Niveau ${currentLevel} débloqué`);
+            fireConfetti();
+        }
+
+        function fireConfetti() {
+            const container = document.getElementById('confetti');
+            container.style.display = 'block';
+            container.innerHTML = '';
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+
+            for (let i = 0; i < 100; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                conf.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(conf);
+            }
+
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 5000);
+        }
+
+        // --- END GAME STATE ---
+
+const itemTypes = {
             'A': { name: 'Appareils', isCSS: true },
             'B': { name: 'Objectifs', isCSS: true },
             'C': { name: 'Accessoires', isCSS: false, emojis: {1: '🦯', 2: '🏗️', 3: '🔦'} },
@@ -570,6 +879,7 @@
         };
 
         const families = Object.keys(itemTypes);
+
 
         function initGrid() {
             for (let i = 0; i < gridSize; i++) {
@@ -590,7 +900,10 @@
             spawnSpecificItem('B', 1); spawnSpecificItem('B', 1); spawnSpecificItem('B', 2);
             spawnSpecificItem('C', 1); spawnSpecificItem('D', 1); spawnSpecificItem('D', 2);
             spawnSpecificItem('E', 1); spawnSpecificItem('E', 2);
+
+            loadGame(); // Load save here
         }
+
 
         function createItemElement(family, level) {
             const item = document.createElement('div');
@@ -633,6 +946,7 @@
             spawnSpecificItem(randomFamily, 1);
         }
 
+
         function spawnSpecificItem(family, level) {
             const cells = document.querySelectorAll('.cell');
             let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
@@ -641,10 +955,12 @@
                 // Placer aléatoirement pour faire "naturel"
                 let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 randomCell.appendChild(createItemElement(family, level));
+                checkMissionStatus(); // Check mission on spawn
             } else {
                 showMessage('Board is full!');
             }
         }
+
 
         function showMessage(msg) {
             const msgEl = document.getElementById('message');
@@ -714,10 +1030,12 @@
                     this.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
 
+
                     // Effet visuel simple de fusion
                     this.firstChild.style.transform = 'scale(1.3)';
                     setTimeout(() => { this.firstChild.style.transform = ''; }, 200);
 
+                    checkMissionStatus(); // Check mission on merge
                 } else {
                     sourceCell.appendChild(targetItem);
                     this.appendChild(draggedItem);
@@ -726,6 +1044,7 @@
                 this.appendChild(draggedItem);
             }
         }
+
 
         window.onload = initGrid;
     </script>
