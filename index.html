@@ -35,7 +35,7 @@
 
         /* Clôture en bois blanc cartoon */
         .fence {
-            position: absolute;
+            position: fixed;
             top: 25%;
             left: 0;
             width: 100%;
@@ -51,7 +51,7 @@
 
         .fence::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: -10px;
             left: 0;
             width: 100%;
@@ -72,6 +72,7 @@
             max-width: 500px;
             padding: 10px;
             box-sizing: border-box;
+
             gap: 10px;
             margin-top: 10px;
             background-color: #2c3e50; /* Gris très foncé / Chic */
@@ -157,7 +158,7 @@
         }
 
         .recipe-avatar {
-            position: absolute;
+            position: fixed;
             left: -25px;
             bottom: 0;
             width: 50px;
@@ -173,7 +174,7 @@
         .recipe-avatar::after {
             content: '🧔'; /* King/Character emoji */
             font-size: 40px;
-            position: absolute;
+            position: fixed;
             bottom: -5px;
             left: 2px;
         }
@@ -184,7 +185,7 @@
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 12px;
-            position: absolute;
+            position: fixed;
             top: -10px;
             right: 10px;
             border: 2px solid #ff8c00;
@@ -221,13 +222,13 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 0 4px #e8dcc8;
             margin-top: 15px;
             position: relative;
-            z-index: 5;
+            z-index: 1;
         }
 
         /* Contour décoratif style cadre en bois */
         .studio-container::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: -6px; left: -6px; right: -6px; bottom: -6px;
             border-radius: 20px;
             border: 6px solid #d2b48c;
@@ -276,7 +277,7 @@
             cursor: grabbing;
             transform: scale(1.1) translateY(-5px);
             filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
-            z-index: 100;
+
         }
 
         /* Les icônes Premium dessinées en CSS (Data URIs ou dégradés complexes) */
@@ -290,7 +291,7 @@
 
         .item-icon::after {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 2px;
             left: 5px;
             right: 5px;
@@ -310,7 +311,7 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         .item[data-family="A"][data-level="1"] .item-icon::before {
-            content: ''; position: absolute; top: 15px; left: 15px; width: 20px; height: 20px;
+            content: ''; position: fixed; top: 15px; left: 15px; width: 20px; height: 20px;
             background: radial-gradient(circle, #333 30%, #666 40%, #222 50%); border-radius: 50%; border: 2px solid #daa520;
         }
 
@@ -321,7 +322,7 @@
             border: 1px solid #000;
         }
         .item[data-family="A"][data-level="2"] .item-icon::before {
-            content: ''; position: absolute; top: 10px; left: 10px; width: 28px; height: 28px;
+            content: ''; position: fixed; top: 10px; left: 10px; width: 28px; height: 28px;
             background: radial-gradient(circle, #000 20%, #444 40%, #111 60%); border-radius: 50%; border: 3px solid #bdc3c7;
         }
 
@@ -332,7 +333,7 @@
             box-shadow: inset 0 2px 0 #fff;
         }
         .item[data-family="A"][data-level="3"] .item-icon::before {
-            content: ''; position: absolute; top: 8px; left: 8px; width: 34px; height: 34px;
+            content: ''; position: fixed; top: 8px; left: 8px; width: 34px; height: 34px;
             background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%); border-radius: 50%; border: 4px solid #bdc3c7; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
@@ -371,7 +372,7 @@
             box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
         }
         .item[data-family="D"][data-level="2"] .item-icon::before {
-            content: 'Film'; position: absolute; top: 15px; left: 8px; color: #c0392b; font-weight: bold; font-size: 10px; font-family: sans-serif;
+            content: 'Film'; position: fixed; top: 15px; left: 8px; color: #c0392b; font-weight: bold; font-size: 10px; font-family: sans-serif;
         }
         .item[data-family="D"][data-level="3"] .item-icon {
             /* Carte SD Bleue */
@@ -391,7 +392,7 @@
 
         /* Feedback visuel de niveau (petits éclairs ou étoiles) */
         .item-level-indicator {
-            position: absolute;
+            position: fixed;
             bottom: -2px;
             right: -2px;
             display: flex;
@@ -412,6 +413,7 @@
             align-items: center;
             padding: 0 20px;
             box-sizing: border-box;
+
             position: relative;
         }
 
@@ -560,7 +562,7 @@
         }
 
         .confetti {
-            position: absolute;
+            position: fixed;
             width: 10px;
             height: 10px;
             background-color: #f00;
@@ -607,7 +609,7 @@
         }
         .spawn-highlight::after {
             content: '⚡';
-            position: absolute;
+            position: fixed;
             top: -15px;
             right: -10px;
             font-size: 20px;
@@ -621,7 +623,7 @@
         }
 
         #message {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -631,7 +633,7 @@
             border-radius: 20px;
             font-weight: 900;
             font-size: 18px;
-            z-index: 1000;
+            z-index: 9999;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s;
@@ -654,6 +656,7 @@
             user-select: none;
             padding: 2px;
             box-sizing: border-box;
+
             position: relative;
         }
         .item:active {
@@ -666,7 +669,7 @@
         /* Inventaire Modal */
         #inventory-modal {
             display: none;
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -676,7 +679,7 @@
             border: 2px solid silver;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-            z-index: 1000;
+            z-index: 9999;
             padding: 15px;
             color: white;
             box-sizing: border-box;
@@ -764,7 +767,7 @@
     <!-- Panneau de contrôle -->
     <div class="controls">
         <div class="bottom-panel">
-            <button class=\"btn-green\" onclick=\"openInventory()\">📦</button>
+            <button class="btn-green" onclick="openInventory()" style="font-size: 24px; padding: 10px 15px;">📦</button>
             <div class="panel-text">Merge items to unlock new photography gear!</div>
             <button class="btn-green spawn-highlight" onclick="spawnRandomItem()">↪️</button>
         </div>
