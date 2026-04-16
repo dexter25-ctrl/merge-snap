@@ -13,27 +13,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Paysage réaliste cartoon: collines vertes douces */
-            background-color: #8FD8D8; /* Ciel bleu clair */
+            background-color: #8FD8D8;
             background-image:
-                /* Nuages */
                 radial-gradient(circle at 20% 15%, #ffffff 0%, rgba(255,255,255,0) 10%),
                 radial-gradient(circle at 25% 18%, #ffffff 0%, rgba(255,255,255,0) 12%),
                 radial-gradient(circle at 75% 10%, #ffffff 0%, rgba(255,255,255,0) 8%),
                 radial-gradient(circle at 80% 12%, #ffffff 0%, rgba(255,255,255,0) 10%),
-                /* Collines au loin */
                 radial-gradient(ellipse at 50% 40%, #A0E8A0 0%, transparent 60%),
                 radial-gradient(ellipse at 10% 45%, #8CD48C 0%, transparent 50%),
                 radial-gradient(ellipse at 90% 45%, #8CD48C 0%, transparent 50%),
-                /* Sol avec chemin */
                 radial-gradient(ellipse at 50% 100%, #E8D4A0 0%, #E8D4A0 15%, transparent 30%),
                 linear-gradient(to bottom, transparent 30%, #68B868 30%, #5CB05C 40%, #50A850 100%);
             background-attachment: fixed;
             overflow-x: hidden;
             position: relative;
+            touch-action: none;
+            user-select: none;
         }
 
-        /* Clôture en bois blanc cartoon */
         .fence {
             position: absolute;
             top: 25%;
@@ -41,28 +38,12 @@
             width: 100%;
             height: 60px;
             background:
-                /* Lattes horizontales */
                 linear-gradient(to bottom, transparent 15px, #fdfdfd 15px, #f0f0f0 25px, #e0e0e0 28px, transparent 28px, transparent 40px, #fdfdfd 40px, #f0f0f0 50px, #e0e0e0 53px, transparent 53px),
-                /* Piquets verticaux */
                 repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 55px, #d0d0d0 58px, transparent 58px, transparent 80px);
             z-index: -1;
             filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
         }
 
-        .fence::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            /* Pointes des piquets */
-            background: repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 49px, #d0d0d0 58px, transparent 58px, transparent 80px);
-            clip-path: polygon(40px 10px, 49px 0, 58px 10px, 120px 10px, 129px 0, 138px 10px); /* Simplifié, l'effet sera donné par le repeating */
-        }
-
-
-        /* Top HUD */
         .hud {
             display: flex;
             justify-content: space-between;
@@ -71,839 +52,277 @@
             max-width: 500px;
             padding: 15px;
             box-sizing: border-box;
-            gap: 5px;
+            gap: 10px;
             margin-top: 10px;
+            z-index: 10;
         }
 
+        /* Quest Zone (Top Left) */
+        .quest-zone {
+            background: linear-gradient(to bottom, #ffeb3b, #ffc107);
+            border: 3px solid #ff9800;
+            border-radius: 15px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+            color: #d84315;
+            position: relative;
+            min-width: 80px;
+        }
+
+        .quest-zone-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .quest-target {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            border: 2px dashed #ff9800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        /* Right Stats */
         .hud-stats {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
         }
 
         .hud-item {
             background: linear-gradient(to bottom, #ffffff, #fdfbf7);
             border-radius: 20px;
-            padding: 4px 10px 4px 30px;
+            padding: 4px 15px 4px 35px;
             font-weight: 800;
-            color: #8b5a2b; /* Marron chaud */
+            color: #8b5a2b;
             box-shadow: 0 3px 5px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,1);
             display: flex;
             align-items: center;
             border: 2px solid #e0d8c8;
-            font-size: 14px;
+            font-size: 16px;
             position: relative;
-            height: 24px;
+            height: 28px;
+            min-width: 60px;
+            justify-content: center;
         }
 
         .hud-icon {
             position: absolute;
             left: -8px;
             top: -6px;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 22px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 2px solid #fff;
         }
 
-        .energy-icon { background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00); border: 2px solid #fff; }
-        .coin-icon { background: radial-gradient(circle at 30% 30%, #ffff00, #daa520); border: 2px solid #fff; }
-        .gem-icon { background: radial-gradient(circle at 30% 30%, #ff69b4, #c71585); border: 2px solid #fff; color: white;}
+        .energy-icon { background: radial-gradient(circle at 30% 30%, #4fc3f7, #0288d1); color: #fff; font-style: normal;}
+        .coin-icon { background: radial-gradient(circle at 30% 30%, #ffff00, #daa520); }
 
         .level-badge {
             position: absolute;
-            left: 10px;
-            top: 20px;
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(to bottom, #4fc3f7, #0288d1);
+            left: 15px;
+            top: 90px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom, #ff9800, #e65100);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             font-weight: 900;
-            font-size: 20px;
-            border: 3px solid #e1f5fe;
+            font-size: 24px;
+            border: 3px solid #fff;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
         }
 
-        .level-star {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            color: #ffd700;
-            font-size: 16px;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
-        }
-
-        /* Recipe Zone (Client order) */
-        .recipe-zone {
-            position: relative;
-            background: linear-gradient(to bottom, #ff94c2, #ff69b4);
-            border: 3px solid #ff1493;
-            border-radius: 12px;
-            padding: 5px 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            margin-left: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            color: white;
-            font-weight: bold;
-        }
-
-        .recipe-avatar {
-            position: absolute;
-            left: -25px;
-            bottom: 0;
-            width: 50px;
-            height: 60px;
-            background: #ccc; /* Placeholder for character */
-            border-radius: 25px 25px 0 0;
-            border: 2px solid #fff;
-            border-bottom: none;
-            overflow: hidden;
-            background-image: radial-gradient(circle at center, #f0e6d2, #d2b48c);
-        }
-
-        .recipe-avatar::after {
-            content: '🧔'; /* King/Character emoji */
-            font-size: 40px;
-            position: absolute;
-            bottom: -5px;
-            left: 2px;
-        }
-
-        .recipe-reward {
-            background: #fff;
-            color: #ff8c00;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 12px;
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            border: 2px solid #ff8c00;
-            box-shadow: 0 2px 2px rgba(0,0,0,0.1);
-        }
-
-        .recipe-items {
-            display: flex;
-            gap: 5px;
-            margin-left: 30px; /* Space for avatar */
-            background: rgba(255,255,255,0.4);
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .recipe-item-box {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(145deg, #a8e6cf, #dcedc1);
-            border-radius: 6px;
-            border: 1px solid #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Grille Principale */
-        .studio-container {
-            background: #fdfaf3; /* Beige très clair / bois clair */
-            padding: 8px;
+        /* Board */
+        .board {
+            background: rgba(255, 255, 255, 0.4);
+            border: 4px solid #8b5a2b;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 0 4px #e8dcc8;
-            margin-top: 15px;
-            position: relative;
-            z-index: 5;
-        }
-
-        /* Contour décoratif style cadre en bois */
-        .studio-container::before {
-            content: '';
-            position: absolute;
-            top: -6px; left: -6px; right: -6px; bottom: -6px;
-            border-radius: 20px;
-            border: 6px solid #d2b48c;
-            background: transparent;
-            z-index: -1;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
+            padding: 10px;
+            margin-top: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.5);
+            backdrop-filter: blur(5px);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(5, 65px); /* 5 colonnes pour ressembler plus à l'image */
+            grid-template-columns: repeat(5, 65px);
             grid-template-rows: repeat(6, 65px);
-            gap: 2px; /* Grille très serrée */
-            background-color: #f0e6d2; /* Couleur de fond entre les cases */
-            border-radius: 10px;
-            padding: 2px;
+            gap: 6px;
         }
 
         .cell {
-            background: #fdfaf3; /* Beige clair */
-            border-radius: 8px;
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle at 50% 50%, #f4edd8, #e0d0b0);
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 0 #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05), inset 0 -2px 4px rgba(255,255,255,0.8);
             position: relative;
         }
 
-        /* Items premium 3D */
+        /* Items */
         .item {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
+            width: 55px;
+            height: 55px;
+            position: relative;
+            cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: grab;
-            user-select: none;
+            font-size: 32px;
             transition: transform 0.1s;
-            position: relative;
-            /* L'ombre de base de l'objet */
-            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3));
         }
 
         .item:active {
             cursor: grabbing;
-            transform: scale(1.1) translateY(-5px);
-            filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
-            z-index: 100;
+            transform: scale(1.1);
         }
 
-        /* Les icônes Premium dessinées en CSS (Data URIs ou dégradés complexes) */
-        .item-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            position: relative;
-            /* Effet brillant universel sur tous les objets */
-        }
-        
-        .item-icon::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            right: 5px;
-            height: 15px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
-            border-radius: 6px 6px 10px 10px;
-            pointer-events: none;
-        }
-
-        /* Styles spécifiques par famille et niveau pour simuler de la 3D cartoon */
-        
-        /* Famille A: Appareils (Corps métallique/cuir) */
-        .item[data-family="A"][data-level="1"] .item-icon {
-            /* Daguerréotype: Boîte en bois */
-            background: linear-gradient(135deg, #8b5a2b, #5c3a21);
-            border: 2px solid #3d2616;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-        .item[data-family="A"][data-level="1"] .item-icon::before {
-            content: ''; position: absolute; top: 15px; left: 15px; width: 20px; height: 20px;
-            background: radial-gradient(circle, #333 30%, #666 40%, #222 50%); border-radius: 50%; border: 2px solid #daa520;
-        }
-        
-        .item[data-family="A"][data-level="2"] .item-icon {
-            /* Brownie: Cuir noir et métal */
-            background: linear-gradient(135deg, #2c3e50, #1a252f);
-            border-radius: 5px;
-            border: 1px solid #000;
-        }
-        .item[data-family="A"][data-level="2"] .item-icon::before {
-            content: ''; position: absolute; top: 10px; left: 10px; width: 28px; height: 28px;
-            background: radial-gradient(circle, #000 20%, #444 40%, #111 60%); border-radius: 50%; border: 3px solid #bdc3c7;
-        }
-
-        .item[data-family="A"][data-level="3"] .item-icon {
-            /* Argentique: Métal brossé et cuir */
-            background: linear-gradient(to bottom, #ecf0f1 30%, #34495e 30%);
-            border-radius: 8px;
-            box-shadow: inset 0 2px 0 #fff;
-        }
-        .item[data-family="A"][data-level="3"] .item-icon::before {
-            content: ''; position: absolute; top: 8px; left: 8px; width: 34px; height: 34px;
-            background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%); border-radius: 50%; border: 4px solid #bdc3c7; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        /* Famille B: Objectifs (Verre et métal noir) */
-        .item[data-family="B"] .item-icon {
-            border-radius: 50%;
-            margin: auto;
-        }
-        .item[data-family="B"][data-level="1"] .item-icon {
-            width: 30px; height: 30px; margin-top: 10px;
-            background: radial-gradient(circle at 30% 30%, #e0f7fa, #006064);
-            border: 4px solid #222; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .item[data-family="B"][data-level="2"] .item-icon {
-            width: 40px; height: 40px; margin-top: 5px;
-            background: radial-gradient(circle at 30% 30%, #b2ebf2, #004d40);
-            border: 5px solid #111; box-shadow: 0 5px 8px rgba(0,0,0,0.3);
-        }
-        .item[data-family="B"][data-level="3"] .item-icon {
-            width: 46px; height: 46px; margin-top: 2px;
-            background: radial-gradient(circle at 40% 40%, #80deea, #000, #333);
-            border: 6px solid #0a0a0a; box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 0 5px #fff;
-        }
-
-        /* Famille D: Consommables (Boîtes jaunes / pellicules) */
-        .item[data-family="D"][data-level="1"] .item-icon {
-            /* Pellicule noire */
-            background: linear-gradient(to right, #111 20%, #333 50%, #111 80%);
-            border-radius: 4px; width: 25px; height: 40px; margin: 5px auto;
-            border-top: 4px solid #ccc; border-bottom: 4px solid #ccc;
-        }
-        .item[data-family="D"][data-level="2"] .item-icon {
-            /* Boîte jaune Kodak-style */
-            background: linear-gradient(135deg, #f1c40f, #f39c12);
-            border-radius: 4px; border: 1px solid #d35400;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
-        }
-        .item[data-family="D"][data-level="2"] .item-icon::before {
-            content: 'Film'; position: absolute; top: 15px; left: 8px; color: #c0392b; font-weight: bold; font-size: 10px; font-family: sans-serif;
-        }
-        .item[data-family="D"][data-level="3"] .item-icon {
-            /* Carte SD Bleue */
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            width: 35px; height: 45px; margin: 2px auto;
-            border-radius: 4px; clip-path: polygon(0 0, 70% 0, 100% 15%, 100% 100%, 0 100%);
-            border-left: 2px solid #74b9ff;
-        }
-
-        /* Familles C et E (Fallback avec emojis améliorés pour le reste) */
-        .item-emoji {
-            font-size: 38px;
-            line-height: 50px;
-            text-align: center;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
-        }
-
-        /* Feedback visuel de niveau (petits éclairs ou étoiles) */
-        .item-level-indicator {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            display: flex;
-        }
-        .level-star-icon {
-            color: #ffd700;
-            font-size: 12px;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
-            margin-left: -4px;
-        }
-
-
+        /* Action Button */
         .controls {
             margin-top: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-            position: relative;
         }
 
-        /* Panneau de contrôle du bas (style Image 2) */
-        .bottom-panel {
-            background: #fdfaf3;
-            border: 4px solid #d2b48c;
-            border-radius: 15px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 300px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .panel-text {
-            font-size: 12px;
-            color: #8b5a2b;
-            font-weight: bold;
-            text-align: center;
-            flex-grow: 1;
-            padding: 0 10px;
-        }
-
-        /* Boutons verts carrés arrondis style Image 2 */
-        .btn-green {
-            background: linear-gradient(to bottom, #76c945, #55a326);
+        .btn-spawn {
+            background: linear-gradient(to bottom, #8bc34a, #388e3c);
             border: 3px solid #fff;
-            border-radius: 12px;
-            width: 50px;
-            height: 50px;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #3a7a16, 0 6px 10px rgba(0,0,0,0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .btn-green:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-
-        /* Narration & Dialog */
-        .dialog-zone {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            border: 3px solid #ff4081;
-            border-radius: 15px;
-            padding: 10px;
-            margin: 10px auto;
-            max-width: 500px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #ddd;
-            border: 3px solid white;
-            margin-right: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .dialog-text {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            font-size: 14px;
-            color: #333;
-            flex-grow: 1;
-        }
-
-        .dialog-name {
-            font-weight: bold;
-            color: #ff4081;
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-
-        /* Missions & Validation */
-        .mission-status {
-            font-size: 12px;
-            color: #666;
-            text-align: right;
-            margin-bottom: 5px;
-        }
-
-        .btn-validate {
-            background: linear-gradient(180deg, #d3d3d3, #a9a9a9);
-            color: white;
-            border: 2px solid white;
-            border-radius: 10px;
-            padding: 8px 15px;
-            font-weight: bold;
-            cursor: not-allowed;
-            transition: all 0.3s;
-            box-shadow: 0 4px 0 #808080;
-            margin-left: 10px;
-            pointer-events: none;
-        }
-
-        .btn-validate.active {
-            background: linear-gradient(180deg, #ffeb3b, #ffb300);
-            box-shadow: 0 4px 0 #f39c12, 0 0 15px rgba(255, 235, 59, 0.8);
-            cursor: pointer;
-            pointer-events: auto;
-            animation: pulse 1.5s infinite;
-        }
-
-        .btn-validate.active:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #f39c12;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Confetti */
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            animation: fall 3s linear infinite;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
-        /* Backgrounds based on level */
-        body.level-1 {
-            background: linear-gradient(to bottom, #d7ccc8, #a1887f); /* Old Paris Studio */
-        }
-        body.level-1::before {
-            background: none; /* remove default clouds */
-        }
-        body.level-1 .fence {
-            background: repeating-linear-gradient(90deg, #5d4037, #5d4037 20px, transparent 20px, transparent 40px);
-            height: 40px;
-            bottom: 30%;
-        }
-
-        body.level-2 {
-            background: linear-gradient(to bottom, #bbdefb, #c8e6c9); /* Flowery street */
-        }
-
-        body.level-3 {
-            background: linear-gradient(to bottom, #fff9c4, #ffcc80); /* Chic Exam Room */
-        }
-        body.level-3::before {
-            background: none;
-        }
-        body.level-3 .fence {
-            display: none;
-        }
-
-
-        /* L'éclair au-dessus d'un objet prêt à être spawner */
-        .spawn-highlight {
-            position: relative;
-        }
-        .spawn-highlight::after {
-            content: '⚡';
-            position: absolute;
-            top: -15px;
-            right: -10px;
+            border-radius: 25px;
+            padding: 12px 30px;
             font-size: 20px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
-            animation: bounce 1s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-5px); }
-        }
-
-        #message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 20px;
             font-weight: 900;
-            font-size: 18px;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 0 #1b5e20, 0 10px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
+        .btn-spawn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #1b5e20, 0 4px 4px rgba(0,0,0,0.3);
+        }
+
+        .btn-spawn::after {
+            content: '⬇️';
+            font-size: 24px;
+        }
+
     </style>
 </head>
 <body>
-
     <div class="fence"></div>
 
-    <!-- Badge Niveau Joueur -->
-    <div class="level-badge" id="ui-level">C<span class="level-star">⭐</span></div>
+    <div class="level-badge">C</div>
 
-
-    <!-- Top HUD -->
     <div class="hud">
-        <div style="flex-grow: 1;"></div> <!-- Spacer -->
+        <div class="quest-zone">
+            <div class="quest-zone-title">Commande</div>
+            <div class="quest-target" id="quest-target">❓</div>
+        </div>
+
         <div class="hud-stats">
-            <div class="hud-item"><div class="hud-icon energy-icon">⚡</div> 457</div>
-            <div class="hud-item"><div class="hud-icon coin-icon">🪙</div> <span id="ui-coins">427</span></div>
-            <div class="hud-item"><div class="hud-icon gem-icon">💎</div> 18</div>
+            <div class="hud-item">
+                <div class="hud-icon energy-icon">⚡</div>
+                <span id="energy">50</span>
+            </div>
+            <div class="hud-item">
+                <div class="hud-icon coin-icon">💰</div>
+                <span id="coins">120</span>
+            </div>
         </div>
     </div>
 
-    <!-- Dialog & Mission Zone -->
-    <div class="dialog-zone">
-        <div class="avatar" id="mentor-avatar">👨‍🦳</div>
-        <div class="dialog-text">
-            <div class="dialog-name" id="mentor-name">Prof. Alistair</div>
-            <div id="dialog-content">Fusionne 2 boîtiers pour créer un 35mm !</div>
-            <div class="mission-status" id="mission-status">Mission 1/3</div>
-        </div>
-        <button class="btn-validate" id="btn-validate" onclick="validateMission()">Valider la photo</button>
+    <div class="board">
+        <div class="grid" id="grid"></div>
     </div>
 
-    <!-- Confetti Container -->
-    <div class="confetti-container" id="confetti"></div>
-
-    <!-- Grille de Jeu -->
-    <div class="studio-container">
-        <div class="grid" id="grid">
-            <!-- Cellules générées ici -->
-        </div>
-    </div>
-
-    <!-- Panneau de contrôle -->
     <div class="controls">
-        <div class="bottom-panel">
-            <button class="btn-green">📦</button>
-            <div class="panel-text">Merge items to unlock new photography gear!</div>
-            <button class="btn-green spawn-highlight" onclick="spawnRandomItem()">↪️</button>
-        </div>
+        <button class="btn-spawn" onclick="spawnRandomItem()">Générer</button>
     </div>
-    <div id="message"></div>
 
     <script>
-        const gridElement = document.getElementById('grid');
-        const cols = 5;
-        const rows = 6;
-        const gridSize = cols * rows;
-        let draggedItem = null;
-        let sourceCell = null;
-
-
-        // --- GAME STATE & SAVE SYSTEM ---
-        let currentLevel = 1;
-        let coins = 427;
-        let currentMissionIndex = 0; // 0, 1, 2 for the 3 missions per level
-
-        const levelsData = {
-            1: {
-                mentor: 'Prof. Alistair',
-                avatar: '👨‍🦳',
-                missions: [
-                    { text: 'Fusionne 2 boîtiers en bois pour créer un 35mm argentique !', req: { family: 'A', level: 2 }, reward: 100 },
-                    { text: 'Il me faut un objectif vintage. (Niv 2)', req: { family: 'B', level: 2 }, reward: 150 },
-                    { text: 'Prépare une pellicule noire. (Niv 1)', req: { family: 'D', level: 1 }, reward: 200 }
-                ]
+        const itemsConfig = {
+            'A': { // Appareils
+                1: '📦', // Daguerréotype (Gros boîtier bois)
+                2: '📻', // Brownie Vintage
+                3: '📷'  // Argentique Vintage (Leica)
             },
-            2: {
-                mentor: 'Prof. Elena',
-                avatar: '👩‍🏫',
-                missions: [
-                    { text: 'Passons aux choses sérieuses. Un grand objectif Zoom !', req: { family: 'B', level: 3 }, reward: 300 },
-                    { text: 'Trouve-moi un Trépied en aluminium !', req: { family: 'C', level: 2 }, reward: 300 },
-                    { text: 'Une pellicule diapo fera l\'affaire. (Niv 2)', req: { family: 'D', level: 2 }, reward: 400 }
-                ]
+            'B': { // Objectifs
+                1: '👁️', // Sténopé
+                2: '🔍', // 50mm classique
+                3: '🔭'  // Téléobjectif
             },
-            3: {
-                mentor: 'Examen Final',
-                avatar: '🎓',
-                missions: [
-                    { text: 'Prouve ta valeur ! Appareil Argentique Vintage (Niv 3)', req: { family: 'A', level: 3 }, reward: 1000 },
-                    { text: 'Et un Flash Cobra moderne ! (Niv 3)', req: { family: 'C', level: 3 }, reward: 1000 },
-                    { text: 'Enfin, un Ordinateur portable pour le traitement !', req: { family: 'E', level: 3 }, reward: 2000 }
-                ]
+            'C': { // Accessoires
+                1: '🦯', // Petit trépied
+                2: '🏗️', // Trépied alu
+                3: '🔦'  // Flash Cobra
+            },
+            'D': { // Consommables
+                1: '🎞️', // Pellicule noire
+                2: '🎫', // Pellicule jaune
+                3: '💽'  // Carte SD bleue
+            },
+            'E': { // Traitement
+                1: '🗃️', // Bac dev
+                2: '📺', // Moniteur CRT
+                3: '💻'  // Ordinateur portable
             }
         };
 
-        function saveGame() {
-            const state = {
-                level: currentLevel,
-                coins: coins,
-                mission: currentMissionIndex,
-                // Ideally save grid too, but keeping it simple as requested
-            };
-            localStorage.setItem('mergeGameSave', JSON.stringify(state));
-        }
+        const families = Object.keys(itemsConfig);
+        const gridSize = 30;
+        let currentQuest = null;
 
-        function loadGame() {
-            const saved = localStorage.getItem('mergeGameSave');
-            if (saved) {
-                const state = JSON.parse(saved);
-                currentLevel = state.level || 1;
-                coins = state.coins || 427;
-                currentMissionIndex = state.mission || 0;
-
-                // Cap level if needed
-                if(currentLevel > 3) {
-                    currentLevel = 3;
-                    currentMissionIndex = 2;
-                }
-            }
-            updateUI();
-        }
-
-        function updateUI() {
-            // Update Background
-            document.body.className = `level-${currentLevel}`;
-
-            // Update HUD
-            document.getElementById('ui-level').innerHTML = `Lvl ${currentLevel}<span class="level-star">⭐</span>`;
-            document.getElementById('ui-coins').textContent = coins;
-
-            // Update Dialog/Mission
-            const levelData = levelsData[currentLevel];
-            if(!levelData) return; // End of game
-
-            document.getElementById('mentor-name').textContent = levelData.mentor;
-            document.getElementById('mentor-avatar').textContent = levelData.avatar;
-
-            const currentMission = levelData.missions[currentMissionIndex];
-            document.getElementById('dialog-content').textContent = currentMission.text;
-            document.getElementById('mission-status').textContent = `Mission ${currentMissionIndex + 1}/3`;
-
-            checkMissionStatus();
-        }
-
-        function checkMissionStatus() { console.log("checkMissionStatus called");
-            const req = levelsData[currentLevel].missions[currentMissionIndex].req;
-            const itemsOnGrid = document.querySelectorAll('.item');
-            let hasItem = false;
-
-            itemsOnGrid.forEach(item => {
-                if (item.dataset.family === req.family && parseInt(item.dataset.level) === req.level) {
-                    hasItem = true;
-                }
-            });
-
-            const btn = document.getElementById('btn-validate');
-            if (hasItem) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        }
-
-        function validateMission() {
-            const btn = document.getElementById('btn-validate');
-            if (!btn.classList.contains('active')) return;
-
-            const mission = levelsData[currentLevel].missions[currentMissionIndex];
-
-            // Find and consume the item
-            const itemsOnGrid = document.querySelectorAll('.item');
-            let itemConsumed = false;
-            itemsOnGrid.forEach(item => {
-                if (!itemConsumed && item.dataset.family === mission.req.family && parseInt(item.dataset.level) === mission.req.level) {
-                    item.parentElement.removeChild(item);
-                    itemConsumed = true;
-                }
-            });
-
-            if (itemConsumed) {
-                // Reward
-                coins += mission.reward;
-
-                // Advance Mission
-                currentMissionIndex++;
-                if (currentMissionIndex >= 3) {
-                    currentMissionIndex = 0;
-                    currentLevel++;
-                    showLevelUp();
-                }
-
-                if (currentLevel > 3) {
-                    currentLevel = 3; // Max level reached
-                    currentMissionIndex = 2;
-                    showMessage("Jeu Terminé ! Félicitations !");
-                }
-
-                saveGame();
-                updateUI();
-            }
-        }
-
-        function showLevelUp() {
-            showMessage(`Félicitations Clara ! Niveau ${currentLevel} débloqué`);
-            fireConfetti();
-        }
-
-        function fireConfetti() {
-            const container = document.getElementById('confetti');
-            container.style.display = 'block';
-            container.innerHTML = '';
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
-
-            for (let i = 0; i < 100; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                conf.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(conf);
-            }
-
-            setTimeout(() => {
-                container.style.display = 'none';
-            }, 5000);
-        }
-
-        // --- END GAME STATE ---
-
-const itemTypes = {
-            'A': { name: 'Appareils', isCSS: true },
-            'B': { name: 'Objectifs', isCSS: true },
-            'C': { name: 'Accessoires', isCSS: false, emojis: {1: '🦯', 2: '🏗️', 3: '🔦'} },
-            'D': { name: 'Consommables', isCSS: true },
-            'E': { name: 'Traitement', isCSS: false, emojis: {1: '🗃️', 2: '📺', 3: '💻'} }
-        };
-
-        const families = Object.keys(itemTypes);
-
-
-        function initGrid() {
+        function init() {
+            const grid = document.getElementById('grid');
             for (let i = 0; i < gridSize; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.dataset.index = i;
-                
                 cell.addEventListener('dragover', handleDragOver);
                 cell.addEventListener('dragenter', handleDragEnter);
                 cell.addEventListener('dragleave', handleDragLeave);
                 cell.addEventListener('drop', handleDrop);
-                
-                gridElement.appendChild(cell);
+                grid.appendChild(cell);
             }
 
-            // Remplir un peu la grille (style image de ref)
-            spawnSpecificItem('A', 1); spawnSpecificItem('A', 1); spawnSpecificItem('A', 2);
-            spawnSpecificItem('B', 1); spawnSpecificItem('B', 1); spawnSpecificItem('B', 2);
-            spawnSpecificItem('C', 1); spawnSpecificItem('D', 1); spawnSpecificItem('D', 2);
-            spawnSpecificItem('E', 1); spawnSpecificItem('E', 2);
+            // Fill initial grid
+            spawnSpecificItem('A', 1);
+            spawnSpecificItem('A', 1);
+            spawnSpecificItem('B', 1);
+            spawnSpecificItem('C', 1);
+            spawnSpecificItem('D', 1);
+            spawnSpecificItem('E', 1);
 
-            loadGame(); // Load save here
+            generateQuest();
         }
-
 
         function createItemElement(family, level) {
             const item = document.createElement('div');
@@ -911,132 +330,92 @@ const itemTypes = {
             item.draggable = true;
             item.dataset.family = family;
             item.dataset.level = level;
+            item.textContent = itemsConfig[family][level] || '❓';
             
-            const icon = document.createElement('div');
-            icon.className = 'item-icon';
-            
-            if (!itemTypes[family].isCSS) {
-                const emoji = document.createElement('div');
-                emoji.className = 'item-emoji';
-                emoji.textContent = itemTypes[family].emojis[level] || '✨';
-                icon.appendChild(emoji);
-            }
-
-            const levelIndicator = document.createElement('div');
-            levelIndicator.className = 'item-level-indicator';
-            // Ajouter autant d'étoiles que le niveau
-            for(let i=0; i<level; i++) {
-                const star = document.createElement('span');
-                star.className = 'level-star-icon';
-                star.textContent = '⭐';
-                levelIndicator.appendChild(star);
-            }
-            
-            item.appendChild(icon);
-            item.appendChild(levelIndicator);
-
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragend', handleDragEnd);
-
             return item;
         }
 
-        function spawnRandomItem() {
-            const randomFamily = families[Math.floor(Math.random() * families.length)];
-            spawnSpecificItem(randomFamily, 1);
-        }
-
-
         function spawnSpecificItem(family, level) {
             const cells = document.querySelectorAll('.cell');
-            let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
-
+            const emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
             if (emptyCells.length > 0) {
-                // Placer aléatoirement pour faire "naturel"
-                let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 randomCell.appendChild(createItemElement(family, level));
-                checkMissionStatus(); // Check mission on spawn
-            } else {
-                showMessage('Board is full!');
             }
         }
 
+        function spawnRandomItem() {
+            let energy = parseInt(document.getElementById('energy').textContent);
+            if (energy <= 0) return;
 
-        function showMessage(msg) {
-            const msgEl = document.getElementById('message');
-            msgEl.textContent = msg;
-            msgEl.style.opacity = '1';
-            setTimeout(() => { msgEl.style.opacity = '0'; }, 1500);
+            const family = families[Math.floor(Math.random() * families.length)];
+            const cells = document.querySelectorAll('.cell');
+            const emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
+            if (emptyCells.length > 0) {
+                spawnSpecificItem(family, 1);
+                document.getElementById('energy').textContent = energy - 1;
+            }
         }
+
+        function generateQuest() {
+            const family = families[Math.floor(Math.random() * families.length)];
+            const level = Math.floor(Math.random() * 2) + 2; // Demande lvl 2 ou 3
+            currentQuest = { family, level };
+            document.getElementById('quest-target').textContent = itemsConfig[family][level];
+        }
+
+        function checkQuest(family, level) {
+            if (currentQuest && currentQuest.family === family && currentQuest.level === level) {
+                let coins = parseInt(document.getElementById('coins').textContent);
+                document.getElementById('coins').textContent = coins + (level * 10);
+                generateQuest();
+                return true;
+            }
+            return false;
+        }
+
+        let draggedItem = null;
+        let sourceCell = null;
 
         function handleDragStart(e) {
             draggedItem = this;
             sourceCell = this.parentElement;
-            setTimeout(() => {
-                this.style.opacity = '0.7';
-                this.style.zIndex = '100';
-            }, 0);
+            setTimeout(() => { this.style.opacity = '0'; }, 0);
         }
 
         function handleDragEnd(e) {
             this.style.opacity = '1';
-            this.style.zIndex = '';
             draggedItem = null;
             sourceCell = null;
         }
 
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDragEnter(e) {
-            e.preventDefault();
-            if(this !== sourceCell) {
-                this.style.background = '#e8dcc8';
-                this.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.1)';
-            }
-        }
-
-        function handleDragLeave(e) {
-            this.style.background = '';
-            this.style.boxShadow = '';
-        }
+        function handleDragOver(e) { e.preventDefault(); }
+        function handleDragEnter(e) { e.preventDefault(); }
+        function handleDragLeave(e) { }
 
         function handleDrop(e) {
             e.preventDefault();
-            this.style.background = '';
-            this.style.boxShadow = '';
-
             if (this === sourceCell) return;
 
             if (this.hasChildNodes()) {
                 const targetItem = this.firstChild;
-                const draggedFamily = draggedItem.dataset.family;
-                const targetFamily = targetItem.dataset.family;
-                const draggedLevel = parseInt(draggedItem.dataset.level);
-                const targetLevel = parseInt(targetItem.dataset.level);
+                const df = draggedItem.dataset.family;
+                const tf = targetItem.dataset.family;
+                const dl = parseInt(draggedItem.dataset.level);
+                const tl = parseInt(targetItem.dataset.level);
 
-                if (draggedFamily === targetFamily && draggedLevel === targetLevel) {
-                    if (draggedLevel >= 3) {
-                        showMessage('Max level!');
-                        // Swap anyway
-                        sourceCell.appendChild(targetItem);
-                        this.appendChild(draggedItem);
-                        return;
-                    }
-                    
+                if (df === tf && dl === tl && dl < 3) {
+                    // Merge
                     this.removeChild(targetItem);
-                    const newItemLevel = draggedLevel + 1;
-                    this.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
+                    this.appendChild(createItemElement(df, dl + 1));
 
-
-                    // Effet visuel simple de fusion
-                    this.firstChild.style.transform = 'scale(1.3)';
-                    setTimeout(() => { this.firstChild.style.transform = ''; }, 200);
-
-                    checkMissionStatus(); // Check mission on merge
+                    // Check if new item fulfills quest
+                    checkQuest(df, dl + 1);
                 } else {
+                    // Swap
                     sourceCell.appendChild(targetItem);
                     this.appendChild(draggedItem);
                 }
@@ -1045,8 +424,7 @@ const itemTypes = {
             }
         }
 
-
-        window.onload = initGrid;
+        window.onload = init;
     </script>
 </body>
 </html>
