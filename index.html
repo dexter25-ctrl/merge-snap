@@ -63,85 +63,81 @@
 
 
         /* Top HUD */
-        .hud {
+        /* NOUVEAU HEADER #header */
+        #header {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             max-width: 500px;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
-            gap: 5px;
+            gap: 10px;
             margin-top: 10px;
-        }
-
-        .hud-stats {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .hud-item {
-            background: linear-gradient(to bottom, #ffffff, #fdfbf7);
-            border-radius: 20px;
-            padding: 4px 10px 4px 30px;
-            font-weight: 800;
-            color: #8b5a2b; /* Marron chaud */
-            box-shadow: 0 3px 5px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,1);
-            display: flex;
-            align-items: center;
-            border: 2px solid #e0d8c8;
-            font-size: 14px;
+            background-color: #2c3e50; /* Gris très foncé / Chic */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             position: relative;
-            height: 24px;
-        }
-
-        .hud-icon {
-            position: absolute;
-            left: -8px;
-            top: -6px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .energy-icon { background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00); border: 2px solid #fff; }
-        .coin-icon { background: radial-gradient(circle at 30% 30%, #ffff00, #daa520); border: 2px solid #fff; }
-        .gem-icon { background: radial-gradient(circle at 30% 30%, #ff69b4, #c71585); border: 2px solid #fff; color: white;}
-
-        .level-badge {
-            position: absolute;
-            left: 10px;
-            top: 20px;
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(to bottom, #4fc3f7, #0288d1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: 900;
-            font-size: 20px;
-            border: 3px solid #e1f5fe;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .level-star {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            color: #ffd700;
+        .header-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: bold;
             font-size: 16px;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
         }
+
+        .header-item-lvl {
+            background-color: #34495e;
+            color: silver;
+        }
+
+        .header-item-energy {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .header-item-coins {
+            background-color: #f1c40f;
+            color: black;
+        }
+
+        .header-item-gems {
+            background-color: #8e44ad;
+            color: white;
+        }
+
+        .btn-plus {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn-plus-energy { background-color: #2980b9; color: white; }
+        .btn-plus-coins { background-color: #f39c12; color: black; }
+        .btn-plus-gems { background-color: #732d91; color: white; }
+
+        .header-icon {
+            margin-right: 6px;
+            font-size: 18px;
+        }
+
 
         /* Recipe Zone (Client order) */
         .recipe-zone {
@@ -672,20 +668,24 @@
 <body>
 
     <div class="fence"></div>
-
-    <!-- Badge Niveau Joueur -->
-    <div class="level-badge" id="ui-level">C<span class="level-star">⭐</span></div>
-
-
-    <!-- Top HUD -->
-    <div class="hud">
-        <div style="flex-grow: 1;"></div> <!-- Spacer -->
-        <div class="hud-stats">
-            <div class="hud-item"><div class="hud-icon energy-icon">⚡</div> 457</div>
-            <div class="hud-item"><div class="hud-icon coin-icon">🪙</div> <span id="ui-coins">427</span></div>
-            <div class="hud-item"><div class="hud-icon gem-icon">💎</div> 18</div>
+    <div id="header">
+        <div class="header-item header-item-lvl" id="ui-level">
+            LVL 1
+        </div>
+        <div class="header-item header-item-energy">
+            <span class="header-icon">⚡</span> 457
+            <button class="btn-plus btn-plus-energy">+</button>
+        </div>
+        <div class="header-item header-item-coins">
+            <span class="header-icon">💰</span> <span id="ui-coins">427</span>
+            <button class="btn-plus btn-plus-coins">+</button>
+        </div>
+        <div class="header-item header-item-gems">
+            <span class="header-icon">💎</span> 18
+            <button class="btn-plus btn-plus-gems">+</button>
         </div>
     </div>
+
 
     <!-- Dialog & Mission Zone -->
     <div class="dialog-zone">
@@ -794,7 +794,7 @@
             document.body.className = `level-${currentLevel}`;
 
             // Update HUD
-            document.getElementById('ui-level').innerHTML = `Lvl ${currentLevel}<span class="level-star">⭐</span>`;
+            document.getElementById('ui-level').innerHTML = `LVL ${currentLevel}`;
             document.getElementById('ui-coins').textContent = coins;
 
             // Update Dialog/Mission
