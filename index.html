@@ -664,10 +664,7 @@
             cursor: grabbing;
             transform: scale(1.05);
         }
-        .item[data-family="A"] { background: linear-gradient(135deg, #a0c4ff, #8ab4f8); } /* Bleu clair */
-        .item[data-family="B"] { background: linear-gradient(135deg, #caffbf, #90ee90); } /* Vert clair */
-        .item[data-family="C"] { background: linear-gradient(135deg, #fdffb6, #ffeb3b); } /* Jaune clair */
-        .item[data-family="D"] { background: linear-gradient(135deg, #bdb2ff, #a991f8); } /* Violet clair */
+
         .item-text { pointer-events: none; }
 
     </style>
@@ -902,10 +899,10 @@
 
 
         const itemNames = {
-            'A': ['Appareil Lvl 1', 'Brownie Lvl 2', 'Appareil Lvl 3', 'Reflex Lvl 4', 'Appareil Lvl 5', 'Appareil Lvl 6', 'Appareil Lvl 7', 'Appareil Lvl 8', 'Appareil Lvl 9', 'Appareil Lvl 10'],
-            'B': ['Trépied Lvl 1', 'Trépied Lvl 2', 'Trépied Lvl 3', 'Trépied Lvl 4', 'Trépied Lvl 5', 'Trépied Lvl 6', 'Trépied Lvl 7', 'Gimbal Lvl 8', 'Trépied Lvl 9', 'Trépied Lvl 10'],
-            'C': ['Stockage Lvl 1', 'Pellicule Lvl 2', 'Stockage Lvl 3', 'Stockage Lvl 4', 'Stockage Lvl 5', 'Carte SD Lvl 6', 'Stockage Lvl 7', 'Stockage Lvl 8', 'Stockage Lvl 9', 'Stockage Lvl 10'],
-            'D': ['Brique Lvl 1', 'Téléphone Lvl 2', 'Téléphone Lvl 3', 'Téléphone Lvl 4', 'Smartphone Lvl 5', 'Téléphone Lvl 6', 'Téléphone Lvl 7', 'Téléphone Lvl 8', 'Téléphone Lvl 9', 'Téléphone Lvl 10']
+            'A': ['📦 Sténopé', '📻 Brownie', '📷 Télémétrique', '📸 Reflex 70s', '📹 Caméscope 90s', '🎥 Caméra Epaule', '📽️ Projo Super8', '📱 Smartphone Cam', '🚁 Drone 4K', '🛸 Capteur Stellaire'],
+            'B': ['🐙 Gorillapod', '🦯 Monopode', '🗼 Trépied Alu', '🏗️ Trépied Pro', '🦾 Trépied Carbone', '🗜️ Tête Fluide', '⚖️ Steadicam', '🕹️ Gimbal 1-axe', '🚁 Gimbal 3-axes', '🛰️ Drone Optique'],
+            'C': ['🪞 Daguerréotype', '🎞️ Rouleau 120', '🎞️ Cartouche 35mm', '🎞️ Diapositive', '💾 Disquette', '🗃️ Carte SD 1GB', '🗂️ Carte SD Pro', '💽 Disque Dur', '⚡ SSD Portable', '💎 Hologramme'],
+            'D': ['🧱 Brique', '📟 Clapet', '📱 Feature Phone', '📱 Smartphone V1', '📸 Smart Flash', '📱 Dual-Cam', '📱 Triple-Cam', '📖 Pliable', '📱 Ultra Capteur', '👁️ Optique Rétinienne']
         };
         const families = ['A', 'B', 'C', 'D'];
 
@@ -945,6 +942,28 @@
             textSpan.textContent = itemNames[family][level - 1] || (family + ' Lvl ' + level);
 
             item.appendChild(textSpan);
+
+            if (family === 'A') {
+                item.style.background = 'linear-gradient(135deg, #e3f2fd, #bbdefb)';
+                item.style.borderRadius = '8px';
+                item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                item.style.border = '1px solid #90caf9';
+            } else if (family === 'B') {
+                item.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9)';
+                item.style.borderRadius = '8px';
+                item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                item.style.border = '1px solid #a5d6a7';
+            } else if (family === 'C') {
+                item.style.background = 'linear-gradient(135deg, #fffde7, #fff9c4)';
+                item.style.borderRadius = '8px';
+                item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                item.style.border = '1px solid #fff59d';
+            } else if (family === 'D') {
+                item.style.background = 'linear-gradient(135deg, #f3e5f5, #e1bee7)';
+                item.style.borderRadius = '8px';
+                item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                item.style.border = '1px solid #ce93d8';
+            }
 
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragend', handleDragEnd);
