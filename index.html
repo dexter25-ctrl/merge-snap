@@ -3,143 +3,580 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merge & Snap - Prototype</title>
+    <title>Merge & Snap - V2 Premium</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
-            padding: 20px;
+            /* Paysage réaliste cartoon: collines vertes douces */
+            background-color: #8FD8D8; /* Ciel bleu clair */
+            background-image:
+                /* Nuages */
+                radial-gradient(circle at 20% 15%, #ffffff 0%, rgba(255,255,255,0) 10%),
+                radial-gradient(circle at 25% 18%, #ffffff 0%, rgba(255,255,255,0) 12%),
+                radial-gradient(circle at 75% 10%, #ffffff 0%, rgba(255,255,255,0) 8%),
+                radial-gradient(circle at 80% 12%, #ffffff 0%, rgba(255,255,255,0) 10%),
+                /* Collines au loin */
+                radial-gradient(ellipse at 50% 40%, #A0E8A0 0%, transparent 60%),
+                radial-gradient(ellipse at 10% 45%, #8CD48C 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 45%, #8CD48C 0%, transparent 50%),
+                /* Sol avec chemin */
+                radial-gradient(ellipse at 50% 100%, #E8D4A0 0%, #E8D4A0 15%, transparent 30%),
+                linear-gradient(to bottom, transparent 30%, #68B868 30%, #5CB05C 40%, #50A850 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
         }
-        h1 {
-            color: #f1c40f;
-            margin-bottom: 5px;
+
+        /* Clôture en bois blanc cartoon */
+        .fence {
+            position: absolute;
+            top: 25%;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background:
+                /* Lattes horizontales */
+                linear-gradient(to bottom, transparent 15px, #fdfdfd 15px, #f0f0f0 25px, #e0e0e0 28px, transparent 28px, transparent 40px, #fdfdfd 40px, #f0f0f0 50px, #e0e0e0 53px, transparent 53px),
+                /* Piquets verticaux */
+                repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 55px, #d0d0d0 58px, transparent 58px, transparent 80px);
+            z-index: -1;
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
         }
-        p {
-            margin-bottom: 20px;
+
+        .fence::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            /* Pointes des piquets */
+            background: repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 49px, #d0d0d0 58px, transparent 58px, transparent 80px);
+            clip-path: polygon(40px 10px, 49px 0, 58px 10px, 120px 10px, 129px 0, 138px 10px); /* Simplifié, l'effet sera donné par le repeating */
         }
+
+
+        /* Top HUD */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            box-sizing: border-box;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .hud-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .hud-item {
+            background: linear-gradient(to bottom, #ffffff, #fdfbf7);
+            border-radius: 20px;
+            padding: 4px 10px 4px 30px;
+            font-weight: 800;
+            color: #8b5a2b; /* Marron chaud */
+            box-shadow: 0 3px 5px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,1);
+            display: flex;
+            align-items: center;
+            border: 2px solid #e0d8c8;
+            font-size: 14px;
+            position: relative;
+            height: 24px;
+        }
+
+        .hud-icon {
+            position: absolute;
+            left: -8px;
+            top: -6px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .energy-icon { background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00); border: 2px solid #fff; }
+        .coin-icon { background: radial-gradient(circle at 30% 30%, #ffff00, #daa520); border: 2px solid #fff; }
+        .gem-icon { background: radial-gradient(circle at 30% 30%, #ff69b4, #c71585); border: 2px solid #fff; color: white;}
+
+        .level-badge {
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(to bottom, #4fc3f7, #0288d1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 900;
+            font-size: 20px;
+            border: 3px solid #e1f5fe;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.5);
+            z-index: 10;
+        }
+
+        .level-star {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            color: #ffd700;
+            font-size: 16px;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+        }
+
+        /* Recipe Zone (Client order) */
+        .recipe-zone {
+            position: relative;
+            background: linear-gradient(to bottom, #ff94c2, #ff69b4);
+            border: 3px solid #ff1493;
+            border-radius: 12px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            margin-left: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .recipe-avatar {
+            position: absolute;
+            left: -25px;
+            bottom: 0;
+            width: 50px;
+            height: 60px;
+            background: #ccc; /* Placeholder for character */
+            border-radius: 25px 25px 0 0;
+            border: 2px solid #fff;
+            border-bottom: none;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #f0e6d2, #d2b48c);
+        }
+
+        .recipe-avatar::after {
+            content: '🧔'; /* King/Character emoji */
+            font-size: 40px;
+            position: absolute;
+            bottom: -5px;
+            left: 2px;
+        }
+
+        .recipe-reward {
+            background: #fff;
+            color: #ff8c00;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 12px;
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            border: 2px solid #ff8c00;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+        }
+
+        .recipe-items {
+            display: flex;
+            gap: 5px;
+            margin-left: 30px; /* Space for avatar */
+            background: rgba(255,255,255,0.4);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .recipe-item-box {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #a8e6cf, #dcedc1);
+            border-radius: 6px;
+            border: 1px solid #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Grille Principale */
         .studio-container {
-            background-color: #34495e;
-            padding: 20px;
+            background: #fdfaf3; /* Beige très clair / bois clair */
+            padding: 8px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 0 4px #e8dcc8;
+            margin-top: 15px;
+            position: relative;
+            z-index: 5;
         }
+
+        /* Contour décoratif style cadre en bois */
+        .studio-container::before {
+            content: '';
+            position: absolute;
+            top: -6px; left: -6px; right: -6px; bottom: -6px;
+            border-radius: 20px;
+            border: 6px solid #d2b48c;
+            background: transparent;
+            z-index: -1;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 80px);
-            grid-template-rows: repeat(4, 80px);
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(5, 65px); /* 5 colonnes pour ressembler plus à l'image */
+            grid-template-rows: repeat(6, 65px);
+            gap: 2px; /* Grille très serrée */
+            background-color: #f0e6d2; /* Couleur de fond entre les cases */
+            border-radius: 10px;
+            padding: 2px;
         }
+
         .cell {
-            background-color: #1abc9c;
+            background: #fdfaf3; /* Beige clair */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05), inset 0 -2px 4px rgba(255,255,255,0.8);
+            position: relative;
+        }
+
+        /* Items premium 3D */
+        .item {
+            width: 60px;
+            height: 60px;
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .item {
-            width: 70px;
-            height: 70px;
-            background-color: #fff;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             cursor: grab;
             user-select: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             transition: transform 0.1s;
+            position: relative;
+            /* L'ombre de base de l'objet */
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.25));
         }
+
         .item:active {
             cursor: grabbing;
-            transform: scale(1.05);
+            transform: scale(1.1) translateY(-5px);
+            filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
+            z-index: 100;
         }
-        
-        /* Niveaux des items */
-        .item[data-level="1"] { border: 3px solid #e74c3c; } /* Chambre Noire */
-        .item[data-level="2"] { border: 3px solid #e67e22; } /* Daguerréotype */
-        .item[data-level="3"] { border: 3px solid #f1c40f; } /* Stéréoscope */
-        
+
+        /* Les icônes Premium dessinées en CSS (Data URIs ou dégradés complexes) */
         .item-icon {
-            font-size: 28px;
-            margin-bottom: 2px;
-        }
-        .item-level {
-            font-size: 12px;
-            font-weight: bold;
-            color: #333;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            position: relative;
+            /* Effet brillant universel sur tous les objets */
         }
         
+        .item-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            right: 5px;
+            height: 15px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            border-radius: 6px 6px 10px 10px;
+            pointer-events: none;
+        }
+
+        /* Styles spécifiques par famille et niveau pour simuler de la 3D cartoon */
+        
+        /* Famille A: Appareils (Corps métallique/cuir) */
+        .item[data-family="A"][data-level="1"] .item-icon {
+            /* Daguerréotype: Boîte en bois */
+            background: linear-gradient(135deg, #8b5a2b, #5c3a21);
+            border: 2px solid #3d2616;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        .item[data-family="A"][data-level="1"] .item-icon::before {
+            content: ''; position: absolute; top: 15px; left: 15px; width: 20px; height: 20px;
+            background: radial-gradient(circle, #333 30%, #666 40%, #222 50%); border-radius: 50%; border: 2px solid #daa520;
+        }
+        
+        .item[data-family="A"][data-level="2"] .item-icon {
+            /* Brownie: Cuir noir et métal */
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            border-radius: 5px;
+            border: 1px solid #000;
+        }
+        .item[data-family="A"][data-level="2"] .item-icon::before {
+            content: ''; position: absolute; top: 10px; left: 10px; width: 28px; height: 28px;
+            background: radial-gradient(circle, #000 20%, #444 40%, #111 60%); border-radius: 50%; border: 3px solid #bdc3c7;
+        }
+
+        .item[data-family="A"][data-level="3"] .item-icon {
+            /* Argentique: Métal brossé et cuir */
+            background: linear-gradient(to bottom, #ecf0f1 30%, #34495e 30%);
+            border-radius: 8px;
+            box-shadow: inset 0 2px 0 #fff;
+        }
+        .item[data-family="A"][data-level="3"] .item-icon::before {
+            content: ''; position: absolute; top: 8px; left: 8px; width: 34px; height: 34px;
+            background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%); border-radius: 50%; border: 4px solid #bdc3c7; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Famille B: Objectifs (Verre et métal noir) */
+        .item[data-family="B"] .item-icon {
+            border-radius: 50%;
+            margin: auto;
+        }
+        .item[data-family="B"][data-level="1"] .item-icon {
+            width: 30px; height: 30px; margin-top: 10px;
+            background: radial-gradient(circle at 30% 30%, #e0f7fa, #006064);
+            border: 4px solid #222; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .item[data-family="B"][data-level="2"] .item-icon {
+            width: 40px; height: 40px; margin-top: 5px;
+            background: radial-gradient(circle at 30% 30%, #b2ebf2, #004d40);
+            border: 5px solid #111; box-shadow: 0 5px 8px rgba(0,0,0,0.3);
+        }
+        .item[data-family="B"][data-level="3"] .item-icon {
+            width: 46px; height: 46px; margin-top: 2px;
+            background: radial-gradient(circle at 40% 40%, #80deea, #000, #333);
+            border: 6px solid #0a0a0a; box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 0 5px #fff;
+        }
+
+        /* Famille D: Consommables (Boîtes jaunes / pellicules) */
+        .item[data-family="D"][data-level="1"] .item-icon {
+            /* Pellicule noire */
+            background: linear-gradient(to right, #111 20%, #333 50%, #111 80%);
+            border-radius: 4px; width: 25px; height: 40px; margin: 5px auto;
+            border-top: 4px solid #ccc; border-bottom: 4px solid #ccc;
+        }
+        .item[data-family="D"][data-level="2"] .item-icon {
+            /* Boîte jaune Kodak-style */
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            border-radius: 4px; border: 1px solid #d35400;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+        }
+        .item[data-family="D"][data-level="2"] .item-icon::before {
+            content: 'Film'; position: absolute; top: 15px; left: 8px; color: #c0392b; font-weight: bold; font-size: 10px; font-family: sans-serif;
+        }
+        .item[data-family="D"][data-level="3"] .item-icon {
+            /* Carte SD Bleue */
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            width: 35px; height: 45px; margin: 2px auto;
+            border-radius: 4px; clip-path: polygon(0 0, 70% 0, 100% 15%, 100% 100%, 0 100%);
+            border-left: 2px solid #74b9ff;
+        }
+
+        /* Familles C et E (Fallback avec emojis améliorés pour le reste) */
+        .item-emoji {
+            font-size: 38px;
+            line-height: 50px;
+            text-align: center;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        }
+
+        /* Feedback visuel de niveau (petits éclairs ou étoiles) */
+        .item-level-indicator {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            display: flex;
+        }
+        .level-star-icon {
+            color: #ffd700;
+            font-size: 12px;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+            margin-left: -4px;
+        }
+
+
         .controls {
             margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            position: relative;
         }
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
+
+        /* Panneau de contrôle du bas (style Image 2) */
+        .bottom-panel {
+            background: #fdfaf3;
+            border: 4px solid #d2b48c;
+            border-radius: 15px;
             padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        button:hover {
-            background-color: #2980b9;
-        }
-        #message {
-            margin-top: 15px;
-            height: 20px;
-            color: #f1c40f;
+
+        .panel-text {
+            font-size: 12px;
+            color: #8b5a2b;
             font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 10px;
+        }
+
+        /* Boutons verts carrés arrondis style Image 2 */
+        .btn-green {
+            background: linear-gradient(to bottom, #76c945, #55a326);
+            border: 3px solid #fff;
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #3a7a16, 0 6px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-green:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* L'éclair au-dessus d'un objet prêt à être spawner */
+        .spawn-highlight {
+            position: relative;
+        }
+        .spawn-highlight::after {
+            content: '⚡';
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            font-size: 20px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 18px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
     </style>
 </head>
 <body>
 
-    <h1>Merge & Snap</h1>
-    <p>Glissez et déposez deux appareils de même niveau pour les fusionner !</p>
+    <div class="fence"></div>
 
+    <!-- Badge Niveau Joueur -->
+    <div class="level-badge">19<span class="level-star">⭐</span></div>
+
+    <!-- Top HUD -->
+    <div class="hud">
+        <div style="flex-grow: 1;"></div> <!-- Spacer -->
+        <div class="hud-stats">
+            <div class="hud-item"><div class="hud-icon energy-icon">⚡</div> 457</div>
+            <div class="hud-item"><div class="hud-icon coin-icon">🪙</div> 427</div>
+            <div class="hud-item"><div class="hud-icon gem-icon">💎</div> 18</div>
+        </div>
+    </div>
+
+    <!-- Recipe Zone -->
+    <div style="width: 100%; max-width: 500px;">
+        <div class="recipe-zone">
+            <div class="recipe-avatar"></div>
+            <div class="recipe-reward">+1.1k 🪙</div>
+            <div class="recipe-items">
+                <div class="recipe-item-box">
+                    <!-- Mini icone d'objectif dessinée en CSS -->
+                    <div style="width: 15px; height: 15px; background: #000; border-radius: 50%; border: 2px solid #80deea;"></div>
+                </div>
+                <div class="recipe-item-box">
+                    <!-- Mini icone de pellicule -->
+                    <div style="width: 15px; height: 15px; background: #f1c40f; border: 1px solid #d35400;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grille de Jeu -->
     <div class="studio-container">
         <div class="grid" id="grid">
-            <!-- Les cellules seront générées ici -->
+            <!-- Cellules générées ici -->
         </div>
-        
-        <div class="controls">
-            <button onclick="spawnItem(1)">+ Appareil Lvl 1</button>
-        </div>
-        <div id="message"></div>
     </div>
+
+    <!-- Panneau de contrôle -->
+    <div class="controls">
+        <div class="bottom-panel">
+            <button class="btn-green">📦</button>
+            <div class="panel-text">Merge items to unlock new photography gear!</div>
+            <button class="btn-green spawn-highlight" onclick="spawnRandomItem()">↪️</button>
+        </div>
+    </div>
+    <div id="message"></div>
 
     <script>
         const gridElement = document.getElementById('grid');
-        const gridSize = 16; // 4x4
+        const cols = 5;
+        const rows = 6;
+        const gridSize = cols * rows;
         let draggedItem = null;
         let sourceCell = null;
 
         const itemTypes = {
-            1: { icon: '📦', name: 'Chambre Noire' },
-            2: { icon: '📷', name: 'Daguerréotype' },
-            3: { icon: '👓', name: 'Stéréoscope' }
+            'A': { name: 'Appareils', isCSS: true },
+            'B': { name: 'Objectifs', isCSS: true },
+            'C': { name: 'Accessoires', isCSS: false, emojis: {1: '🦯', 2: '🏗️', 3: '🔦'} },
+            'D': { name: 'Consommables', isCSS: true },
+            'E': { name: 'Traitement', isCSS: false, emojis: {1: '🗃️', 2: '📺', 3: '💻'} }
         };
 
-        // Initialisation de la grille
+        const families = Object.keys(itemTypes);
+
         function initGrid() {
             for (let i = 0; i < gridSize; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.index = i;
                 
-                // Événements pour la cellule (zone de dépôt)
                 cell.addEventListener('dragover', handleDragOver);
                 cell.addEventListener('dragenter', handleDragEnter);
                 cell.addEventListener('dragleave', handleDragLeave);
@@ -147,122 +584,149 @@
                 
                 gridElement.appendChild(cell);
             }
-            // Ajouter quelques items de départ
-            spawnItem(1);
-            spawnItem(1);
-            spawnItem(2);
-            spawnItem(2);
+
+            // Remplir un peu la grille (style image de ref)
+            spawnSpecificItem('A', 1); spawnSpecificItem('A', 1); spawnSpecificItem('A', 2);
+            spawnSpecificItem('B', 1); spawnSpecificItem('B', 1); spawnSpecificItem('B', 2);
+            spawnSpecificItem('C', 1); spawnSpecificItem('D', 1); spawnSpecificItem('D', 2);
+            spawnSpecificItem('E', 1); spawnSpecificItem('E', 2);
         }
 
-        // Créer un item
-        function createItemElement(level) {
+        function createItemElement(family, level) {
             const item = document.createElement('div');
             item.className = 'item';
             item.draggable = true;
+            item.dataset.family = family;
             item.dataset.level = level;
             
             const icon = document.createElement('div');
             icon.className = 'item-icon';
-            icon.textContent = itemTypes[level] ? itemTypes[level].icon : '✨';
             
-            const lvlText = document.createElement('div');
-            lvlText.className = 'item-level';
-            lvlText.textContent = `Lvl ${level}`;
+            if (!itemTypes[family].isCSS) {
+                const emoji = document.createElement('div');
+                emoji.className = 'item-emoji';
+                emoji.textContent = itemTypes[family].emojis[level] || '✨';
+                icon.appendChild(emoji);
+            }
+
+            const levelIndicator = document.createElement('div');
+            levelIndicator.className = 'item-level-indicator';
+            // Ajouter autant d'étoiles que le niveau
+            for(let i=0; i<level; i++) {
+                const star = document.createElement('span');
+                star.className = 'level-star-icon';
+                star.textContent = '⭐';
+                levelIndicator.appendChild(star);
+            }
             
             item.appendChild(icon);
-            item.appendChild(lvlText);
+            item.appendChild(levelIndicator);
 
-            // Événements de Drag
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragend', handleDragEnd);
 
             return item;
         }
 
-        // Faire apparaître un nouvel item dans la première cellule vide
-        function spawnItem(level) {
+        function spawnRandomItem() {
+            const randomFamily = families[Math.floor(Math.random() * families.length)];
+            spawnSpecificItem(randomFamily, 1);
+        }
+
+        function spawnSpecificItem(family, level) {
             const cells = document.querySelectorAll('.cell');
-            for (let cell of cells) {
-                if (!cell.hasChildNodes()) {
-                    cell.appendChild(createItemElement(level));
-                    showMessage(`Nouvel item Lvl ${level} ajouté !`);
-                    return;
-                }
+            let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
+
+            if (emptyCells.length > 0) {
+                // Placer aléatoirement pour faire "naturel"
+                let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                randomCell.appendChild(createItemElement(family, level));
+            } else {
+                showMessage('Board is full!');
             }
-            showMessage('La grille est pleine !');
         }
 
         function showMessage(msg) {
             const msgEl = document.getElementById('message');
             msgEl.textContent = msg;
-            setTimeout(() => { msgEl.textContent = ''; }, 2000);
+            msgEl.style.opacity = '1';
+            setTimeout(() => { msgEl.style.opacity = '0'; }, 1500);
         }
 
-        // Drag & Drop Handlers
         function handleDragStart(e) {
             draggedItem = this;
             sourceCell = this.parentElement;
-            setTimeout(() => this.style.opacity = '0.5', 0); // Rend l'item semi-transparent pendant le drag
+            setTimeout(() => {
+                this.style.opacity = '0.7';
+                this.style.zIndex = '100';
+            }, 0);
         }
 
         function handleDragEnd(e) {
             this.style.opacity = '1';
+            this.style.zIndex = '';
             draggedItem = null;
             sourceCell = null;
         }
 
         function handleDragOver(e) {
-            e.preventDefault(); // Nécessaire pour autoriser le drop
+            e.preventDefault();
         }
 
         function handleDragEnter(e) {
             e.preventDefault();
             if(this !== sourceCell) {
-                this.style.backgroundColor = '#16a085'; // Feedback visuel
+                this.style.background = '#e8dcc8';
+                this.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.1)';
             }
         }
 
         function handleDragLeave(e) {
-            this.style.backgroundColor = ''; // Enlève le feedback visuel
+            this.style.background = '';
+            this.style.boxShadow = '';
         }
 
         function handleDrop(e) {
             e.preventDefault();
-            this.style.backgroundColor = '';
+            this.style.background = '';
+            this.style.boxShadow = '';
 
-            if (this === sourceCell) return; // Drop sur la même case = annuler
+            if (this === sourceCell) return;
 
-            // Si la case cible contient déjà un item
             if (this.hasChildNodes()) {
                 const targetItem = this.firstChild;
+                const draggedFamily = draggedItem.dataset.family;
+                const targetFamily = targetItem.dataset.family;
                 const draggedLevel = parseInt(draggedItem.dataset.level);
                 const targetLevel = parseInt(targetItem.dataset.level);
 
-                // Conditions de fusion
-                if (draggedLevel === targetLevel) {
+                if (draggedFamily === targetFamily && draggedLevel === targetLevel) {
                     if (draggedLevel >= 3) {
-                        showMessage('Niveau max atteint pour le prototype !');
-                        return; // Limite du prototype
+                        showMessage('Max level!');
+                        // Swap anyway
+                        sourceCell.appendChild(targetItem);
+                        this.appendChild(draggedItem);
+                        return;
                     }
                     
-                    // FUSION REUSSIE
-                    this.removeChild(targetItem); // On supprime l'ancien
+                    this.removeChild(targetItem);
                     const newItemLevel = draggedLevel + 1;
-                    this.appendChild(createItemElement(newItemLevel)); // On crée le niveau supérieur
-                    sourceCell.removeChild(draggedItem); // On enlève l'item de sa case source
-                    showMessage(`Fusion ! Nouvel item Lvl ${newItemLevel}`);
+                    this.appendChild(createItemElement(draggedFamily, newItemLevel));
+                    sourceCell.removeChild(draggedItem);
+
+                    // Effet visuel simple de fusion
+                    this.firstChild.style.transform = 'scale(1.3)';
+                    setTimeout(() => { this.firstChild.style.transform = ''; }, 200);
+
                 } else {
-                    // Échange de place (Swap) si niveaux différents
                     sourceCell.appendChild(targetItem);
                     this.appendChild(draggedItem);
                 }
             } else {
-                // Déplacement simple vers une case vide
                 this.appendChild(draggedItem);
             }
         }
 
-        // Lancement
         window.onload = initGrid;
     </script>
 </body>
