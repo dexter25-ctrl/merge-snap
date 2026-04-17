@@ -1043,17 +1043,7 @@
                 img.style.zIndex = '0';
                 item.appendChild(img);
 
-                textSpan.textContent = itemNames[family][level - 1].split(' ').slice(1).join(' '); // Remove emoji
-                textSpan.style.position = 'absolute';
-                textSpan.style.bottom = '2px';
-                textSpan.style.left = '0';
-                textSpan.style.width = '100%';
-                textSpan.style.textAlign = 'center';
-                textSpan.style.fontSize = '10px';
-                textSpan.style.fontWeight = 'bold';
-                textSpan.style.color = '#fff';
-                textSpan.style.textShadow = '1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000';
-                textSpan.style.zIndex = '1';
+                textSpan.textContent = '';
                 item.style.position = 'relative'; // ensure child absolute positioning works
             } else {
                 textSpan.textContent = itemNames[family][level - 1] || (family + ' Lvl ' + level);
