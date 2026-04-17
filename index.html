@@ -854,6 +854,18 @@
         .gender-btn.selected { border-color: white; transform: scale(1.05); }
 
 
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-animation {
+            animation: shake 0.3s ease-in-out;
+        }
+
     </style>
 </head>
 <body>
@@ -886,7 +898,7 @@
             LVL 1
         </div>
         <div class="header-item header-item-energy">
-            <span class="header-icon">⚡</span> 457
+            <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
             <button class="btn-plus btn-plus-energy">+</button>
         </div>
         <div class="header-item header-item-coins">
@@ -1062,8 +1074,22 @@
 
 
         window.spawnRandomItem = function() {
+            if (energy <= 0) {
+                showMessage('Énergie épuisée !');
+                const btn = document.querySelector('.spawn-highlight');
+                if(btn) {
+                    btn.classList.add('shake-animation');
+                    setTimeout(() => btn.classList.remove('shake-animation'), 300);
+                }
+                return;
+            }
+
             const randomFamily = families[Math.floor(Math.random() * families.length)];
-            spawnSpecificItem(randomFamily, 1);
+            if (spawnSpecificItem(randomFamily, 1)) {
+                energy--;
+                updateUI();
+                saveGame();
+            }
         };
 
 
@@ -1134,6 +1160,7 @@
 
         // --- GAME STATE & SAVE SYSTEM ---
         let currentLevel = 1;
+        let energy = 457;
         let coins = 427;
         let playerName = "C";
         let playerGender = "female";
@@ -1173,6 +1200,7 @@
         function saveGame() {
             const state = {
                 level: currentLevel,
+                energy: energy,
                 coins: coins,
                 mission: currentMissionIndex,
                 // Ideally save grid too, but keeping it simple as requested
@@ -1185,6 +1213,7 @@
             if (saved) {
                 const state = JSON.parse(saved);
                 currentLevel = state.level || 1;
+                energy = state.energy !== undefined ? state.energy : 457;
                 coins = state.coins || 427;
                 currentMissionIndex = state.mission || 0;
 
@@ -1204,6 +1233,7 @@
             // Update HUD
             document.getElementById('ui-level').innerHTML = `LVL ${currentLevel} <br> <span style=\"font-size: 10px;\">${playerName}</span>`;
             document.getElementById('ui-coins').textContent = coins;
+            document.getElementById('ui-energy').textContent = energy;
             document.getElementById('ui-gems').textContent = gems;
 
             // Update Dialog/Mission
@@ -1415,8 +1445,10 @@
                 let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 randomCell.appendChild(createItemElement(family, level));
                 checkMissionStatus(); // Check mission on spawn
+                return true;
             } else {
-                showMessage('Board is full!');
+                showMessage('Grille principale pleine !');
+                return false;
             }
         }
 
