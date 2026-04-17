@@ -225,7 +225,7 @@
             z-index: 1;
             width: 100%;
             max-width: 400px; /* Adjust max width for mobile */
-            aspect-ratio: 1;
+            height: auto; /* Allow content to dictate height */
             box-sizing: border-box;
         }
 
@@ -244,13 +244,12 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr); /* Responsive columns */
-            grid-template-rows: repeat(7, 1fr);
             gap: 2px; /* Grille très serrée */
             background-color: #f0e6d2; /* Couleur de fond entre les cases */
             border-radius: 10px;
             padding: 2px;
             width: 100%;
-            height: 100%;
+            height: auto;
             box-sizing: border-box;
         }
 
@@ -265,6 +264,7 @@
             position: relative;
             aspect-ratio: 1 / 1;
             box-sizing: border-box;
+            container-type: inline-size;
         }
 
         /* Items premium 3D */
@@ -741,6 +741,7 @@
             align-items: center;
             position: relative;
             box-sizing: border-box;
+            container-type: inline-size;
         }
 
 
@@ -1379,10 +1380,11 @@
                 let nameParts = (itemNames[family][level - 1] || (family + ' Lvl ' + level)).split(' ');
 
                 // For non-camera families, we just want the emoji as requested for the 80% view
+                // Dynamically sizing emojis using container width units or static large rem
                 if (nameParts.length > 1) {
-                    textSpan.innerHTML = `<span style="font-size: 2.5rem;">${nameParts[0]}</span>`;
+                    textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem);">${nameParts[0]}</span>`;
                 } else {
-                    textSpan.textContent = nameParts[0];
+                    textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem);">${nameParts[0]}</span>`;
                 }
                 contentDiv.appendChild(textSpan);
             }
