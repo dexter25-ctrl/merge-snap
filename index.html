@@ -673,8 +673,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 300px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh; /* Permettre le scroll vertical */
             background-color: #2c3e50;
             border: 2px solid silver;
             border-radius: 12px;
@@ -683,6 +684,30 @@
             padding: 15px;
             color: white;
             box-sizing: border-box;
+            flex-direction: column;
+        }
+
+        #inventory-modal[style*="display: block"] {
+            display: flex !important; /* Force flex quand affiché */
+        }
+
+        .inventory-content {
+            overflow-y: auto; /* Scroll vertical */
+            flex-grow: 1;
+            padding-right: 5px;
+        }
+
+        /* Custom scrollbar pour l'inventaire */
+        .inventory-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .inventory-content::-webkit-scrollbar-track {
+            background: #1a252f;
+            border-radius: 3px;
+        }
+        .inventory-content::-webkit-scrollbar-thumb {
+            background: silver;
+            border-radius: 3px;
         }
 
         .inventory-header {
@@ -694,6 +719,7 @@
             margin-bottom: 15px;
             font-weight: bold;
             font-size: 18px;
+            flex-shrink: 0;
         }
 
         .inventory-close {
@@ -707,16 +733,30 @@
 
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(8, 1fr); /* 8 colonnes */
+            gap: 4px;
         }
 
         .inventory-slot {
-            background-color: #e0e0e0; /* Comme .cell */
-            border-radius: 8px;
-            height: 60px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-            border: 1px solid #fff;
+            background-color: #34495e; /* Plus sombre pour contraster avec les items */
+            border-radius: 6px;
+            aspect-ratio: 1; /* Cases carrées */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid #1a252f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .inventory-slot .item {
+            width: 80%; /* 80% de la taille de la case */
+            height: 80%;
+            border-radius: 6px; /* Ajustement du border radius pour la petite taille */
+        }
+
+        .inventory-slot .item .item-text {
+            display: none !important; /* Pas de texte dans l'inventaire */
         }
 
     </style>
@@ -778,11 +818,10 @@
             <span>📦 Stockage Studio</span>
             <button class="inventory-close" onclick="closeInventory()">X</button>
         </div>
-        <div class="inventory-grid">
-            <div class="inventory-slot"></div>
-            <div class="inventory-slot"></div>
-            <div class="inventory-slot"></div>
-            <div class="inventory-slot"></div>
+        <div class="inventory-content">
+            <div class="inventory-grid" id="inventory-grid">
+                <!-- 160 slots seront générés en JS -->
+            </div>
         </div>
     </div>
 
@@ -797,16 +836,68 @@
         let sourceCell = null;
 
 
-        // Inventory Modal functions
+
+        // --- INVENTORY INIT ---
+        const inventoryCols = 8;
+        const inventoryRows = 20;
+        const inventorySize = inventoryCols * inventoryRows;
+
+        function initInventory() {
+            const invGrid = document.getElementById('inventory-grid');
+            for(let i=0; i<inventorySize; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'inventory-slot';
+                slot.dataset.index = i;
+                invGrid.appendChild(slot);
+            }
+        }
+        initInventory();
+
+
+        // --- CLICK TO MOVE LOGIC ---
+        let isInventoryOpen = false;
+
         window.openInventory = function() {
             var modal = document.getElementById('inventory-modal');
-            if(modal) modal.style.display = 'block';
+            if(modal) {
+                modal.style.display = 'flex';
+                isInventoryOpen = true;
+            }
         };
 
         window.closeInventory = function() {
             var modal = document.getElementById('inventory-modal');
-            if(modal) modal.style.display = 'none';
+            if(modal) {
+                modal.style.display = 'none';
+                isInventoryOpen = false;
+            }
         };
+
+        function handleItemClick(e) {
+            if (!isInventoryOpen) return;
+
+            const item = e.currentTarget;
+            const parent = item.parentElement;
+
+            if (parent.classList.contains('cell')) {
+                // Déplacer vers l'inventaire
+                const emptySlots = Array.from(document.querySelectorAll('.inventory-slot')).filter(s => !s.hasChildNodes());
+                if (emptySlots.length > 0) {
+                    emptySlots[0].appendChild(item);
+                } else {
+                    showMessage("Inventaire plein !");
+                }
+            } else if (parent.classList.contains('inventory-slot')) {
+                // Déplacer vers la grille principale
+                const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
+                if (emptyCells.length > 0) {
+                    emptyCells[0].appendChild(item);
+                } else {
+                    showMessage("Grille principale pleine !");
+                }
+            }
+        }
+
 
         window.spawnRandomItem = function() {
             const randomFamily = families[Math.floor(Math.random() * families.length)];
@@ -1076,6 +1167,7 @@
 
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragend', handleDragEnd);
+            item.addEventListener('click', handleItemClick);
 
             return item;
         }
