@@ -777,7 +777,7 @@
             <button class="btn-plus btn-plus-coins">+</button>
         </div>
         <div class="header-item header-item-gems">
-            <span class="header-icon">💎</span> 18
+            <span class="header-icon">💎</span> <span id="ui-gems">18</span>
             <button class="btn-plus btn-plus-gems">+</button>
         </div>
     </div>
@@ -807,7 +807,7 @@
     <!-- Panneau de contrôle -->
     <div class="controls">
         <div class="bottom-panel">
-            <button class="btn-green" onclick="openInventory()" style="font-size: 24px; padding: 10px 15px;">📦</button>
+            <button class="btn-green" id="inventory-btn" onclick="openInventory()" style="font-size: 24px; padding: 10px 15px;">📦</button>
             <div class="panel-text">Merge items to unlock new photography gear!</div>
             <button class="btn-green spawn-highlight" onclick="spawnRandomItem()">↪️</button>
         </div>
@@ -823,6 +823,7 @@
                 <!-- 160 slots seront générés en JS -->
             </div>
         </div>
+        <button id="buy-slots-btn" onclick="buyInventorySlots()" style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter +8 cases (100 💎)</button>
     </div>
 
     <div id="message"></div>
@@ -836,6 +837,26 @@
         let sourceCell = null;
 
 
+
+
+        window.buyInventorySlots = function() {
+            if (gems >= 100) {
+                gems -= 100;
+                document.getElementById('ui-gems').textContent = gems;
+
+                const invGrid = document.getElementById('inventory-grid');
+                const currentCount = document.querySelectorAll('.inventory-slot').length;
+                for(let i=0; i<8; i++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'inventory-slot';
+                    slot.dataset.index = currentCount + i;
+                    invGrid.appendChild(slot);
+                }
+                showMessage("+8 cases d'inventaire !");
+            } else {
+                showMessage("Pas assez de diamants !");
+            }
+        };
 
         // --- INVENTORY INIT ---
         const inventoryCols = 8;
@@ -872,6 +893,30 @@
                 isInventoryOpen = false;
             }
         };
+
+
+        const invBtn = document.getElementById('inventory-btn');
+        if (invBtn) {
+            invBtn.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                invBtn.style.transform = 'scale(1.1)';
+            });
+            invBtn.addEventListener('dragleave', (e) => {
+                invBtn.style.transform = '';
+            });
+            invBtn.addEventListener('drop', (e) => {
+                e.preventDefault();
+                invBtn.style.transform = '';
+                if (draggedItem && draggedItem.parentElement.classList.contains('cell')) {
+                    const emptySlots = Array.from(document.querySelectorAll('.inventory-slot')).filter(s => !s.hasChildNodes());
+                    if (emptySlots.length > 0) {
+                        emptySlots[0].appendChild(draggedItem);
+                    } else {
+                        showMessage("Inventaire plein !");
+                    }
+                }
+            });
+        }
 
         function handleItemClick(e) {
             if (!isInventoryOpen) return;
@@ -910,6 +955,7 @@
         // --- GAME STATE & SAVE SYSTEM ---
         let currentLevel = 1;
         let coins = 427;
+        let gems = 18;
         let currentMissionIndex = 0; // 0, 1, 2 for the 3 missions per level
 
         const levelsData = {
@@ -976,6 +1022,7 @@
             // Update HUD
             document.getElementById('ui-level').innerHTML = `LVL ${currentLevel}`;
             document.getElementById('ui-coins').textContent = coins;
+            document.getElementById('ui-gems').textContent = gems;
 
             // Update Dialog/Mission
             const levelData = levelsData[currentLevel];
