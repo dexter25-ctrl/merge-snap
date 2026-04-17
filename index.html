@@ -223,6 +223,10 @@
             margin-top: 15px;
             position: relative;
             z-index: 1;
+            width: 100%;
+            max-width: 400px; /* Adjust max width for mobile */
+            aspect-ratio: 1;
+            box-sizing: border-box;
         }
 
         /* Contour décoratif style cadre en bois */
@@ -239,12 +243,15 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(5, 65px); /* 5 colonnes pour ressembler plus à l'image */
-            grid-template-rows: repeat(6, 65px);
+            grid-template-columns: repeat(7, 1fr); /* Responsive columns */
+            grid-template-rows: repeat(7, 1fr);
             gap: 2px; /* Grille très serrée */
             background-color: #f0e6d2; /* Couleur de fond entre les cases */
             border-radius: 10px;
             padding: 2px;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .cell {
@@ -940,8 +947,8 @@
 
     <script>
         const gridElement = document.getElementById('grid');
-        const cols = 5;
-        const rows = 6;
+        const cols = 7;
+        const rows = 7;
         const gridSize = cols * rows;
         let draggedItem = null;
         let sourceCell = null;
