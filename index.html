@@ -903,6 +903,7 @@
         <div class="header-item header-item-energy">
             <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
             <button class="btn-plus btn-plus-energy">+</button>
+            <div id="ui-energy-timer" style="position: absolute; bottom: -18px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">MAX</div>
         </div>
         <div class="header-item header-item-coins">
             <span class="header-icon">💰</span> <span id="ui-coins">427</span>
@@ -1154,6 +1155,39 @@
         let gems = 18;
         let currentMissionIndex = 0; // 0, 1, 2 for the 3 missions per level
 
+        const MAX_ENERGY = 100;
+        const ENERGY_REGEN_TIME = 90000; // 1m30s
+        let lastEnergyTime = Date.now();
+
+        function updateEnergyTimer() {
+            const timerEl = document.getElementById('ui-energy-timer');
+            if (energy >= MAX_ENERGY) {
+                lastEnergyTime = Date.now(); // Reset timer so it doesn't instantly jump when energy drops
+                timerEl.textContent = 'MAX';
+            } else {
+                let elapsed = Date.now() - lastEnergyTime;
+                if (elapsed >= ENERGY_REGEN_TIME) {
+                    energy++;
+                    lastEnergyTime += ENERGY_REGEN_TIME; // Advance time by exactly one cycle
+                    document.getElementById('ui-energy').textContent = energy;
+                    saveGame();
+
+                    if (energy >= MAX_ENERGY) {
+                        timerEl.textContent = 'MAX';
+                        return;
+                    }
+                    elapsed = Date.now() - lastEnergyTime; // Recalculate for display
+                }
+
+                const remaining = ENERGY_REGEN_TIME - elapsed;
+                const totalSeconds = Math.floor(remaining / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+        setInterval(updateEnergyTimer, 1000);
+
         const levelsData = {
             1: {
                 mentor: 'Prof. Alistair',
@@ -1203,7 +1237,8 @@
                 energy: energy,
                 coins: coins,
                 mission: currentMissionIndex,
-                grid: gridCells
+                grid: gridCells,
+                lastEnergyTime: lastEnergyTime
             };
             localStorage.setItem('mergeGameSave', JSON.stringify(state));
         }
@@ -1216,6 +1251,27 @@
                 energy = state.energy !== undefined ? state.energy : 457;
                 coins = state.coins || 427;
                 currentMissionIndex = state.mission || 0;
+
+                const savedLastEnergyTime = state.lastEnergyTime || Date.now();
+                if (energy < MAX_ENERGY) {
+                    const elapsedOffline = Date.now() - savedLastEnergyTime;
+                    const gainedEnergy = Math.floor(elapsedOffline / ENERGY_REGEN_TIME);
+
+                    if (gainedEnergy > 0) {
+                        energy += gainedEnergy;
+                        if (energy >= MAX_ENERGY) {
+                            energy = MAX_ENERGY;
+                            lastEnergyTime = Date.now();
+                        } else {
+                            // Preserve the remaining fractional time towards the next point
+                            lastEnergyTime = Date.now() - (elapsedOffline % ENERGY_REGEN_TIME);
+                        }
+                    } else {
+                        lastEnergyTime = savedLastEnergyTime;
+                    }
+                } else {
+                    lastEnergyTime = Date.now();
+                }
 
                 // Cap level if needed
                 if(currentLevel > 3) {
@@ -1300,6 +1356,7 @@
             if (itemConsumed) {
                 // Reward
                 coins += mission.reward;
+                energy += 15; // +15 Energy Bonus
 
                 // Advance Mission
                 currentMissionIndex++;
