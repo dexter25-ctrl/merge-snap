@@ -593,7 +593,8 @@
         /* --- LOCKED ITEMS (VIEUX PAPIER & BRÛLÉ) --- */
         /* Style : Vieux Papier (Opaque) */
         .paper-locked {
-            background-image: url('assets/vieux_papier.png') !important;
+            background-color: #d2b48c !important;
+            background-image: url('/assets/vieux_papier.png') !important;
             background-size: cover !important;
             pointer-events: none; /* Le joueur ne peut pas interagir du tout */
         }
@@ -608,7 +609,7 @@
         /* Superposition du PNG troué par-dessus l'objet */
         .burnable-locked::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/papier_brule.png') !important;
+            background-image: url('/assets/papier_brule.png') !important;
             background-size: cover !important; z-index: 10; pointer-events: none;
         }
         /* L'objet visible à travers le trou est grisé */
@@ -973,6 +974,8 @@
     </div>
 
     <div id="message"></div>
+
+    <button onclick="localStorage.clear(); window.location.reload();" style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄 Reset Save</button>
 
     <script>
         const gridElement = document.getElementById('grid');
