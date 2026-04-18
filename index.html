@@ -243,7 +243,8 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr); /* Responsive columns */
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(9, 1fr); /* Responsive columns */
             gap: 2px; /* Grille très serrée */
             background-color: #f0e6d2; /* Couleur de fond entre les cases */
             border-radius: 10px;
@@ -925,14 +926,13 @@
         </div>
     </div>
 
-    <!-- Panneau de contrôle -->
-    <div class="controls">
-        <div class="bottom-panel">
-            <button class="btn-green" id="inventory-btn" onclick="openInventory()" style="font-size: 24px; padding: 10px 15px;">📦</button>
-            <div class="panel-text">Merge items to unlock new photography gear!</div>
-            <button class="btn-green spawn-highlight" onclick="spawnRandomItem()">↪️</button>
-        </div>
+    <!-- Bottom Controls (Inventory) -->
+    <div class="bottom-controls" id="bottom-controls">
+        <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+            📦 <br> <span style="font-size: 10px;">Stock</span>
+        </button>
     </div>
+
     <!-- Inventory Modal -->
     <div id="inventory-modal">
         <div class="inventory-header">
@@ -952,7 +952,7 @@
     <script>
         const gridElement = document.getElementById('grid');
         const cols = 7;
-        const rows = 7;
+        const rows = 9;
         const gridSize = cols * rows;
         let draggedItem = null;
         let sourceCell = null;
@@ -1062,27 +1062,8 @@
                     showMessage("Grille principale pleine !");
                 }
             }
+            saveGame();
         }
-
-
-        window.spawnRandomItem = function() {
-            if (energy <= 0) {
-                showMessage('Énergie épuisée !');
-                const btn = document.querySelector('.spawn-highlight');
-                if(btn) {
-                    btn.classList.add('shake-animation');
-                    setTimeout(() => btn.classList.remove('shake-animation'), 300);
-                }
-                return;
-            }
-
-            const randomFamily = families[Math.floor(Math.random() * families.length)];
-            if (spawnSpecificItem(randomFamily, 1)) {
-                energy--;
-                updateUI();
-                saveGame();
-            }
-        };
 
 
 
@@ -1190,12 +1171,24 @@
         };
 
         function saveGame() {
+            const gridCells = [];
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                if (cell.firstChild) {
+                    gridCells.push({
+                        index: index,
+                        family: cell.firstChild.dataset.family,
+                        level: cell.firstChild.dataset.level
+                    });
+                }
+            });
+
             const state = {
                 level: currentLevel,
                 energy: energy,
                 coins: coins,
                 mission: currentMissionIndex,
-                // Ideally save grid too, but keeping it simple as requested
+                grid: gridCells
             };
             localStorage.setItem('mergeGameSave', JSON.stringify(state));
         }
@@ -1213,6 +1206,18 @@
                 if(currentLevel > 3) {
                     currentLevel = 3;
                     currentMissionIndex = 2;
+                }
+
+                if (state.grid) {
+                    // Rebuild grid
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => cell.innerHTML = ''); // Clear before loading
+
+                    state.grid.forEach(itemData => {
+                        if (cells[itemData.index]) {
+                            cells[itemData.index].appendChild(createItemElement(itemData.family, parseInt(itemData.level)));
+                        }
+                    });
                 }
             }
             updateUI();
@@ -1354,10 +1359,31 @@
                 gridElement.appendChild(cell);
             }
 
-            // Remplir un peu la grille (style image de ref)
-            spawnSpecificItem('A', 1); spawnSpecificItem('A', 1); spawnSpecificItem('B', 1); spawnSpecificItem('C', 1); spawnSpecificItem('D', 1);
-
             loadGame(); // Load save here
+
+            // Generate initial items only if grid is still completely empty (meaning no save was loaded)
+            const cells = document.querySelectorAll('.cell');
+            let hasItems = Array.from(cells).some(c => c.hasChildNodes());
+
+            if (!hasItems) {
+                // Remplir un peu la grille (style image de ref)
+                const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
+                if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
+                spawnSpecificItem('A', 1); spawnSpecificItem('A', 1); spawnSpecificItem('B', 1); spawnSpecificItem('C', 1); spawnSpecificItem('D', 1);
+            } else {
+                // Ensure generator is always present
+                const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
+                if (generatorCell && !generatorCell.querySelector('[data-family="GENERATOR"]')) {
+                    if (generatorCell.firstChild) {
+                        // Move whatever is there to the first available slot
+                        const emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
+                        if (emptyCells.length > 0) {
+                            emptyCells[0].appendChild(generatorCell.firstChild);
+                        }
+                    }
+                    generatorCell.appendChild(createItemElement("GENERATOR", 1));
+                }
+            }
         }
 
 
@@ -1365,11 +1391,18 @@
         function createItemElement(family, level) {
             const item = document.createElement('div');
             item.className = 'item';
-            item.draggable = true;
+
             item.dataset.family = family;
             item.dataset.level = level;
             
             const contentDiv = document.createElement('div');
+
+            if (family === "GENERATOR") {
+                item.draggable = false;
+                contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📦</span>';
+                item.addEventListener('click', handleGeneratorClick);
+            } else {
+                item.draggable = true;
             contentDiv.style.width = '100%';
             contentDiv.style.height = '100%';
             contentDiv.style.display = 'flex';
@@ -1406,11 +1439,12 @@
                 contentDiv.appendChild(textSpan);
             }
 
-            item.appendChild(contentDiv);
-
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragend', handleDragEnd);
             item.addEventListener('click', handleItemClick);
+            }
+
+            item.appendChild(contentDiv);
 
             return item;
         }
@@ -1424,9 +1458,12 @@
             let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
 
             if (emptyCells.length > 0) {
-                // Placer aléatoirement pour faire "naturel"
-                let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                randomCell.appendChild(createItemElement(family, level));
+                let cellToUse = emptyCells[0]; // first available slot
+                if (family !== 'A') {
+                    // Placer aléatoirement pour les autres (setup)
+                    cellToUse = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                }
+                cellToUse.appendChild(createItemElement(family, level));
                 checkMissionStatus(); // Check mission on spawn
                 return true;
             } else {
@@ -1481,7 +1518,7 @@
             this.style.background = '';
             this.style.boxShadow = '';
 
-            if (this === sourceCell) return;
+            if (this === sourceCell || !draggedItem) return;
 
             if (this.hasChildNodes()) {
                 const targetItem = this.firstChild;
@@ -1489,6 +1526,11 @@
                 const targetFamily = targetItem.dataset.family;
                 const draggedLevel = parseInt(draggedItem.dataset.level);
                 const targetLevel = parseInt(targetItem.dataset.level);
+
+                if (targetFamily === "GENERATOR" || draggedFamily === "GENERATOR") {
+                    showMessage("Impossible de déplacer cet objet !");
+                    return;
+                }
 
                 if (draggedFamily === targetFamily && draggedLevel === targetLevel) {
                     if (draggedLevel >= 10) {
@@ -1516,6 +1558,22 @@
                 }
             } else {
                 this.appendChild(draggedItem);
+            }
+            saveGame();
+        }
+
+
+        function handleGeneratorClick(e) {
+            if (energy > 0) {
+                // Try to spawn first
+                const spawned = spawnSpecificItem('A', 1);
+                if (spawned) {
+                    energy--;
+                    document.getElementById('ui-energy').textContent = energy;
+                    saveGame();
+                }
+            } else {
+                showMessage("Pas assez d'énergie !");
             }
         }
 
