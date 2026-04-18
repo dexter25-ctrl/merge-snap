@@ -1,0 +1,13 @@
+--- index.html
++++ index.html
+@@ -1078,7 +1078,9 @@
+             if (family === 'A') {
+                 const img = document.createElement('img');
+                 img.src = `assets/Famille_A/appareil_lvl${level}.png?v=2`;
+                 contentDiv.appendChild(img);
++                item.style.background = 'transparent';
++                item.style.backgroundColor = 'transparent';
++                item.style.border = 'none';
+             } else {
+                 const textSpan = document.createElement('span');
+                 textSpan.className = 'item-text';
