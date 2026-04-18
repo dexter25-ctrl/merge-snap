@@ -590,6 +590,49 @@
             }
         }
 
+        /* --- LOCKED ITEMS (VIEUX PAPIER) --- */
+        .locked-paper {
+            position: relative;
+        }
+        .locked-paper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background-color: #d4b886;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
+            -webkit-mask-image: radial-gradient(circle at 40% 40%, transparent 15%, black 30%);
+            mask-image: radial-gradient(circle at 40% 40%, transparent 15%, black 30%);
+            border-radius: 8px;
+            z-index: 5;
+            pointer-events: none;
+            box-shadow: inset 0 0 10px rgba(100,50,0,0.5), 0 0 5px rgba(0,0,0,0.3);
+            border: 1px solid #b3915f;
+        }
+
+        .locked-paper::after {
+            /* Simulated burn edges around the hole */
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: radial-gradient(circle at 40% 40%, transparent 15%, rgba(60, 20, 0, 0.6) 20%, transparent 25%);
+            border-radius: 8px;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .locked-item-content {
+            filter: grayscale(100%) sepia(50%) opacity(0.7);
+        }
+
+        .cobweb {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 20px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
         /* Backgrounds based on level */
         body.level-1 {
             background: linear-gradient(to bottom, #d7ccc8, #a1887f); /* Old Paris Studio */
@@ -1043,6 +1086,10 @@
             if (!isInventoryOpen) return;
 
             const item = e.currentTarget;
+            if (item.dataset.locked === 'true') {
+                showMessage("Cet objet est verrouillé !");
+                return;
+            }
             const parent = item.parentElement;
 
             if (parent.classList.contains('cell')) {
@@ -1178,7 +1225,8 @@
                     gridCells.push({
                         index: index,
                         family: cell.firstChild.dataset.family,
-                        level: cell.firstChild.dataset.level
+                        level: cell.firstChild.dataset.level,
+                        locked: cell.firstChild.dataset.locked === 'true'
                     });
                 }
             });
@@ -1215,7 +1263,7 @@
 
                     state.grid.forEach(itemData => {
                         if (cells[itemData.index]) {
-                            cells[itemData.index].appendChild(createItemElement(itemData.family, parseInt(itemData.level)));
+                            cells[itemData.index].appendChild(createItemElement(itemData.family, parseInt(itemData.level), itemData.locked));
                         }
                     });
                 }
@@ -1369,7 +1417,14 @@
                 // Remplir un peu la grille (style image de ref)
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
                 if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
-                spawnSpecificItem('A', 1); spawnSpecificItem('A', 1); spawnSpecificItem('B', 1); spawnSpecificItem('C', 1); spawnSpecificItem('D', 1);
+
+                // Normal starting items
+                spawnSpecificItem('A', 1); spawnSpecificItem('B', 1); spawnSpecificItem('C', 1); spawnSpecificItem('D', 1);
+
+                // Locked items for testing
+                spawnSpecificItem('A', 1, true);
+                spawnSpecificItem('A', 1, true);
+                spawnSpecificItem('A', 2, true);
             } else {
                 // Ensure generator is always present
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
@@ -1388,7 +1443,7 @@
 
 
 
-        function createItemElement(family, level) {
+        function createItemElement(family, level, isLocked = false) {
             const item = document.createElement('div');
             item.className = 'item';
 
@@ -1402,46 +1457,58 @@
                 contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📦</span>';
                 item.addEventListener('click', handleGeneratorClick);
             } else {
-                item.draggable = true;
-            contentDiv.style.width = '100%';
-            contentDiv.style.height = '100%';
-            contentDiv.style.display = 'flex';
-            contentDiv.style.justifyContent = 'center';
-            contentDiv.style.alignItems = 'center';
-            contentDiv.style.pointerEvents = 'none';
-            contentDiv.style.setProperty("background", "transparent", "important");
-            contentDiv.style.setProperty("background-color", "transparent", "important");
-            contentDiv.style.setProperty("background-image", "none", "important");
-            contentDiv.style.setProperty("border", "none", "important");
-
-            item.style.setProperty("background", "transparent", "important");
-            item.style.setProperty("background-color", "transparent", "important");
-            item.style.setProperty("background-image", "none", "important");
-            item.style.setProperty("border", "none", "important");
-            item.style.setProperty("box-shadow", "none", "important");
-
-            if (family === "A") {
-                const img = document.createElement("img");
-                img.src = `assets/Famille_A/appareil_lvl${level}.png?v=2`;
-                img.style.setProperty("background-color", "transparent", "important");
-                img.style.setProperty("background-image", "none", "important");
-                img.style.setProperty("border", "none", "important");
-                contentDiv.appendChild(img);
-            } else {
-                const textSpan = document.createElement("span");
-                textSpan.className = "item-text";
-                let nameParts = (itemNames[family][level - 1] || (family + " Lvl " + level)).split(" ");
-                if (nameParts.length > 1) {
-                    textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
-                } else {
-                    textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
+                item.draggable = !isLocked;
+                if (isLocked) {
+                    item.dataset.locked = 'true';
+                    item.classList.add('locked-paper');
+                    const cobweb = document.createElement('div');
+                    cobweb.className = 'cobweb';
+                    cobweb.textContent = '🕸️';
+                    item.appendChild(cobweb);
+                    contentDiv.classList.add('locked-item-content');
                 }
-                contentDiv.appendChild(textSpan);
-            }
 
-            item.addEventListener('dragstart', handleDragStart);
-            item.addEventListener('dragend', handleDragEnd);
-            item.addEventListener('click', handleItemClick);
+                contentDiv.style.width = '100%';
+                contentDiv.style.height = '100%';
+                contentDiv.style.display = 'flex';
+                contentDiv.style.justifyContent = 'center';
+                contentDiv.style.alignItems = 'center';
+                contentDiv.style.pointerEvents = 'none';
+                contentDiv.style.setProperty("background", "transparent", "important");
+                contentDiv.style.setProperty("background-color", "transparent", "important");
+                contentDiv.style.setProperty("background-image", "none", "important");
+                contentDiv.style.setProperty("border", "none", "important");
+
+                item.style.setProperty("background", "transparent", "important");
+                item.style.setProperty("background-color", "transparent", "important");
+                item.style.setProperty("background-image", "none", "important");
+                item.style.setProperty("border", "none", "important");
+                item.style.setProperty("box-shadow", "none", "important");
+
+                if (family === "A") {
+                    const img = document.createElement("img");
+                    img.src = `assets/Famille_A/appareil_lvl${level}.png?v=2`;
+                    img.style.setProperty("background-color", "transparent", "important");
+                    img.style.setProperty("background-image", "none", "important");
+                    img.style.setProperty("border", "none", "important");
+                    contentDiv.appendChild(img);
+                } else {
+                    const textSpan = document.createElement("span");
+                    textSpan.className = "item-text";
+                    let nameParts = (itemNames[family][level - 1] || (family + " Lvl " + level)).split(" ");
+                    if (nameParts.length > 1) {
+                        textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
+                    } else {
+                        textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
+                    }
+                    contentDiv.appendChild(textSpan);
+                }
+
+                if (!isLocked) {
+                    item.addEventListener('dragstart', handleDragStart);
+                }
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('click', handleItemClick);
             }
 
             item.appendChild(contentDiv);
@@ -1453,17 +1520,17 @@
 
 
 
-        function spawnSpecificItem(family, level) {
+        function spawnSpecificItem(family, level, isLocked = false) {
             const cells = document.querySelectorAll('.cell');
             let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
 
             if (emptyCells.length > 0) {
                 let cellToUse = emptyCells[0]; // first available slot
-                if (family !== 'A') {
+                if (family !== 'A' || isLocked) {
                     // Placer aléatoirement pour les autres (setup)
                     cellToUse = emptyCells[Math.floor(Math.random() * emptyCells.length)];
                 }
-                cellToUse.appendChild(createItemElement(family, level));
+                cellToUse.appendChild(createItemElement(family, level, isLocked));
                 checkMissionStatus(); // Check mission on spawn
                 return true;
             } else {
@@ -1535,14 +1602,19 @@
                 if (draggedFamily === targetFamily && draggedLevel === targetLevel) {
                     if (draggedLevel >= 10) {
                         showMessage('Max level!');
-                        // Swap anyway
-                        sourceCell.appendChild(targetItem);
-                        this.appendChild(draggedItem);
+                        // Swap anyway if not locked
+                        if (targetItem.dataset.locked !== 'true') {
+                            sourceCell.appendChild(targetItem);
+                            this.appendChild(draggedItem);
+                        } else {
+                            sourceCell.appendChild(draggedItem); // Return dragged item
+                        }
                         return;
                     }
 
                     this.removeChild(targetItem);
                     const newItemLevel = draggedLevel + 1;
+                    // Note: new item is not locked by default
                     this.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
 
@@ -1553,8 +1625,13 @@
 
                     checkMissionStatus(); // Check mission on merge
                 } else {
-                    sourceCell.appendChild(targetItem);
-                    this.appendChild(draggedItem);
+                    if (targetItem.dataset.locked === 'true') {
+                        // Cannot swap with locked items
+                        sourceCell.appendChild(draggedItem);
+                    } else {
+                        sourceCell.appendChild(targetItem);
+                        this.appendChild(draggedItem);
+                    }
                 }
             } else {
                 this.appendChild(draggedItem);
