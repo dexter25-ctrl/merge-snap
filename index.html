@@ -591,47 +591,14 @@
         }
 
         /* --- LOCKED ITEMS (VIEUX PAPIER) --- */
-        .locked-paper {
-            position: relative;
-        }
-        .locked-paper::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background-color: #d4b886;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
-            -webkit-mask-image: radial-gradient(circle at 40% 40%, transparent 15%, black 30%);
-            mask-image: radial-gradient(circle at 40% 40%, transparent 15%, black 30%);
-            border-radius: 8px;
-            z-index: 5;
-            pointer-events: none;
-            box-shadow: inset 0 0 10px rgba(100,50,0,0.5), 0 0 5px rgba(0,0,0,0.3);
-            border: 1px solid #b3915f;
-        }
-
+        .locked-paper { position: relative; pointer-events: auto; }
         .locked-paper::after {
-            /* Simulated burn edges around the hole */
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: radial-gradient(circle at 40% 40%, transparent 15%, rgba(60, 20, 0, 0.6) 20%, transparent 25%);
-            border-radius: 8px;
-            z-index: 6;
-            pointer-events: none;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            /* Effet vieux papier avec un trou transparent au milieu (brûlure) */
+            background: radial-gradient(circle at center, transparent 25%, rgba(139, 69, 19, 0.8) 40%, #deb887 100%);
+            border-radius: 8px; z-index: 5; pointer-events: none;
         }
-
-        .locked-item-content {
-            filter: grayscale(100%) sepia(50%) opacity(0.7);
-        }
-
-        .cobweb {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            font-size: 20px;
-            z-index: 10;
-            pointer-events: none;
-        }
+        .locked-paper img { filter: grayscale(30%) brightness(60%); z-index: 1; }
 
         /* Backgrounds based on level */
         body.level-1 {
@@ -1414,17 +1381,42 @@
             let hasItems = Array.from(cells).some(c => c.hasChildNodes());
 
             if (!hasItems) {
-                // Remplir un peu la grille (style image de ref)
+                // Le Spawner : Place le Carton 📦 vers le haut au centre (index 3).
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
                 if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
 
-                // Normal starting items
-                spawnSpecificItem('A', 1); spawnSpecificItem('B', 1); spawnSpecificItem('C', 1); spawnSpecificItem('D', 1);
+                // Zone Bloquée : Répartis une quinzaine d'objets de la Famille A (Niveaux 1 à 5)
+                // sur les cases du bas et des côtés.
+                // Zone Libre : Laisse environ 8 à 10 cases totalement vides autour du générateur
 
-                // Locked items for testing
-                spawnSpecificItem('A', 1, true);
-                spawnSpecificItem('A', 1, true);
-                spawnSpecificItem('A', 2, true);
+                // Indices autour du générateur (index 3) dans une grille 7x9:
+                // Ligne 0: 0, 1, 2, 3, 4, 5, 6
+                // Ligne 1: 7, 8, 9, 10, 11, 12, 13
+                // Les indices de 0 à 13 (sauf 3) sont laissés vides pour la zone libre.
+                const freeZoneIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+                // Tous les autres indices sont des candidats pour les cases bloquées
+                let candidateIndices = [];
+                for (let i = 0; i < gridSize; i++) {
+                    if (!freeZoneIndices.includes(i)) {
+                        candidateIndices.push(i);
+                    }
+                }
+
+                // Mélange les candidats
+                candidateIndices.sort(() => Math.random() - 0.5);
+
+                // Prend 15 indices pour les objets bloqués
+                const lockedIndices = candidateIndices.slice(0, 15);
+
+                lockedIndices.forEach(index => {
+                    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+                    if (cell) {
+                        const randomLevel = Math.floor(Math.random() * 5) + 1; // Niveaux 1 à 5
+                        cell.appendChild(createItemElement('A', randomLevel, true));
+                    }
+                });
+
             } else {
                 // Ensure generator is always present
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
@@ -1461,11 +1453,6 @@
                 if (isLocked) {
                     item.dataset.locked = 'true';
                     item.classList.add('locked-paper');
-                    const cobweb = document.createElement('div');
-                    cobweb.className = 'cobweb';
-                    cobweb.textContent = '🕸️';
-                    item.appendChild(cobweb);
-                    contentDiv.classList.add('locked-item-content');
                 }
 
                 contentDiv.style.width = '100%';
@@ -1548,6 +1535,10 @@
         }
 
         function handleDragStart(e) {
+            if (this.dataset.locked === 'true') {
+                e.preventDefault();
+                return;
+            }
             draggedItem = this;
             sourceCell = this.parentElement;
             setTimeout(() => {
@@ -1610,6 +1601,11 @@
                             sourceCell.appendChild(draggedItem); // Return dragged item
                         }
                         return;
+                    }
+
+                    if (targetItem.dataset.locked === 'true') {
+                        targetItem.dataset.locked = 'false';
+                        targetItem.classList.remove('locked-paper');
                     }
 
                     this.removeChild(targetItem);
