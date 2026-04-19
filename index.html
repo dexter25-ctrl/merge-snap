@@ -2,14 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -924,6 +925,42 @@
             color: white;
             width: 100%;
         }
+        /* New App Container and Layout Styles */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        #game-header {
+            width: 100%;
+            background-color: #A0C4FF; /* Doux bleu */
+            padding-bottom: 10px;
+        }
+        #mission-area {
+            width: 100%;
+            background-color: #BDB2FF; /* Doux violet */
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        #grid-area {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            background-color: #CAFFBF; /* Doux vert */
+            overflow: hidden; /* Avoid scrolling inside */
+        }
+        #game-footer {
+            width: 100%;
+            background-color: #FFADAD; /* Doux rouge/rose */
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -952,55 +989,62 @@
         </div>
     </div>
 
-    <div id="game-ui" style="display: none; width: 100%; flex-direction: column; align-items: center; position: relative;">
+    <div id="game-ui" class="app-container" style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;">
     <div class="fence"></div>
-    <div id="header">
-        <div class="header-item header-item-lvl" id="ui-level">
-            LVL 1
+    <header id="game-header">
+        <div id="header">
+            <div class="header-item header-item-lvl" id="ui-level">
+                LVL 1
+            </div>
+            <div class="header-item header-item-energy">
+                <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
+                <button class="btn-plus btn-plus-energy">+</button>
+                <div id="ui-energy-timer" style="position: absolute; bottom: -18px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">MAX</div>
+            </div>
+            <div class="header-item header-item-coins">
+                <span class="header-icon">💰</span> <span id="ui-coins">427</span>
+                <button class="btn-plus btn-plus-coins">+</button>
+            </div>
+            <div class="header-item header-item-gems">
+                <span class="header-icon">💎</span> <span id="ui-gems">18</span>
+                <button class="btn-plus btn-plus-gems">+</button>
+            </div>
         </div>
-        <div class="header-item header-item-energy">
-            <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
-            <button class="btn-plus btn-plus-energy">+</button>
-            <div id="ui-energy-timer" style="position: absolute; bottom: -18px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">MAX</div>
-        </div>
-        <div class="header-item header-item-coins">
-            <span class="header-icon">💰</span> <span id="ui-coins">427</span>
-            <button class="btn-plus btn-plus-coins">+</button>
-        </div>
-        <div class="header-item header-item-gems">
-            <span class="header-icon">💎</span> <span id="ui-gems">18</span>
-            <button class="btn-plus btn-plus-gems">+</button>
-        </div>
-    </div>
-
+    </header>
 
     <!-- Dialog & Mission Zone -->
-    <div class="dialog-zone">
-        <div class="avatar" id="mentor-avatar">👨‍🦳</div>
-        <div class="dialog-text">
-            <div class="dialog-name" id="mentor-name">Prof. Alistair</div>
-            <div id="dialog-content">Fusionne 2 boîtiers pour créer un 35mm !</div>
-            <div class="mission-status" id="mission-status">Mission 1/3</div>
+    <section id="mission-area">
+        <div class="dialog-zone">
+            <div class="avatar" id="mentor-avatar">👨‍🦳</div>
+            <div class="dialog-text">
+                <div class="dialog-name" id="mentor-name">Prof. Alistair</div>
+                <div id="dialog-content">Fusionne 2 boîtiers pour créer un 35mm !</div>
+                <div class="mission-status" id="mission-status">Mission 1/3</div>
+            </div>
+            <button class="btn-validate" id="btn-validate" onclick="validateMission()">Valider la photo</button>
         </div>
-        <button class="btn-validate" id="btn-validate" onclick="validateMission()">Valider la photo</button>
-    </div>
+    </section>
 
     <!-- Confetti Container -->
     <div class="confetti-container" id="confetti"></div>
 
     <!-- Grille de Jeu -->
-    <div class="studio-container">
-        <div class="grid" id="grid">
-            <!-- Cellules générées ici -->
+    <main id="grid-area">
+        <div class="studio-container">
+            <div class="grid" id="grid">
+                <!-- Cellules générées ici -->
+            </div>
         </div>
-    </div>
+    </main>
 
     <!-- Bottom Controls (Inventory) -->
-    <div class="bottom-controls" id="bottom-controls">
-        <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-            📦 <br> <span style="font-size: 10px;">Stock</span>
-        </button>
-    </div>
+    <footer id="game-footer">
+        <div class="bottom-controls" id="bottom-controls">
+            <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+                📦 <br> <span style="font-size: 10px;">Stock</span>
+            </button>
+        </div>
+    </footer>
 
     <!-- Inventory Modal -->
     <div id="inventory-modal">
