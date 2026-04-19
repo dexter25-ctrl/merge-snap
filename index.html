@@ -1866,7 +1866,7 @@
                     if (i % cols !== cols - 1) neighbors.push(i + 1);
 
                     const hasClearNeighbor = neighbors.some(n => cells[n].dataset.fogState === 'clear');
-                    if (hasClearNeighbor) {
+                    if (hasClearNeighbor && cells[i].dataset.unlocked !== 'true') {
                         cells[i].dataset.fogState = 'burned';
                         cells[i].classList.remove('fog-solid');
                         cells[i].classList.add('fog-burned');
@@ -1938,6 +1938,7 @@
                     if (targetCell.dataset.fogState === 'burned') {
                         targetCell.dataset.fogState = 'clear';
                         targetCell.classList.remove('fog-burned');
+                        targetCell.dataset.unlocked = 'true';
                     }
 
                     checkMissionStatus(); // Check mission on merge
