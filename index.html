@@ -1690,6 +1690,7 @@
                     item.addEventListener('touchstart', handleTouchStart, {passive: false});
                     item.addEventListener('touchmove', handleTouchMove, {passive: false});
                     item.addEventListener('touchend', handleTouchEnd);
+                    item.addEventListener('touchcancel', handleTouchEnd);
                 }
                 item.addEventListener('dragend', handleDragEnd);
                 item.addEventListener('click', handleItemClick);
@@ -1797,6 +1798,13 @@
             draggedItem.style.top = '';
             draggedItem.style.opacity = '1';
 
+            // Ensure the item is returned to a valid container temporarily so it isn't stuck on the body
+            if (!draggedItem.parentElement || draggedItem.parentElement === document.body) {
+                if (sourceCell) {
+                     sourceCell.appendChild(draggedItem);
+                }
+            }
+
             // Find drop target
             const touch = e.changedTouches[0];
             let targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -1811,6 +1819,7 @@
             }
 
             if (targetElement && targetElement.classList.contains('cell')) {
+                // Pass it to drop logic
                 processDropLogic(draggedItem, sourceCell, targetElement);
             } else {
                 // Revert if dropped outside grid
@@ -1921,15 +1930,15 @@
                     targetCell.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
 
-                    // Handle fog discovery
+                    // Effet visuel simple de fusion
+                    targetCell.firstChild.style.transform = 'scale(1.3)';
+                    setTimeout(() => { targetCell.firstChild.style.transform = ''; }, 200);
+
+                    // Handle fog discovery (must be done after modifying DOM so that updateFog runs correctly)
                     if (targetCell.dataset.fogState === 'burned') {
                         targetCell.dataset.fogState = 'clear';
                         targetCell.classList.remove('fog-burned');
                     }
-
-                    // Effet visuel simple de fusion
-                    targetCell.firstChild.style.transform = 'scale(1.3)';
-                    setTimeout(() => { targetCell.firstChild.style.transform = ''; }, 200);
 
                     checkMissionStatus(); // Check mission on merge
                     updateFog(); // Check for new fog discoveries

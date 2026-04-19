@@ -1,0 +1,43 @@
+--- index.html
++++ index.html
+@@ -1688,2 +1688,3 @@
+                     item.addEventListener('touchend', handleTouchEnd);
++                    item.addEventListener('touchcancel', handleTouchEnd);
+                 }
+@@ -1795,2 +1796,9 @@
+
++            if (!draggedItem.parentElement || draggedItem.parentElement === document.body) {
++                if (sourceCell) {
++                     sourceCell.appendChild(draggedItem);
++                }
++            }
++
+             // Find drop target
+@@ -1813,3 +1821,3 @@
+             if (targetElement && targetElement.classList.contains('cell')) {
+-                processDropLogic(draggedItem, sourceCell, targetElement);
++                setTimeout(() => processDropLogic(draggedItem, sourceCell, targetElement), 0);
+             } else {
+@@ -1923,6 +1931,6 @@
+                     // Handle fog discovery
+-                    if (targetCell.dataset.fogState === 'burned') {
+-                        targetCell.dataset.fogState = 'clear';
+-                        targetCell.classList.remove('fog-burned');
+-                    }
++                    // if (targetCell.dataset.fogState === 'burned') {
++                    //     targetCell.dataset.fogState = 'clear';
++                    //     targetCell.classList.remove('fog-burned');
++                    // }
+
+@@ -1931,3 +1939,11 @@
+                     setTimeout(() => { targetCell.firstChild.style.transform = ''; }, 200);
+
++                    // Move fog logic AFTER the DOM node is appended and visual effect applied
++                    if (targetCell.dataset.fogState === 'burned') {
++                        targetCell.dataset.fogState = 'clear';
++                        targetCell.classList.remove('fog-burned');
++                    }
++                    if (sourceCell.dataset.fogState === 'burned') {
++                         // Actually sourceCell couldn't have been burned because draggedItem wasn't locked.
++                    }
+                     checkMissionStatus(); // Check mission on merge
