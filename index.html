@@ -591,14 +591,14 @@
         }
 
         /* --- LOCKED ITEMS (VIEUX PAPIER & BRÛLÉ) --- */
-        .locked-paper { position: relative; pointer-events: auto; }
-        .locked-paper::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            /* Effet vieux papier avec un trou transparent au milieu (brûlure) */
-            background: radial-gradient(circle at center, transparent 25%, rgba(139, 69, 19, 0.8) 40%, #deb887 100%);
-            border-radius: 8px; z-index: 5; pointer-events: none;
-        }
-        .locked-paper img { filter: grayscale(30%) brightness(60%); z-index: 1; }
+.locked-paper { position: relative; pointer-events: auto; }
+.locked-paper::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    /* On utilise ton image PNG de papier brûlé */
+    background: url('./assets/papier_brule.png') center/cover no-repeat !important;
+    border-radius: 8px; z-index: 5; pointer-events: none;
+}
+.locked-paper img { filter: grayscale(30%) brightness(60%); z-index: 1; }
 
         /* État : Inconnu (Vieux Papier 100% propre) */
         .fog-solid {
