@@ -243,18 +243,18 @@
         }
 
         .grid {
-            width: 96vw !important; /* Prend presque toute la largeur de l'écran */
-            max-width: 450px !important;
-            margin: 0 auto !important; /* Centre la grille */
             display: grid !important;
             grid-template-columns: repeat(7, 1fr) !important; /* 7 colonnes fluides */
+            grid-template-rows: repeat(9, calc((100dvh - 200px) / 9 - 3px)) !important;
             gap: 3px !important;
-            box-sizing: border-box !important;
-            padding: 5px !important;
+            max-width: 95vw !important; /* La grille rétrécit si le téléphone est étroit */
+            margin: 0 auto !important;
 
+            width: 100%;
             background-color: #f0e6d2; /* Couleur de fond entre les cases */
             border-radius: 10px;
-            height: auto;
+            padding: 2px;
+            box-sizing: border-box !important;
         }
 
         .cell {
@@ -269,8 +269,7 @@
             container-type: inline-size;
 
             width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 1 / 1 !important; /* Reste toujours un carré */
+            height: 100% !important; /* Se remplit selon les colonnes/rangées du parent grid */
             min-width: 0 !important; /* Empêche la case de forcer l'élargissement */
             min-height: 0 !important;
             display: flex !important;
