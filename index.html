@@ -590,46 +590,23 @@
             }
         }
 
-        /* --- LOCKED ITEMS (VIEUX PAPIER & BRÛLÉ) --- */
-.locked-paper { position: relative; pointer-events: auto; }
-.locked-paper::after {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    /* On utilise ton image PNG de papier brûlé */
-    background: url('./assets/papier_brule.png') center/cover no-repeat !important;
-    border-radius: 8px; z-index: 5; pointer-events: none;
-}
-.locked-paper img { filter: grayscale(30%) brightness(60%); z-index: 1; }
-
-        /* État : Inconnu (Vieux Papier 100% propre) */
-        .fog-solid {
-            background: url('./assets/vieux_papier.png') center/cover no-repeat !important;
-            pointer-events: none;
-            border: none !important;
-        }
-        .fog-solid img {
-            display: none !important;
-        }
-
-        /* État : Frontière (Papier brûlé) */
-        .fog-burned {
-            position: relative;
-            pointer-events: auto;
-            background: transparent !important;
-        }
+        /* Niveau 1 : Frontière (Papier Brûlé) - On devine l'objet */
+        .fog-burned { position: relative; pointer-events: auto; }
         .fog-burned::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            /* AUCUN radial-gradient, juste l'image : */
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: url('./assets/papier_brule.png') center/cover no-repeat !important;
-            z-index: 5;
-            pointer-events: none;
+            border-radius: 8px; z-index: 5; pointer-events: none;
         }
-        .fog-burned img {
-            /* L'objet est visible à travers le trou du PNG, juste un peu assombri */
-            filter: grayscale(30%) brightness(70%);
-            z-index: 1;
+        .fog-burned img { filter: grayscale(50%) brightness(70%); z-index: 1; }
+
+        /* Niveau 2 : Inconnu (Vieux Papier) - Totalement caché */
+        .fog-solid { position: relative; pointer-events: none; }
+        .fog-solid::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('./assets/vieux_papier.png') center/cover no-repeat !important;
+            border-radius: 8px; z-index: 10; pointer-events: none;
         }
+        .fog-solid img { display: none !important; }
 
         /* Backgrounds based on level */
         body.level-1 {
@@ -1557,9 +1534,6 @@
                 item.addEventListener('click', handleGeneratorClick);
             } else {
                 item.draggable = !isLocked;
-                if (isLocked) {
-                    item.classList.add('locked-paper');
-                }
 
                 contentDiv.style.width = '100%';
                 contentDiv.style.height = '100%';
