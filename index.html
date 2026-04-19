@@ -877,6 +877,53 @@
             display: block;
             margin: auto;
         }
+
+        /* Save Slots Styles */
+        .save-slot {
+            background-color: #34495e;
+            border: 2px solid silver;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .save-slot-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+        .save-slot-info {
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        .save-slot-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .save-slot-btn {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        .btn-play {
+            background-color: #27ae60;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            flex: 0.3;
+        }
+        .btn-new {
+            background-color: #3498db;
+            color: white;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -885,8 +932,9 @@
     <div id="start-menu" class="overlay-menu">
         <div class="menu-box">
             <div class="menu-title">Merge & Snap</div>
-            <button class="menu-btn" onclick="resumeGame()">JOUER</button>
-            <button class="menu-btn menu-btn-secondary" onclick="showCharacterCreation()">Nouveau Personnage</button>
+            <div id="save-slots-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <!-- Slots will be generated here -->
+            </div>
         </div>
     </div>
 
@@ -900,9 +948,11 @@
                 <button class="gender-btn female" onclick="selectGender('female', this)">Femme</button>
             </div>
             <button class="menu-btn" onclick="validateCreation()">Valider la création</button>
+            <button class="menu-btn menu-btn-secondary" style="margin-top: 10px;" onclick="backToMenu()">Retour</button>
         </div>
     </div>
 
+    <div id="game-ui" style="display: none; width: 100%; flex-direction: column; align-items: center; position: relative;">
     <div class="fence"></div>
     <div id="header">
         <div class="header-item header-item-lvl" id="ui-level">
@@ -970,7 +1020,10 @@
 
     <button onclick="localStorage.clear(); window.location.reload();" style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄 Reset Save</button>
 
-    <script>
+
+    </div>
+
+        <script>
         const gridElement = document.getElementById('grid');
         const cols = 7;
         const rows = 9;
@@ -1096,24 +1149,69 @@
 
         // --- PROFIL & MENUS ---
         let selectedGender = null;
+        let currentSlot = 1;
 
-        function checkProfile() {
-            const savedProfile = localStorage.getItem('mergeGameProfile');
-            if (savedProfile) {
-                const profile = JSON.parse(savedProfile);
-                playerName = profile.name;
-                playerGender = profile.gender;
-                document.getElementById('start-menu').style.display = 'flex';
-                document.getElementById('character-creation').style.display = 'none';
-            } else {
-                document.getElementById('start-menu').style.display = 'none';
-                document.getElementById('character-creation').style.display = 'flex';
+        function renderMainMenu() {
+            document.getElementById('game-ui').style.display = 'none';
+            document.getElementById('character-creation').style.display = 'none';
+            document.getElementById('start-menu').style.display = 'flex';
+
+            const container = document.getElementById('save-slots-container');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const saved = localStorage.getItem(`save_slot_${i}`);
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'save-slot';
+
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    slotDiv.innerHTML = `
+                        <div class="save-slot-title">Slot ${i}</div>
+                        <div class="save-slot-info">${data.name || 'Inconnu'} - ${data.gender === 'male' ? 'Homme' : 'Femme'}</div>
+                        <div class="save-slot-actions">
+                            <button class="save-slot-btn btn-play" onclick="playSlot(${i})">Jouer</button>
+                            <button class="save-slot-btn btn-delete" onclick="deleteSlot(${i})">🗑️</button>
+                        </div>
+                    `;
+                } else {
+                    slotDiv.innerHTML = `
+                        <div class="save-slot-title">Slot ${i}</div>
+                        <button class="save-slot-btn btn-new" onclick="newGameSlot(${i})">Nouvelle Partie ➕</button>
+                    `;
+                }
+                container.appendChild(slotDiv);
             }
         }
 
-        function showCharacterCreation() {
+        function playSlot(slot) {
+            currentSlot = slot;
+            document.getElementById('start-menu').style.display = 'none';
+            document.getElementById('game-ui').style.display = 'flex';
+
+            // On s'assure que la grille est affichée
+            const gridEl = document.getElementById('grid');
+            if(gridEl) { gridEl.style.display = 'grid'; }
+
+            startGame();
+        }
+
+        function deleteSlot(slot) {
+            if (confirm("Voulez-vous vraiment effacer cette sauvegarde ?")) {
+                localStorage.removeItem(`save_slot_${slot}`);
+                renderMainMenu();
+            }
+        }
+
+        function newGameSlot(slot) {
+            currentSlot = slot;
             document.getElementById('start-menu').style.display = 'none';
             document.getElementById('character-creation').style.display = 'flex';
+        }
+
+        function backToMenu() {
+            document.getElementById('character-creation').style.display = 'none';
+            renderMainMenu();
         }
 
         function selectGender(gender, btnElement) {
@@ -1136,19 +1234,24 @@
             playerName = nameInput;
             playerGender = selectedGender;
 
-            localStorage.setItem('mergeGameProfile', JSON.stringify({
-                name: playerName,
-                gender: playerGender
-            }));
+            // Clear current variables for new game
+            currentLevel = 1;
+            energy = 100; // Reset
+            coins = 0;
+            gems = 0;
+            currentMissionIndex = 0;
 
             document.getElementById('character-creation').style.display = 'none';
+            document.getElementById('game-ui').style.display = 'flex';
+
+            // On s'assure que la grille est affichée
+            const gridEl = document.getElementById('grid');
+            if(gridEl) { gridEl.style.display = 'grid'; }
+
             startGame();
         }
 
-        function resumeGame() {
-            document.getElementById('start-menu').style.display = 'none';
-            startGame();
-        }
+
 
         function startGame() {
             document.getElementById('ui-level').innerHTML = `LVL ${currentLevel} <br> <span style="font-size: 10px;">${playerName}</span>`;
@@ -1245,24 +1348,30 @@
             });
 
             const state = {
+                name: playerName,
+                gender: playerGender,
                 level: currentLevel,
                 energy: energy,
                 coins: coins,
+                gems: gems,
                 mission: currentMissionIndex,
                 grid: gridCells,
                 fogStates: fogStates,
                 lastEnergyTime: lastEnergyTime
             };
-            localStorage.setItem('mergeGameSave', JSON.stringify(state));
+            localStorage.setItem(`save_slot_${currentSlot}`, JSON.stringify(state));
         }
 
         function loadGame() {
-            const saved = localStorage.getItem('mergeGameSave');
+            const saved = localStorage.getItem(`save_slot_${currentSlot}`);
             if (saved) {
                 const state = JSON.parse(saved);
+                playerName = state.name || "C";
+                playerGender = state.gender || "female";
                 currentLevel = state.level || 1;
                 energy = state.energy !== undefined ? state.energy : 457;
                 coins = state.coins || 427;
+                gems = state.gems || 18;
                 currentMissionIndex = state.mission || 0;
 
                 const savedLastEnergyTime = state.lastEnergyTime || Date.now();
@@ -1499,6 +1608,7 @@
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
                 if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
 
+                saveGame();
             } else {
                 // Ensure generator is always present
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
@@ -1764,7 +1874,7 @@
         }
 
 
-        window.onload = checkProfile;
+        window.onload = renderMainMenu;
 
     </script>
 </body>
