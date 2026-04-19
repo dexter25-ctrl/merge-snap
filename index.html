@@ -427,89 +427,92 @@
         }
 
 
-        /* Narration & Dialog */
-        .dialog-zone {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            border: 3px solid #ff4081;
-            border-radius: 15px;
-            padding: 10px;
-            margin: 10px auto;
-            max-width: 500px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #ddd;
-            border: 3px solid white;
-            margin-right: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .dialog-text {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            font-size: 14px;
-            color: #333;
-            flex-grow: 1;
-        }
-
-        .dialog-name {
-            font-weight: bold;
-            color: #ff4081;
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-
         /* Missions & Validation */
-        .mission-status {
-            font-size: 12px;
-            color: #666;
-            text-align: right;
-            margin-bottom: 5px;
+        #mission-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 5px;
+            height: 80px;
+            box-sizing: border-box;
+            background: transparent;
+            width: 100%;
+            max-width: 500px;
         }
 
-        .btn-validate {
-            background: linear-gradient(180deg, #d3d3d3, #a9a9a9);
-            color: white;
-            border: 2px solid white;
+        .mission-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border: 2px solid #ccc;
             border-radius: 10px;
-            padding: 8px 15px;
-            font-weight: bold;
-            cursor: not-allowed;
+            padding: 5px;
+            width: 70px;
+            height: 70px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            opacity: 0.6;
             transition: all 0.3s;
-            box-shadow: 0 4px 0 #808080;
-            margin-left: 10px;
-            pointer-events: none;
         }
 
-        .btn-validate.active {
-            background: linear-gradient(180deg, #ffeb3b, #ffb300);
-            box-shadow: 0 4px 0 #f39c12, 0 0 15px rgba(255, 235, 59, 0.8);
+        .mission-card.active {
+            border-color: #3498db;
+            opacity: 1;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+            transform: scale(1.05);
+        }
+
+        .mission-card.active-validable {
+            border-color: #ffb300;
+            background: #fffde7;
+            animation: pulse 1.5s infinite;
             cursor: pointer;
             pointer-events: auto;
-            animation: pulse 1.5s infinite;
         }
 
-        .btn-validate.active:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #f39c12;
+        .mission-card.completed {
+            border-color: #4CAF50;
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .mission-card-client {
+            font-size: 20px;
+            margin-bottom: -5px;
+            z-index: 2;
+        }
+
+        .mission-card-req {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+        }
+
+        .mission-card-req img {
+            max-width: 25px;
+            max-height: 25px;
+            object-fit: contain;
+        }
+
+        .mission-card-reward {
+            font-size: 10px;
+            font-weight: bold;
+            color: #d35400;
+            background: #f1c40f;
+            border-radius: 5px;
+            padding: 1px 4px;
+            position: absolute;
+            bottom: -5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% {  }
+            50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
 
@@ -938,17 +941,7 @@
     </header>
 
     <!-- Dialog & Mission Zone -->
-    <section id="mission-area">
-        <div class="dialog-zone">
-            <div class="avatar" id="mentor-avatar">👨‍🦳</div>
-            <div class="dialog-text">
-                <div class="dialog-name" id="mentor-name">Prof. Alistair</div>
-                <div id="dialog-content">Fusionne 2 boîtiers pour créer un 35mm !</div>
-                <div class="mission-status" id="mission-status">Mission 1/3</div>
-            </div>
-            <button class="btn-validate" id="btn-validate" onclick="validateMission()">Valider la photo</button>
-        </div>
-    </section>
+    <section id="mission-area"></section>
 
     <!-- Confetti Container -->
     <div class="confetti-container" id="confetti"></div>
@@ -1421,17 +1414,56 @@
             const levelData = levelsData[currentLevel];
             if(!levelData) return; // End of game
 
-            document.getElementById('mentor-name').textContent = levelData.mentor;
-            document.getElementById('mentor-avatar').textContent = levelData.avatar;
+            const missionArea = document.getElementById('mission-area');
+            missionArea.innerHTML = '';
 
-            const currentMission = levelData.missions[currentMissionIndex];
-            document.getElementById('dialog-content').textContent = currentMission.text;
-            document.getElementById('mission-status').textContent = `Mission ${currentMissionIndex + 1}/3`;
+            const emojis = ['👩🏽', '🧔🏻‍♂️', '👵🏼', '👱🏼‍♀️', '👴🏿', '👦🏻'];
+
+            levelData.missions.forEach((mission, index) => {
+                const card = document.createElement('div');
+                card.className = 'mission-card';
+                if (index < currentMissionIndex) {
+                    card.classList.add('completed');
+                } else if (index === currentMissionIndex) {
+                    card.classList.add('active');
+                    card.id = 'active-mission-card';
+                }
+
+                const clientDiv = document.createElement('div');
+                clientDiv.className = 'mission-card-client';
+                clientDiv.textContent = emojis[(currentLevel + index) % emojis.length];
+
+                const reqDiv = document.createElement('div');
+                reqDiv.className = 'mission-card-req';
+
+                if (mission.req.family === 'A') {
+                    reqDiv.innerHTML = `<img src="assets/Famille_A/appareil_lvl${mission.req.level}.png?v=2" />`;
+                } else {
+                    const nameParts = (itemNames[mission.req.family][mission.req.level - 1] || "Obj").split(" ");
+                    reqDiv.textContent = nameParts[0].substring(0, 2); // Fallback emoji/text
+                    // Try to extract emoji from name
+                    const emojiMatch = itemNames[mission.req.family][mission.req.level - 1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}/gu);
+                    if (emojiMatch) {
+                        reqDiv.textContent = emojiMatch[0];
+                    }
+                }
+
+                const rewardDiv = document.createElement('div');
+                rewardDiv.className = 'mission-card-reward';
+                rewardDiv.textContent = `🪙 +${mission.reward}`;
+
+                card.appendChild(clientDiv);
+                card.appendChild(reqDiv);
+                card.appendChild(rewardDiv);
+
+                missionArea.appendChild(card);
+            });
 
             checkMissionStatus();
         }
 
         function checkMissionStatus() { console.log("checkMissionStatus called");
+            if (currentLevel > 3 || !levelsData[currentLevel]) return;
             const req = levelsData[currentLevel].missions[currentMissionIndex].req;
             const itemsOnGrid = document.querySelectorAll('.item');
             let hasItem = false;
@@ -1442,17 +1474,20 @@
                 }
             });
 
-            const btn = document.getElementById('btn-validate');
-            if (hasItem) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+            const activeCard = document.getElementById('active-mission-card');
+            if (activeCard) {
+                if (hasItem) {
+                    activeCard.classList.add('active-validable');
+                    activeCard.onclick = () => validateMission(currentMissionIndex);
+                } else {
+                    activeCard.classList.remove('active-validable');
+                    activeCard.onclick = null;
+                }
             }
         }
 
-        function validateMission() {
-            const btn = document.getElementById('btn-validate');
-            if (!btn.classList.contains('active')) return;
+        function validateMission(index) {
+            if (index !== currentMissionIndex) return;
 
             const mission = levelsData[currentLevel].missions[currentMissionIndex];
 
@@ -1652,6 +1687,9 @@
 
                 if (!isLocked) {
                     item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('touchstart', handleTouchStart, {passive: false});
+                    item.addEventListener('touchmove', handleTouchMove, {passive: false});
+                    item.addEventListener('touchend', handleTouchEnd);
                 }
                 item.addEventListener('dragend', handleDragEnd);
                 item.addEventListener('click', handleItemClick);
@@ -1713,6 +1751,77 @@
             sourceCell = null;
         }
 
+        // --- TOUCH EVENTS ---
+        function handleTouchStart(e) {
+            if (this.dataset.locked === 'true') return;
+            e.preventDefault(); // Prevent scroll
+            draggedItem = this;
+            sourceCell = this.parentElement;
+
+            // Set up absolute positioning for visual dragging
+            const rect = this.getBoundingClientRect();
+            this.style.position = 'absolute';
+            this.style.zIndex = '1000';
+            this.style.pointerEvents = 'none'; // so elementFromPoint works later
+            this.style.width = rect.width + 'px';
+            this.style.height = rect.height + 'px';
+
+            // Move to center under finger
+            const touch = e.touches[0];
+            this.style.left = (touch.clientX - rect.width / 2) + 'px';
+            this.style.top = (touch.clientY - rect.height / 2) + 'px';
+            this.style.opacity = '0.7';
+
+            document.body.appendChild(this); // temporarily move to body for free movement
+        }
+
+        function handleTouchMove(e) {
+            if (!draggedItem) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = draggedItem.getBoundingClientRect();
+            draggedItem.style.left = (touch.clientX - rect.width / 2) + 'px';
+            draggedItem.style.top = (touch.clientY - rect.height / 2) + 'px';
+        }
+
+        function handleTouchEnd(e) {
+            if (!draggedItem) return;
+
+            // Reset styles
+            draggedItem.style.position = '';
+            draggedItem.style.zIndex = '';
+            draggedItem.style.pointerEvents = '';
+            draggedItem.style.width = '100% !important';
+            draggedItem.style.height = '100% !important';
+            draggedItem.style.left = '';
+            draggedItem.style.top = '';
+            draggedItem.style.opacity = '1';
+
+            // Find drop target
+            const touch = e.changedTouches[0];
+            let targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+
+            // Walk up to find a cell if we dropped on something inside it
+            while (targetElement && !targetElement.classList.contains('cell')) {
+                targetElement = targetElement.parentElement;
+                if (targetElement === document.body) {
+                    targetElement = null;
+                    break;
+                }
+            }
+
+            if (targetElement && targetElement.classList.contains('cell')) {
+                processDropLogic(draggedItem, sourceCell, targetElement);
+            } else {
+                // Revert if dropped outside grid
+                sourceCell.appendChild(draggedItem);
+            }
+
+            draggedItem = null;
+            sourceCell = null;
+        }
+        // --- END TOUCH EVENTS ---
+
         function handleDragOver(e) {
             e.preventDefault();
         }
@@ -1767,10 +1876,21 @@
             this.style.background = '';
             this.style.boxShadow = '';
 
-            if (this === sourceCell || !draggedItem) return;
+            if (!draggedItem) return;
 
-            if (this.hasChildNodes()) {
-                const targetItem = this.firstChild;
+            processDropLogic(draggedItem, sourceCell, this);
+        }
+
+        function processDropLogic(draggedItem, sourceCell, targetCell) {
+            if (targetCell === sourceCell || !draggedItem) {
+                if (targetCell && targetCell !== sourceCell && !targetCell.classList.contains('cell')) {
+                     sourceCell.appendChild(draggedItem);
+                }
+                return;
+            }
+
+            if (targetCell.hasChildNodes()) {
+                const targetItem = targetCell.firstChild;
                 const draggedFamily = draggedItem.dataset.family;
                 const targetFamily = targetItem.dataset.family;
                 const draggedLevel = parseInt(draggedItem.dataset.level);
@@ -1778,6 +1898,7 @@
 
                 if (targetFamily === "GENERATOR" || draggedFamily === "GENERATOR") {
                     showMessage("Impossible de déplacer cet objet !");
+                    sourceCell.appendChild(draggedItem);
                     return;
                 }
 
@@ -1787,28 +1908,28 @@
                         // Swap anyway if not locked
                         if (targetItem.dataset.locked !== 'true') {
                             sourceCell.appendChild(targetItem);
-                            this.appendChild(draggedItem);
+                            targetCell.appendChild(draggedItem);
                         } else {
                             sourceCell.appendChild(draggedItem); // Return dragged item
                         }
                         return;
                     }
 
-                    this.removeChild(targetItem);
+                    targetCell.removeChild(targetItem);
                     const newItemLevel = draggedLevel + 1;
                     // Note: new item is not locked by default
-                    this.appendChild(createItemElement(draggedFamily, newItemLevel));
+                    targetCell.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
 
                     // Handle fog discovery
-                    if (this.dataset.fogState === 'burned') {
-                        this.dataset.fogState = 'clear';
-                        this.classList.remove('fog-burned');
+                    if (targetCell.dataset.fogState === 'burned') {
+                        targetCell.dataset.fogState = 'clear';
+                        targetCell.classList.remove('fog-burned');
                     }
 
                     // Effet visuel simple de fusion
-                    this.firstChild.style.transform = 'scale(1.3)';
-                    setTimeout(() => { this.firstChild.style.transform = ''; }, 200);
+                    targetCell.firstChild.style.transform = 'scale(1.3)';
+                    setTimeout(() => { targetCell.firstChild.style.transform = ''; }, 200);
 
                     checkMissionStatus(); // Check mission on merge
                     updateFog(); // Check for new fog discoveries
@@ -1818,11 +1939,11 @@
                         sourceCell.appendChild(draggedItem);
                     } else {
                         sourceCell.appendChild(targetItem);
-                        this.appendChild(draggedItem);
+                        targetCell.appendChild(draggedItem);
                     }
                 }
             } else {
-                this.appendChild(draggedItem);
+                targetCell.appendChild(draggedItem);
             }
             saveGame();
         }
