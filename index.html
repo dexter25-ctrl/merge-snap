@@ -600,6 +600,21 @@
         }
         .locked-paper img { filter: grayscale(30%) brightness(60%); z-index: 1; }
 
+        .fog-solid {
+            background-color: #d2b48c !important; /* Fallback beige */
+            background-image: url('./assets/vieux_papier.png'), url('../assets/vieux_papier.png'), url('/assets/vieux_papier.png'), url('assets/vieux_papier.png') !important;
+            background-size: cover !important; pointer-events: none;
+        }
+        .fog-solid img { display: none !important; }
+
+        .fog-burned { position: relative; pointer-events: auto; }
+        .fog-burned::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: url('./assets/papier_brule.png'), url('../assets/papier_brule.png'), url('/assets/papier_brule.png'), url('assets/papier_brule.png') !important;
+            background-size: cover !important; z-index: 5; pointer-events: none;
+        }
+        .fog-burned img { filter: grayscale(80%) brightness(60%); z-index: 1; }
+
         /* Backgrounds based on level */
         body.level-1 {
             background: linear-gradient(to bottom, #d7ccc8, #a1887f); /* Old Paris Studio */
@@ -1223,7 +1238,9 @@
         function saveGame() {
             const gridCells = [];
             const cells = document.querySelectorAll('.cell');
+            const fogStates = [];
             cells.forEach((cell, index) => {
+                fogStates.push(cell.dataset.fogState || 'clear');
                 if (cell.firstChild) {
                     gridCells.push({
                         index: index,
@@ -1240,6 +1257,7 @@
                 coins: coins,
                 mission: currentMissionIndex,
                 grid: gridCells,
+                fogStates: fogStates,
                 lastEnergyTime: lastEnergyTime
             };
             localStorage.setItem('mergeGameSave', JSON.stringify(state));
@@ -1284,7 +1302,20 @@
                 if (state.grid) {
                     // Rebuild grid
                     const cells = document.querySelectorAll('.cell');
-                    cells.forEach(cell => cell.innerHTML = ''); // Clear before loading
+                    cells.forEach((cell, index) => {
+                        cell.innerHTML = ''; // Clear before loading
+                        cell.classList.remove('fog-solid', 'fog-burned');
+                        let fogState = 'clear';
+                        if (state.fogStates && state.fogStates[index]) {
+                            fogState = state.fogStates[index];
+                        }
+                        cell.dataset.fogState = fogState;
+                        if (fogState === 'solid') {
+                            cell.classList.add('fog-solid');
+                        } else if (fogState === 'burned') {
+                            cell.classList.add('fog-burned');
+                        }
+                    });
 
                     state.grid.forEach(itemData => {
                         if (cells[itemData.index]) {
@@ -1450,29 +1481,31 @@
 
             if (!hasItems) {
                 // Initialisation du Brouillard
+                // 9 cases libres autour du générateur
+                const freeIndices = [2, 3, 4, 9, 10, 11, 16, 17, 18];
+                const burnedIndices = [1, 5, 8, 12, 15, 19, 23, 24, 25];
+
+                for (let i = 0; i < gridSize; i++) {
+                    const cell = cells[i];
+                    if (freeIndices.includes(i)) {
+                        cell.dataset.fogState = 'clear';
+                    } else if (burnedIndices.includes(i)) {
+                        cell.dataset.fogState = 'burned';
+                        cell.classList.add('fog-burned');
+                        const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
+                        cell.appendChild(createItemElement('A', randomLevel, true));
+                    } else {
+                        cell.dataset.fogState = 'solid';
+                        cell.classList.add('fog-solid');
+                        const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
+                        cell.appendChild(createItemElement('A', randomLevel, true));
+                    }
+                }
+
                 // Le Spawner en [0,3] (index 3)
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
                 if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
 
-                // 8 cases libres autour du générateur
-                const freeIndices = [2, 3, 4, 9, 10, 11, 16, 17, 18]; // 9 cases dont le générateur
-
-                // Répartir une quinzaine d'objets bloqués sur le reste de la grille
-                let availableIndices = [];
-                for (let i = 0; i < gridSize; i++) {
-                    if (!freeIndices.includes(i)) availableIndices.push(i);
-                }
-
-                // Mélanger et prendre 15 indices
-                availableIndices = availableIndices.sort(() => 0.5 - Math.random()).slice(0, 15);
-
-                for (const idx of availableIndices) {
-                    const cell = document.querySelector(`.cell[data-index="${idx}"]`);
-                    if (cell) {
-                        const randomLevel = Math.floor(Math.random() * 5) + 1; // Niveaux 1 à 5
-                        cell.appendChild(createItemElement('A', randomLevel, true));
-                    }
-                }
             } else {
                 // Ensure generator is always present
                 const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
@@ -1628,6 +1661,38 @@
             this.style.boxShadow = '';
         }
 
+        function updateFog() {
+            const cells = document.querySelectorAll('.cell');
+            let fogChanged = false;
+
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i].dataset.fogState === 'solid') {
+                    // Check adjacent cells
+                    const neighbors = [];
+                    // Top
+                    if (i >= cols) neighbors.push(i - cols);
+                    // Bottom
+                    if (i < gridSize - cols) neighbors.push(i + cols);
+                    // Left
+                    if (i % cols !== 0) neighbors.push(i - 1);
+                    // Right
+                    if (i % cols !== cols - 1) neighbors.push(i + 1);
+
+                    const hasClearNeighbor = neighbors.some(n => cells[n].dataset.fogState === 'clear');
+                    if (hasClearNeighbor) {
+                        cells[i].dataset.fogState = 'burned';
+                        cells[i].classList.remove('fog-solid');
+                        cells[i].classList.add('fog-burned');
+                        fogChanged = true;
+                    }
+                }
+            }
+
+            if (fogChanged) {
+                saveGame();
+            }
+        }
+
         function handleDrop(e) {
             e.preventDefault();
             this.style.background = '';
@@ -1666,11 +1731,18 @@
                     this.appendChild(createItemElement(draggedFamily, newItemLevel));
                     sourceCell.removeChild(draggedItem);
 
+                    // Handle fog discovery
+                    if (this.dataset.fogState === 'burned') {
+                        this.dataset.fogState = 'clear';
+                        this.classList.remove('fog-burned');
+                    }
+
                     // Effet visuel simple de fusion
                     this.firstChild.style.transform = 'scale(1.3)';
                     setTimeout(() => { this.firstChild.style.transform = ''; }, 200);
 
                     checkMissionStatus(); // Check mission on merge
+                    updateFog(); // Check for new fog discoveries
                 } else {
                     if (targetItem.dataset.locked === 'true') {
                         // Cannot swap with locked items
