@@ -5,34 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100dvh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Paysage réaliste cartoon: collines vertes douces */
-            background-color: #8FD8D8; /* Ciel bleu clair */
-            background-image:
-                /* Nuages */
-                radial-gradient(circle at 20% 15%, #ffffff 0%, rgba(255,255,255,0) 10%),
-                radial-gradient(circle at 25% 18%, #ffffff 0%, rgba(255,255,255,0) 12%),
-                radial-gradient(circle at 75% 10%, #ffffff 0%, rgba(255,255,255,0) 8%),
-                radial-gradient(circle at 80% 12%, #ffffff 0%, rgba(255,255,255,0) 10%),
-                /* Collines au loin */
-                radial-gradient(ellipse at 50% 40%, #A0E8A0 0%, transparent 60%),
-                radial-gradient(ellipse at 10% 45%, #8CD48C 0%, transparent 50%),
-                radial-gradient(ellipse at 90% 45%, #8CD48C 0%, transparent 50%),
-                /* Sol avec chemin */
-                radial-gradient(ellipse at 50% 100%, #E8D4A0 0%, #E8D4A0 15%, transparent 30%),
-                linear-gradient(to bottom, transparent 30%, #68B868 30%, #5CB05C 40%, #50A850 100%);
-            background-attachment: fixed;
-            overflow-x: hidden;
-            position: relative;
-        }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #f4ece1; }
 
         /* Clôture en bois blanc cartoon */
         .fence {
@@ -242,42 +215,9 @@
             box-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .grid {
-           display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    gap: 2px;
-    max-height: 100%;
-    max-width: 100%;
-    aspect-ratio: 7 / 9 !important;
-    margin: 0 auto;
 
-            width: 100%;
-            background-color: #f0e6d2; /* Couleur de fond entre les cases */
-            border-radius: 10px;
-            padding: 2px;
-            box-sizing: border-box !important;
-        }
 
-        .cell {
-            background-color: transparent !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            background: transparent !important;
-            border-radius: 8px;
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-            position: relative;
-            box-sizing: border-box;
-            container-type: inline-size;
-
-            width: 100% !important;
-            height: 100% !important; /* Se remplit selon les colonnes/rangées du parent grid */
-            min-width: 0 !important; /* Empêche la case de forcer l'élargissement */
-            min-height: 0 !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
+        .cell { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: 0; margin: 0; }
 
         /* Items premium 3D */
         .item {
@@ -935,45 +875,18 @@
             width: 100%;
         }
         /* New App Container and Layout Styles */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100dvh;
-            overflow: hidden;
-            background-color: #f4ece1;
-        }
-        #game-header {
-            width: 100%;
-            flex-shrink: 0;
-            padding-bottom: 10px;
-        }
-        #mission-area {
-            width: 100%;
-            flex-shrink: 0;
-            padding-bottom: 10px;
-            padding-top: 10px;
-        }
-       #grid-area {
-    flex-grow: 1; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    max-height: 65vh; /* C'est ça qui bloque le scroll ! */
-    overflow: hidden;
-    padding: 5px;
-    box-sizing: border-box;
-}
-        #game-footer {
-            width: 100%;
-            flex-shrink: 0;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: center;
-        }
-    </style>
+        .app-container { display: flex; flex-direction: column; height: 100dvh; width: 100vw; overflow: hidden; }
+
+
+       #grid-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; padding: 10px; width: 100%; box-sizing: border-box; }
+
+
+        .cell img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        #game-header, #mission-area, #game-footer { flex-shrink: 0; position: relative; z-index: 10; margin: 0; }
+
+        #grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(9, 1fr); gap: 2px; max-height: 100%; max-width: 100%; aspect-ratio: 7 / 9 !important; margin: 0 auto; }
+</style>
 </head>
 <body>
 
