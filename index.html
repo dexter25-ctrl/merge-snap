@@ -894,6 +894,21 @@
             color: #fff !important;
         }
 
+
+        .btn-new-game {
+            width: 80px !important;
+            height: 80px !important;
+            padding: 0 !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            white-space: normal !important; /* Permet le retour à la ligne */
+            font-size: 12px !important;
+            background-color: #f39c12 !important;
+            color: #fff !important;
+            text-transform: uppercase;
+        }
         .btn-new {
             background-color: #f39c12 !important;
             color: #fff !important;
@@ -1193,9 +1208,8 @@
                 if (saved) {
                     const data = JSON.parse(saved);
                     slotDiv.innerHTML = `
-                        <div class="save-slot-title">Slot ${i}</div>
-                        <div class="save-slot-info">${data.name || 'Inconnu'} - ${data.gender === 'male' ? 'Homme' : 'Femme'}</div>
-                        <div class="save-slot-actions">
+                        <p class="save-name" style="margin: 0 0 5px 0; font-weight: bold; color: #fff;">${data.name || 'Inconnu'}</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
                             <button class="save-slot-btn btn-play" onclick="playSlot(${i})">Jouer</button>
                             <button class="save-slot-btn btn-delete" onclick="deleteSlot(${i})">🗑️</button>
                         </div>
@@ -1203,7 +1217,10 @@
                 } else {
                     slotDiv.innerHTML = `
                         <div class="save-slot-title">Slot ${i}</div>
-                        <button class="save-slot-btn btn-new" onclick="newGameSlot(${i})">Nouvelle Partie</button>
+                        <button class="save-slot-btn btn-new-game" onclick="newGameSlot(${i})">Nouvelle
+
+
+Partie</button>
                     `;
                 }
                 container.appendChild(slotDiv);
