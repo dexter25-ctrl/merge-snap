@@ -1386,27 +1386,45 @@ Partie</button>
                 mentor: 'Prof. Alistair',
                 avatar: '👨‍🦳',
                 missions: [
-                    { text: 'Fusionne 2 boîtiers en bois pour créer un 35mm argentique !', req: { family: 'A', level: 2 }, reward: 100 },
-                    { text: 'Il me faut un objectif vintage. (Niv 2)', req: { family: 'B', level: 2 }, reward: 150 },
-                    { text: 'Prépare une pellicule noire. (Niv 1)', req: { family: 'D', level: 1 }, reward: 200 }
+                    { text: 'Appareil (Niv 3)', req: { family: 'A', level: 3 }, reward: 100 },
+                    { text: 'Objectif (Niv 3)', req: { family: 'B', level: 3 }, reward: 150 },
+                    { text: 'Appareil (Niv 4)', req: { family: 'A', level: 4 }, reward: 200 }
                 ]
             },
             2: {
                 mentor: 'Prof. Elena',
                 avatar: '👩‍🏫',
                 missions: [
-                    { text: 'Passons aux choses sérieuses. Un grand objectif Zoom !', req: { family: 'B', level: 3 }, reward: 300 },
-                    { text: 'Trouve-moi un Trépied en aluminium !', req: { family: 'C', level: 2 }, reward: 300 },
-                    { text: 'Une pellicule diapo fera l\'affaire. (Niv 2)', req: { family: 'D', level: 2 }, reward: 400 }
+                    { text: 'Objectif (Niv 5)', req: { family: 'B', level: 5 }, reward: 300 },
+                    { text: 'Pellicule (Niv 5)', req: { family: 'C', level: 5 }, reward: 300 },
+                    { text: 'Téléphone (Niv 5)', req: { family: 'D', level: 5 }, reward: 400 }
                 ]
             },
             3: {
+                mentor: 'Prof. Dupont',
+                avatar: '👨‍🎨',
+                missions: [
+                    { text: 'Objectif (Niv 6)', req: { family: 'B', level: 6 }, reward: 500 },
+                    { text: 'Pellicule (Niv 6)', req: { family: 'C', level: 6 }, reward: 500 },
+                    { text: 'Téléphone (Niv 7)', req: { family: 'D', level: 7 }, reward: 600 }
+                ]
+            },
+            4: {
+                mentor: 'Directrice',
+                avatar: '👩‍💼',
+                missions: [
+                    { text: 'Appareil (Niv 8)', req: { family: 'A', level: 8 }, reward: 800 },
+                    { text: 'Objectif (Niv 8)', req: { family: 'B', level: 8 }, reward: 800 },
+                    { text: 'Pellicule (Niv 8)', req: { family: 'C', level: 8 }, reward: 900 }
+                ]
+            },
+            5: {
                 mentor: 'Examen Final',
                 avatar: '🎓',
                 missions: [
-                    { text: 'Prouve ta valeur ! Appareil Argentique Vintage (Niv 3)', req: { family: 'A', level: 3 }, reward: 1000 },
-                    { text: 'Et un Flash Cobra moderne ! (Niv 3)', req: { family: 'C', level: 3 }, reward: 1000 },
-                    { text: 'Enfin, un Ordinateur portable pour le traitement !', req: { family: 'E', level: 3 }, reward: 2000 }
+                    { text: 'Téléphone (Niv 9)', req: { family: 'D', level: 9 }, reward: 1200 },
+                    { text: 'Appareil (Niv 10)', req: { family: 'A', level: 10 }, reward: 1500 },
+                    { text: 'Objectif (Niv 10)', req: { family: 'B', level: 10 }, reward: 2000 }
                 ]
             }
         };
@@ -1556,13 +1574,21 @@ Partie</button>
 
                 if (mission.req.family === 'A') {
                     reqDiv.innerHTML = `<img src="assets/Famille_A/appareil_lvl${mission.req.level}.png?v=2" />`;
+                } else if (mission.req.family === 'B') {
+                    reqDiv.innerHTML = `<img src="assets/Famille_B/objectif_lvl${mission.req.level}.png" />`;
+                } else if (mission.req.family === 'C') {
+                    reqDiv.innerHTML = `<img src="assets/Famille_C/pellicule_lvl${mission.req.level}.png" />`;
+                } else if (mission.req.family === 'D') {
+                    reqDiv.innerHTML = `<img src="assets/Famille_D/telephone_lvl${mission.req.level}.png" />`;
                 } else {
-                    const nameParts = (itemNames[mission.req.family][mission.req.level - 1] || "Obj").split(" ");
+                    const nameParts = (itemNames[mission.req.family] && itemNames[mission.req.family][mission.req.level - 1] ? itemNames[mission.req.family][mission.req.level - 1] : "Obj").split(" ");
                     reqDiv.textContent = nameParts[0].substring(0, 2); // Fallback emoji/text
                     // Try to extract emoji from name
-                    const emojiMatch = itemNames[mission.req.family][mission.req.level - 1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}/gu);
-                    if (emojiMatch) {
-                        reqDiv.textContent = emojiMatch[0];
+                    if (itemNames[mission.req.family]) {
+                        const emojiMatch = itemNames[mission.req.family][mission.req.level - 1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}/gu);
+                        if (emojiMatch) {
+                            reqDiv.textContent = emojiMatch[0];
+                        }
                     }
                 }
 
@@ -1581,7 +1607,7 @@ Partie</button>
         }
 
         function checkMissionStatus() { console.log("checkMissionStatus called");
-            if (currentLevel > 3 || !levelsData[currentLevel]) return;
+            if (currentLevel > 5 || !levelsData[currentLevel]) return;
             const req = levelsData[currentLevel].missions[currentMissionIndex].req;
             const itemsOnGrid = document.querySelectorAll('.item');
             let hasItem = false;
@@ -1632,10 +1658,10 @@ Partie</button>
                     showLevelUp();
                 }
 
-                if (currentLevel > 3) {
-                    currentLevel = 3; // Max level reached
+                if (currentLevel > 5) {
+                    currentLevel = 5; // Max level reached
                     currentMissionIndex = 2;
-                    showMessage("Jeu Terminé ! Félicitations !");
+                    showMessage("Toutes les missions terminées !");
                 }
 
                 saveGame();
@@ -1709,6 +1735,11 @@ Partie</button>
                 const freeIndices = [2, 3, 4, 9, 10, 11, 16, 17, 18];
                 const burnedIndices = [1, 5, 8, 12, 15, 19, 23, 24, 25];
 
+                // Cases Spéciales
+                const papierIndices = [8, 12, 24];
+                const coffreIndices = [19, 25];
+                const sortieIndex = 62; // Dernière case en bas
+
                 for (let i = 0; i < gridSize; i++) {
                     const cell = cells[i];
                     if (freeIndices.includes(i)) {
@@ -1716,13 +1747,27 @@ Partie</button>
                     } else if (burnedIndices.includes(i)) {
                         cell.dataset.fogState = 'burned';
                         cell.classList.add('fog-burned');
-                        const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
-                        cell.appendChild(createItemElement('A', randomLevel, true));
+                        if (papierIndices.includes(i)) {
+                            cell.appendChild(createItemElement('PAPIER', 1, true));
+                        } else if (coffreIndices.includes(i)) {
+                            cell.appendChild(createItemElement('COFFRE', 1, true));
+                        } else {
+                            const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
+                            cell.appendChild(createItemElement('A', randomLevel, true));
+                        }
                     } else {
                         cell.dataset.fogState = 'solid';
                         cell.classList.add('fog-solid');
-                        const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
-                        cell.appendChild(createItemElement('A', randomLevel, true));
+                        if (i === sortieIndex) {
+                            cell.appendChild(createItemElement('SORTIE', 1, true));
+                        } else if (papierIndices.includes(i)) {
+                            cell.appendChild(createItemElement('PAPIER', 1, true));
+                        } else if (coffreIndices.includes(i)) {
+                            cell.appendChild(createItemElement('COFFRE', 1, true));
+                        } else {
+                            const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
+                            cell.appendChild(createItemElement('A', randomLevel, true));
+                        }
                     }
                 }
 
@@ -1764,6 +1809,58 @@ Partie</button>
                 item.dataset.locked = 'true';
                 contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📦</span>';
                 item.addEventListener('click', handleGeneratorClick);
+            } else if (family === "PAPIER" || family === "COFFRE" || family === "SORTIE") {
+                item.draggable = false;
+                item.dataset.locked = 'true';
+
+                if (family === "PAPIER") {
+                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📄</span>';
+                } else if (family === "COFFRE") {
+                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">🧰</span>';
+                } else if (family === "SORTIE") {
+                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">🚪</span>';
+                }
+
+                item.addEventListener('click', function(e) {
+                    if (this.parentElement.dataset.fogState !== 'clear') return;
+
+                    const myFamily = this.dataset.family;
+                    const cell = this.parentElement;
+
+                    if (myFamily === "PAPIER") {
+                        energy += 15;
+                        document.getElementById('ui-energy').textContent = energy;
+                        showMessage("+15 Énergie !");
+                        cell.removeChild(this);
+                        cell.dataset.unlocked = 'true';
+                        saveGame();
+                    } else if (myFamily === "COFFRE") {
+                        const numDrops = Math.floor(Math.random() * 3) + 2; // 2 to 4 items
+                        let spawned = 0;
+                        for (let i = 0; i < numDrops; i++) {
+                            const f = ['A', 'B', 'C'][Math.floor(Math.random() * 3)];
+                            const l = Math.floor(Math.random() * 2) + 1;
+                            if (spawnSpecificItem(f, l)) spawned++;
+                        }
+                        if (spawned > 0) {
+                            showMessage("Coffre ouvert !");
+                            cell.removeChild(this);
+                            cell.dataset.unlocked = 'true';
+                            saveGame();
+                        } else {
+                            showMessage("Plus de place pour le coffre !");
+                        }
+                    } else if (myFamily === "SORTIE") {
+                        if (currentLevel >= 5 && currentMissionIndex >= 2) {
+                            showMessage("Vous avez ouvert la Sortie ! Victoire !");
+                            cell.removeChild(this);
+                            cell.dataset.unlocked = 'true';
+                            saveGame();
+                        } else {
+                            showMessage("Finissez toutes les missions d'abord !");
+                        }
+                    }
+                });
             } else {
                 item.draggable = !isLocked;
 
@@ -1791,10 +1888,31 @@ Partie</button>
                     img.style.setProperty("background-image", "none", "important");
                     img.style.setProperty("border", "none", "important");
                     contentDiv.appendChild(img);
+                } else if (family === "B") {
+                    const img = document.createElement("img");
+                    img.src = `assets/Famille_B/objectif_lvl${level}.png`;
+                    img.style.setProperty("background-color", "transparent", "important");
+                    img.style.setProperty("background-image", "none", "important");
+                    img.style.setProperty("border", "none", "important");
+                    contentDiv.appendChild(img);
+                } else if (family === "C") {
+                    const img = document.createElement("img");
+                    img.src = `assets/Famille_C/pellicule_lvl${level}.png`;
+                    img.style.setProperty("background-color", "transparent", "important");
+                    img.style.setProperty("background-image", "none", "important");
+                    img.style.setProperty("border", "none", "important");
+                    contentDiv.appendChild(img);
+                } else if (family === "D") {
+                    const img = document.createElement("img");
+                    img.src = `assets/Famille_D/telephone_lvl${level}.png`;
+                    img.style.setProperty("background-color", "transparent", "important");
+                    img.style.setProperty("background-image", "none", "important");
+                    img.style.setProperty("border", "none", "important");
+                    contentDiv.appendChild(img);
                 } else {
                     const textSpan = document.createElement("span");
                     textSpan.className = "item-text";
-                    let nameParts = (itemNames[family][level - 1] || (family + " Lvl " + level)).split(" ");
+                    let nameParts = (itemNames[family] && itemNames[family][level - 1] ? itemNames[family][level - 1] : (family + " Lvl " + level)).split(" ");
                     if (nameParts.length > 1) {
                         textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
                     } else {
@@ -2079,8 +2197,16 @@ Partie</button>
 
         function handleGeneratorClick(e) {
             if (energy > 0) {
+                // Determine drop family based on progression
+                let possibleFamilies = ['A'];
+                if (currentLevel >= 2) possibleFamilies.push('B');
+                if (currentLevel >= 3) possibleFamilies.push('C');
+                if (currentLevel >= 4) possibleFamilies.push('D');
+
+                const randomFamily = possibleFamilies[Math.floor(Math.random() * possibleFamilies.length)];
+
                 // Try to spawn first
-                const spawned = spawnSpecificItem('A', 1);
+                const spawned = spawnSpecificItem(randomFamily, 1);
                 if (spawned) {
                     energy--;
                     document.getElementById('ui-energy').textContent = energy;
