@@ -841,8 +841,9 @@
 
         /* Save Slots Styles */
         .save-slot {
-            background: rgba(0,0,0,0.7);
-            border: 2px solid #ecf0f1;
+            background: transparent;
+            border: none;
+            width: 30%;
             border-radius: 10px;
             padding: 15px;
             display: flex;
@@ -864,25 +865,30 @@
             gap: 10px;
         }
         .save-slot-btn {
+            background-color: #2c3e50;
+            color: #ecf0f1;
             padding: 8px 12px;
-            border-radius: 5px;
+            border-radius: 6px;
             border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             cursor: pointer;
             font-weight: bold;
+            transition: background-color 0.2s, color 0.2s;
             flex: 1;
         }
+        .save-slot-btn:hover {
+            background-color: #f39c12;
+            color: #fff;
+        }
         .btn-play {
-            background-color: #27ae60;
-            color: white;
+            /* Inherits .save-slot-btn styles */
         }
         .btn-delete {
-            background-color: #e74c3c;
-            color: white;
+            /* Inherits .save-slot-btn styles */
             flex: 0.3;
         }
         .btn-new {
-            background-color: #3498db;
-            color: white;
+            /* Inherits .save-slot-btn styles */
             width: 100%;
         }
         /* New App Container and Layout Styles */
@@ -925,46 +931,45 @@
 </div>
 
     <!-- Écran de Démarrage -->
-    <div id="start-menu" class="overlay-menu">
-        <div class="menu-box">
+    <div id="start-menu" class="overlay-menu" style="background-image: url('assets/arriere_plan/fond_slot.png'); background-size: cover; background-position: center; width: 100vw; height: 100dvh; display: flex; justify-content: center; align-items: center;">
+        <div class="menu-box" style="background: transparent; border: none; box-shadow: none;">
             <div class="menu-title">Merge & Snap</div>
-            <div id="save-slots-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+            <div id="save-slots-container" style="display: flex; flex-direction: row; justify-content: space-around; width: 90%; height: 60%; margin-top: 20px;">
                 <!-- Slots will be generated here -->
             </div>
         </div>
     </div>
 
     <!-- Écran Création Personnage -->
-    <div id="character-creator" class="overlay-menu" style="display: none;">
-        <div class="menu-box">
-            <div class="menu-title">Nouveau Profil</div>
-            <input type="text" id="player-name-input" class="menu-input" placeholder="Nom du Photographe" />
-            <div class="gender-select">
-                <button class="gender-btn male" onclick="selectGender('male', this)">Homme</button>
-                <button class="gender-btn female" onclick="selectGender('female', this)">Femme</button>
-            </div>
+    <div id="character-creator" style="display: none; width: 100vw; height: 100dvh; background: #1a252f; color: white; flex-direction: column; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; z-index: 50;">
+        <h2>Créez votre Photographe</h2>
+        <input type="text" id="player-name-input" placeholder="Votre Nom" style="padding: 10px; margin: 10px; border-radius: 5px; border: none;">
 
-            <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Cheveux</span>
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Haut</span>
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Bas</span>
-                    <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-            </div>
-
-            <button class="menu-btn" style="padding: 15px 30px; font-size: 18px;" onclick="validateCreation()">Valider mon Héros</button>
-            <button class="menu-btn menu-btn-secondary" style="margin-top: 10px;" onclick="backToMenu()">Retour</button>
+        <div class="gender-select" style="display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px;">
+            <button class="gender-btn male" onclick="selectGender('male', this)" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #2980b9;">Homme</button>
+            <button class="gender-btn female" onclick="selectGender('female', this)" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #8e44ad;">Femme</button>
         </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+                <span style="color: white; font-weight: bold;">Cheveux</span>
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+                <span style="color: white; font-weight: bold;">Haut</span>
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+                <span style="color: white; font-weight: bold;">Bas</span>
+                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+            </div>
+        </div>
+
+        <button style="background-color: #f39c12; color: #fff; padding: 15px 30px; font-size: 18px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);" onclick="validateCreation()">VALIDER MON HÉROS</button>
+        <button class="menu-btn menu-btn-secondary" style="margin-top: 10px; background: transparent; border: none; text-decoration: underline; color: #bdc3c7;" onclick="backToMenu()">Retour</button>
     </div>
 
     <div id="game-ui" class="app-container" style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;">
@@ -1189,7 +1194,7 @@
                 } else {
                     slotDiv.innerHTML = `
                         <div class="save-slot-title">Slot ${i}</div>
-                        <button class="save-slot-btn btn-new" onclick="newGameSlot(${i})">Nouvelle Partie ➕</button>
+                        <button class="save-slot-btn btn-new" onclick="newGameSlot(${i})">Nouvelle Partie</button>
                     `;
                 }
                 container.appendChild(slotDiv);
@@ -1217,6 +1222,7 @@
 
         function newGameSlot(slot) {
             currentSlot = slot;
+            // Hide start menu and show character creator
             document.getElementById('start-menu').style.display = 'none';
             document.getElementById('character-creator').style.display = 'flex';
         }
