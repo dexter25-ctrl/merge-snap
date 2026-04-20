@@ -737,16 +737,21 @@
         }
 
         .menu-box {
-            display: flex;
-            flex-direction: column !important; /* EMPILÉ VERTICALEMENT */
-            justify-content: space-evenly;
-            align-items: center;
-            width: 60%; /* La largeur du meuble en bois */
-            height: 65%; /* La hauteur des 3 casiers */
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-evenly !important; /* Répartit les 3 slots équitablement */
+            align-items: center !important;
+            width: 60% !important; /* Ajuste selon la largeur du meuble */
+            height: 61% !important; /* Ajuste selon la hauteur totale des 3 étagères */
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            margin: 0 auto;
+            margin: 0 auto !important;
+            position: absolute !important;
+            top: 55% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: 10;
         }
 
         .menu-title {
@@ -836,12 +841,11 @@
 
         /* Save Slots Styles */
         .save-slot {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 30%;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
+            height: 30% !important; /* Occupe un tiers de la menu-box */
             background: transparent !important;
             border: none !important;
         }
@@ -849,6 +853,7 @@
             font-size: 18px;
             font-weight: bold;
             color: #ecf0f1;
+            display: none !important;
         }
         .save-slot-info {
             font-size: 14px;
@@ -860,16 +865,15 @@
             gap: 10px;
         }
         .save-slot button, .start-menu button {
-            background-color: #f8f9fa !important; /* Blanc cassé très clair */
-            color: #2c3e50 !important; /* Texte gris anthracite */
-            border: 1px solid #e0e0e0 !important;
-            border-radius: 12px !important;
-            padding: 12px 24px !important;
-            font-weight: bold;
-            font-family: 'Arial', sans-serif;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important; /* Ombre très douce */
+            border-radius: 4px !important; /* Presque carré pour rentrer dans le casier */
+            border: none !important;
+            padding: 8px 16px !important; /* Compact pour ne pas dépasser */
+            font-size: 14px !important;
+            font-weight: bold !important;
+            font-family: 'Courier New', monospace !important; /* Style industriel/photo */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
             transition: all 0.2s ease;
-            margin: 5px;
+            margin: 0 5px !important; /* Espace entre Jouer et Supprimer */
             cursor: pointer;
         }
 
@@ -880,14 +884,20 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
         }
 
-        .btn-play {
-            flex: 1;
+        .btn-play, .btn-delete {
+            background-color: #bdc3c7 !important;
+            color: #2c3e50 !important;
         }
+
         .btn-delete {
-            flex: 0.3;
+            background-color: #e74c3c !important; /* Rouge discret pour supprimer */
+            color: #fff !important;
         }
+
         .btn-new {
-            width: 100%;
+            background-color: #f39c12 !important;
+            color: #fff !important;
+            text-transform: uppercase;
         }
         /* New App Container and Layout Styles */
         .app-container { display: flex; flex-direction: column; height: 100dvh; width: 100vw; overflow: hidden; }
