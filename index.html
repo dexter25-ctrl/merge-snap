@@ -81,9 +81,21 @@
             position: relative;
         }
 
-        .header-item-lvl,
-        .header-item-gems {
+        .header-item-lvl {
             display: none;
+        }
+
+        .header-item-gems {
+            display: flex;
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            color: #fff;
+            border-radius: 20px;
+            padding: 6px 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            font-weight: 900;
+            border: 1px solid #1abc9c;
+            align-items: center;
+            font-size: 16px;
         }
 
         .header-item-energy {
@@ -569,38 +581,97 @@
         /* Missions & Validation */
         #mission-area {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 5px;
-            height: 80px;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            padding: 25px 10px 10px 10px;
+            /* Space for the client head on top */
             box-sizing: border-box;
             background: transparent;
-            width: 100%;
-            max-width: 500px;
+            border: none;
         }
 
         .mission-card {
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+            border: 2px solid #bdc3c7;
+            border-radius: 12px;
+            padding: 10px 5px 5px 5px;
+            text-align: center;
+            width: 85px;
+            /* Compact */
+            height: 90px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+            /* Push items down */
             align-items: center;
-            justify-content: center;
-            background: #fff;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            padding: 5px;
-            width: 70px;
-            height: 70px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-            opacity: 0.6;
-            transition: all 0.3s;
         }
 
         .mission-card.active {
-            border-color: #3498db;
-            opacity: 1;
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
-            transform: scale(1.05);
+            border-color: #f39c12;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .mission-card.active-validable {
+            border-color: #2ecc71;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+
+        .mission-card-client {
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            border: 2px solid #bdc3c7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .mission-card.active .mission-card-client {
+            border-color: #f39c12;
+        }
+
+        .mission-card-req {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .mission-card-req img {
+            max-width: 45px;
+            max-height: 45px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+        }
+
+        .mission-card-reward {
+            background: #f1c40f;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid #d4ac0d;
+            margin-bottom: -12px;
+            /* Hang below the card */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
         }
 
         .mission-card.active-validable {
@@ -1374,19 +1445,19 @@
 
     <!-- Écran Création Personnage -->
     <div id="character-creator"
-        style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing.png'); background-size: cover; background-position: center; color: white; flex-direction: column; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; z-index: 50;">
+        style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing_3d.png'); background-size: cover; background-position: center bottom; color: white; flex-direction: column; justify-content: flex-start; align-items: center; position: fixed; top: 0; left: 0; z-index: 50; padding-top: 5vh; box-sizing: border-box;">
         <h2>Créez votre Photographe</h2>
 
         <div id="character-display"
-            style="position: relative; width: 100%; height: 50%; max-height: 400px; margin-bottom: 20px;">
+            style="position: relative; width: 100%; height: 50vh; max-height: 450px; margin-bottom: 20px; perspective: 1000px;">
             <img id="body-layer" src="assets/decor_perso/femme_dressing.png"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;">
+                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 1; transform-origin: bottom center;">
             <img id="bottom-layer" src=""
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 10;">
+                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 10; transform-origin: bottom center;">
             <img id="top-layer" src=""
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 20;">
+                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 20; transform-origin: bottom center;">
             <img id="hair-layer" src=""
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 30;">
+                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 30; transform-origin: bottom center;">
         </div>
 
         <input type="text" id="player-name-input" placeholder="Votre Nom"
@@ -1443,24 +1514,26 @@
                 <div class="header-item header-item-lvl" id="ui-level">
                     LVL 1
                 </div>
+                <div class="header-item header-item-gems">
+                    <img src="assets/diamond_icon.png"
+                        style="width: 24px; height: 24px; margin-right: 5px; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));" />
+                    <span id="ui-gems">18</span>
+                    <button class="btn-plus btn-plus-gems" style="margin-left: 5px;">+</button>
+                </div>
                 <div class="header-item header-item-energy">
                     <div class="energy-bar-container">
                         <div class="energy-bar-fill" id="ui-energy-fill"></div>
                         <div class="energy-text"><span class="header-icon">⚡</span> <span id="ui-energy">457</span>/100
                         </div>
                     </div>
-                    <button class="btn-plus btn-plus-energy">+</button>
+                    <button class="btn-plus btn-plus-energy" style="margin-left: 5px;">+</button>
                     <div id="ui-energy-timer"
                         style="position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">
                         MAX</div>
                 </div>
                 <div class="header-item header-item-coins">
                     <span class="header-icon">🪙</span> <span id="ui-coins">427</span>
-                    <button class="btn-plus btn-plus-coins">+</button>
-                </div>
-                <div class="header-item header-item-gems">
-                    <span class="header-icon">💎</span> <span id="ui-gems">18</span>
-                    <button class="btn-plus btn-plus-gems">+</button>
+                    <button class="btn-plus btn-plus-coins" style="margin-left: 5px;">+</button>
                 </div>
             </div>
         </header>
