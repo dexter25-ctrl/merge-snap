@@ -842,8 +842,10 @@
         /* Save Slots Styles */
         .save-slot {
             display: flex !important;
+            flex-direction: column !important;
             justify-content: center !important;
             align-items: center !important;
+            transform: translateY(-8px) !important;
             width: 100% !important;
             height: 30% !important; /* Occupe un tiers de la menu-box */
             background: transparent !important;
@@ -855,9 +857,23 @@
             color: #ecf0f1;
             display: none !important;
         }
+        .save-name {
+            text-align: center !important;
+            width: 100% !important;
+            margin: 0 0 8px 0 !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
         .save-slot-info {
             font-size: 14px;
             color: #bdc3c7;
+        }
+        .save-actions {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 6px !important;
         }
         .save-slot-actions {
             display: flex;
@@ -905,8 +921,9 @@
             text-align: center;
             white-space: normal !important; /* Permet le retour à la ligne */
             font-size: 12px !important;
-            background-color: #f39c12 !important;
-            color: #fff !important;
+            background-color: #F8F9FA !important; /* Blanc perle */
+            color: #2C3E50 !important; /* Texte gris anthracite foncé */
+            border: 1px solid #ddd !important;
             text-transform: uppercase;
         }
         .btn-new {
@@ -1208,8 +1225,8 @@
                 if (saved) {
                     const data = JSON.parse(saved);
                     slotDiv.innerHTML = `
-                        <p class="save-name" style="margin: 0 0 5px 0; font-weight: bold; color: #fff;">${data.name || 'Inconnu'}</p>
-                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <p class="save-name">${data.name || 'Inconnu'}</p>
+                        <div class="save-actions">
                             <button class="save-slot-btn btn-play" onclick="playSlot(${i})">Jouer</button>
                             <button class="save-slot-btn btn-delete" onclick="deleteSlot(${i})">🗑️</button>
                         </div>
