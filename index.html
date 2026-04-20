@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
-        body { margin: 0; padding: 0; overflow: hidden; background-color: #f4ece1; }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f4ece1;
+        }
 
         /* Clôture en bois blanc cartoon */
         .fence {
@@ -20,7 +26,7 @@
                 /* Piquets verticaux */
                 repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 55px, #d0d0d0 58px, transparent 58px, transparent 80px);
             z-index: -1;
-            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.1));
         }
 
         .fence::before {
@@ -32,7 +38,8 @@
             height: 10px;
             /* Pointes des piquets */
             background: repeating-linear-gradient(to right, transparent 0, transparent 40px, #fdfdfd 40px, #f0f0f0 49px, #d0d0d0 58px, transparent 58px, transparent 80px);
-            clip-path: polygon(40px 10px, 49px 0, 58px 10px, 120px 10px, 129px 0, 138px 10px); /* Simplifié, l'effet sera donné par le repeating */
+            clip-path: polygon(40px 10px, 49px 0, 58px 10px, 120px 10px, 129px 0, 138px 10px);
+            /* Simplifié, l'effet sera donné par le repeating */
         }
 
 
@@ -49,9 +56,10 @@
 
             gap: 10px;
             margin-top: 10px;
-            background-color: #2c3e50; /* Gris très foncé / Chic */
+            background-color: #2c3e50;
+            /* Gris très foncé / Chic */
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 10;
             margin-left: auto;
@@ -65,7 +73,7 @@
             border-radius: 8px;
             font-weight: bold;
             font-size: 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             position: relative;
         }
 
@@ -101,12 +109,23 @@
             font-size: 14px;
             cursor: pointer;
             margin-left: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-plus-energy { background-color: #2980b9; color: white; }
-        .btn-plus-coins { background-color: #f39c12; color: black; }
-        .btn-plus-gems { background-color: #732d91; color: white; }
+        .btn-plus-energy {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .btn-plus-coins {
+            background-color: #f39c12;
+            color: black;
+        }
+
+        .btn-plus-gems {
+            background-color: #732d91;
+            color: white;
+        }
 
         .header-icon {
             margin-right: 6px;
@@ -126,7 +145,7 @@
             gap: 10px;
             margin-top: 10px;
             margin-left: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: white;
             font-weight: bold;
         }
@@ -137,7 +156,8 @@
             bottom: 0;
             width: 50px;
             height: 60px;
-            background: #ccc; /* Placeholder for character */
+            background: #ccc;
+            /* Placeholder for character */
             border-radius: 25px 25px 0 0;
             border: 2px solid #fff;
             border-bottom: none;
@@ -146,7 +166,8 @@
         }
 
         .recipe-avatar::after {
-            content: '🧔'; /* King/Character emoji */
+            content: '🧔';
+            /* King/Character emoji */
             font-size: 40px;
             position: absolute;
             bottom: -5px;
@@ -163,14 +184,15 @@
             top: -10px;
             right: 10px;
             border: 2px solid #ff8c00;
-            box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
         }
 
         .recipe-items {
             display: flex;
             gap: 5px;
-            margin-left: 30px; /* Space for avatar */
-            background: rgba(255,255,255,0.4);
+            margin-left: 30px;
+            /* Space for avatar */
+            background: rgba(255, 255, 255, 0.4);
             padding: 5px;
             border-radius: 8px;
         }
@@ -185,21 +207,24 @@
             justify-content: center;
             align-items: center;
             font-size: 18px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Grille Principale */
         .studio-container {
-            background: #fdfaf3; /* Beige très clair / bois clair */
+            background: #fdfaf3;
+            /* Beige très clair / bois clair */
             padding: 8px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 0 4px #e8dcc8;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 4px #e8dcc8;
             margin-top: 15px;
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 400px; /* Adjust max width for mobile */
-            height: auto; /* Allow content to dictate height */
+            max-width: 400px;
+            /* Adjust max width for mobile */
+            height: auto;
+            /* Allow content to dictate height */
             box-sizing: border-box;
         }
 
@@ -207,17 +232,29 @@
         .studio-container::before {
             content: '';
             position: absolute;
-            top: -6px; left: -6px; right: -6px; bottom: -6px;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
             border-radius: 20px;
             border: 6px solid #d2b48c;
             background: transparent;
             z-index: -1;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
 
 
-        .cell { position: relative !important; width: 100%; height: 100%; min-width: 0 !important; min-height: 0 !important; display: flex; justify-content: center; align-items: center; }
+        .cell {
+            position: relative !important;
+            width: 100%;
+            height: 100%;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         /* Items premium 3D */
         .item {
@@ -233,14 +270,14 @@
             user-select: none;
             transition: transform 0.1s;
             position: relative;
-            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
             box-sizing: border-box;
         }
 
         .item:active {
             cursor: grabbing;
 
-            filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.3));
 
         }
 
@@ -260,7 +297,7 @@
             left: 5px;
             right: 5px;
             height: 15px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
             border-radius: 6px 6px 10px 10px;
             pointer-events: none;
         }
@@ -272,11 +309,19 @@
             /* Daguerréotype: Boîte en bois */
             background: linear-gradient(135deg, #8b5a2b, #5c3a21);
             border: 2px solid #3d2616;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
+
         .item[data-family=\"A\"][data-level=\"1\"] .item-icon::before {
-            content: ''; position: absolute; top: 15px; left: 15px; width: 20px; height: 20px;
-            background: radial-gradient(circle, #333 30%, #666 40%, #222 50%); border-radius: 50%; border: 2px solid #daa520;
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #333 30%, #666 40%, #222 50%);
+            border-radius: 50%;
+            border: 2px solid #daa520;
         }
 
         .item[data-family="A"][data-level="2"] .item-icon {
@@ -285,9 +330,17 @@
             border-radius: 5px;
             border: 1px solid #000;
         }
+
         .item[data-family=\"A\"][data-level=\"2\"] .item-icon::before {
-            content: ''; position: absolute; top: 10px; left: 10px; width: 28px; height: 28px;
-            background: radial-gradient(circle, #000 20%, #444 40%, #111 60%); border-radius: 50%; border: 3px solid #bdc3c7;
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle, #000 20%, #444 40%, #111 60%);
+            border-radius: 50%;
+            border: 3px solid #bdc3c7;
         }
 
         .item[data-family="A"][data-level="3"] .item-icon {
@@ -296,9 +349,18 @@
             border-radius: 8px;
             box-shadow: inset 0 2px 0 #fff;
         }
+
         .item[data-family=\"A\"][data-level=\"3\"] .item-icon::before {
-            content: ''; position: absolute; top: 8px; left: 8px; width: 34px; height: 34px;
-            background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%); border-radius: 50%; border: 4px solid #bdc3c7; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 34px;
+            height: 34px;
+            background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%);
+            border-radius: 50%;
+            border: 4px solid #bdc3c7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         /* Famille B: Objectifs (Verre et métal noir) */
@@ -306,43 +368,73 @@
             border-radius: 50%;
             margin: auto;
         }
+
         .item[data-family="B"][data-level="1"] .item-icon {
-            width: 30px; height: 30px; margin-top: 10px;
+            width: 30px;
+            height: 30px;
+            margin-top: 10px;
             background: radial-gradient(circle at 30% 30%, #e0f7fa, #006064);
-            border: 4px solid #222; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 4px solid #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         .item[data-family="B"][data-level="2"] .item-icon {
-            width: 40px; height: 40px; margin-top: 5px;
+            width: 40px;
+            height: 40px;
+            margin-top: 5px;
             background: radial-gradient(circle at 30% 30%, #b2ebf2, #004d40);
-            border: 5px solid #111; box-shadow: 0 5px 8px rgba(0,0,0,0.3);
+            border: 5px solid #111;
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
         }
+
         .item[data-family="B"][data-level="3"] .item-icon {
-            width: 46px; height: 46px; margin-top: 2px;
+            width: 46px;
+            height: 46px;
+            margin-top: 2px;
             background: radial-gradient(circle at 40% 40%, #80deea, #000, #333);
-            border: 6px solid #0a0a0a; box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 0 5px #fff;
+            border: 6px solid #0a0a0a;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), inset 0 0 5px #fff;
         }
 
         /* Famille D: Consommables (Boîtes jaunes / pellicules) */
         .item[data-family="D"][data-level="1"] .item-icon {
             /* Pellicule noire */
             background: linear-gradient(to right, #111 20%, #333 50%, #111 80%);
-            border-radius: 4px; width: 25px; height: 40px; margin: 5px auto;
-            border-top: 4px solid #ccc; border-bottom: 4px solid #ccc;
+            border-radius: 4px;
+            width: 25px;
+            height: 40px;
+            margin: 5px auto;
+            border-top: 4px solid #ccc;
+            border-bottom: 4px solid #ccc;
         }
+
         .item[data-family="D"][data-level="2"] .item-icon {
             /* Boîte jaune Kodak-style */
             background: linear-gradient(135deg, #f1c40f, #f39c12);
-            border-radius: 4px; border: 1px solid #d35400;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+            border-radius: 4px;
+            border: 1px solid #d35400;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
         }
+
         .item[data-family=\"D\"][data-level=\"2\"] .item-icon::before {
-            content: 'Film'; position: absolute; top: 15px; left: 8px; color: #c0392b; font-weight: bold; font-size: 10px; font-family: sans-serif;
+            content: 'Film';
+            position: absolute;
+            top: 15px;
+            left: 8px;
+            color: #c0392b;
+            font-weight: bold;
+            font-size: 10px;
+            font-family: sans-serif;
         }
+
         .item[data-family="D"][data-level="3"] .item-icon {
             /* Carte SD Bleue */
             background: linear-gradient(135deg, #3498db, #2980b9);
-            width: 35px; height: 45px; margin: 2px auto;
-            border-radius: 4px; clip-path: polygon(0 0, 70% 0, 100% 15%, 100% 100%, 0 100%);
+            width: 35px;
+            height: 45px;
+            margin: 2px auto;
+            border-radius: 4px;
+            clip-path: polygon(0 0, 70% 0, 100% 15%, 100% 100%, 0 100%);
             border-left: 2px solid #74b9ff;
         }
 
@@ -351,7 +443,7 @@
             font-size: 38px;
             line-height: 50px;
             text-align: center;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
         }
 
         /* Feedback visuel de niveau (petits éclairs ou étoiles) */
@@ -361,10 +453,11 @@
             right: -2px;
             display: flex;
         }
+
         .level-star-icon {
             color: #ffd700;
             font-size: 12px;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8));
             margin-left: -4px;
         }
 
@@ -391,7 +484,7 @@
             justify-content: space-between;
             align-items: center;
             width: 300px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .panel-text {
@@ -414,7 +507,7 @@
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 #3a7a16, 0 6px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 0 #3a7a16, 0 6px 10px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -423,7 +516,7 @@
 
         .btn-green:active {
             transform: translateY(4px);
-            box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
 
@@ -451,7 +544,7 @@
             padding: 5px;
             width: 70px;
             height: 70px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
             opacity: 0.6;
             transition: all 0.3s;
@@ -507,13 +600,21 @@
             padding: 1px 4px;
             position: absolute;
             bottom: -5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         /* Confetti */
@@ -543,30 +644,63 @@
         }
 
         /* Niveau 1 : Frontière (Papier Brûlé) - On devine l'objet */
-        .fog-burned { position: relative; pointer-events: auto; }
-        .fog-burned::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: url('./assets/papier_brule.png') center/cover no-repeat !important;
-            border-radius: 8px; z-index: 5; pointer-events: none;
+        .fog-burned {
+            position: relative;
+            pointer-events: auto;
         }
-        .fog-burned img { filter: grayscale(50%) brightness(70%); z-index: 1; }
+
+        .fog-burned::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/papier_brule.png') center/cover no-repeat !important;
+            border-radius: 8px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .fog-burned img {
+            filter: grayscale(50%) brightness(70%);
+            z-index: 1;
+        }
 
         /* Niveau 2 : Inconnu (Vieux Papier) - Totalement caché */
-        .fog-solid { position: relative; pointer-events: none; }
-        .fog-solid::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: url('./assets/vieux_papier.png') center/cover no-repeat !important;
-            border-radius: 8px; z-index: 10; pointer-events: none;
+        .fog-solid {
+            position: relative;
+            pointer-events: none;
         }
-        .fog-solid img { display: none !important; }
+
+        .fog-solid::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('./assets/vieux_papier.png') center/cover no-repeat !important;
+            border-radius: 8px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .fog-solid img {
+            display: none !important;
+        }
 
         /* Backgrounds based on level */
         body.level-1 {
-            background: linear-gradient(to bottom, #d7ccc8, #a1887f); /* Old Paris Studio */
+            background: linear-gradient(to bottom, #d7ccc8, #a1887f);
+            /* Old Paris Studio */
         }
+
         body.level-1::before {
-            background: none; /* remove default clouds */
+            background: none;
+            /* remove default clouds */
         }
+
         body.level-1 .fence {
             background: repeating-linear-gradient(90deg, #5d4037, #5d4037 20px, transparent 20px, transparent 40px);
             height: 40px;
@@ -574,15 +708,19 @@
         }
 
         body.level-2 {
-            background: linear-gradient(to bottom, #bbdefb, #c8e6c9); /* Flowery street */
+            background: linear-gradient(to bottom, #bbdefb, #c8e6c9);
+            /* Flowery street */
         }
 
         body.level-3 {
-            background: linear-gradient(to bottom, #fff9c4, #ffcc80); /* Chic Exam Room */
+            background: linear-gradient(to bottom, #fff9c4, #ffcc80);
+            /* Chic Exam Room */
         }
+
         body.level-3::before {
             background: none;
         }
+
         body.level-3 .fence {
             display: none;
         }
@@ -592,19 +730,25 @@
         .spawn-highlight {
             position: relative;
         }
+
         .spawn-highlight::after {
             content: '⚡';
             position: absolute;
             top: -15px;
             right: -10px;
             font-size: 20px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
             animation: bounce 1s infinite alternate;
         }
 
         @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-5px); }
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-5px);
+            }
         }
 
         #message {
@@ -612,7 +756,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             color: #fff;
             padding: 10px 20px;
             border-radius: 20px;
@@ -630,7 +774,17 @@
 
         }
 
-        .item-text { pointer-events: none; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; text-align: center; position: relative; z-index: 1; }
+        .item-text {
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
 
         /* Inventaire Modal */
         #inventory-modal {
@@ -641,11 +795,12 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
-            max-height: 80vh; /* Permettre le scroll vertical */
+            max-height: 80vh;
+            /* Permettre le scroll vertical */
             background-color: #2c3e50;
             border: 2px solid silver;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
             z-index: 9999;
             padding: 15px;
             color: white;
@@ -654,11 +809,13 @@
         }
 
         #inventory-modal[style*="display: block"] {
-            display: flex !important; /* Force flex quand affiché */
+            display: flex !important;
+            /* Force flex quand affiché */
         }
 
         .inventory-content {
-            overflow-y: auto; /* Scroll vertical */
+            overflow-y: auto;
+            /* Scroll vertical */
             flex-grow: 1;
             padding-right: 5px;
         }
@@ -667,10 +824,12 @@
         .inventory-content::-webkit-scrollbar {
             width: 6px;
         }
+
         .inventory-content::-webkit-scrollbar-track {
             background: #1a252f;
             border-radius: 3px;
         }
+
         .inventory-content::-webkit-scrollbar-thumb {
             background: silver;
             border-radius: 3px;
@@ -699,15 +858,16 @@
 
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(8, 1fr); /* 8 colonnes */
+            grid-template-columns: repeat(8, 1fr);
+            /* 8 colonnes */
             gap: 4px;
         }
 
         .inventory-slot {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
             aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
@@ -724,7 +884,10 @@
         /* Menus Overlays */
         .overlay-menu {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: url('assets/arriere_plan/fond_slot.png');
             background-size: cover;
             background-position: center;
@@ -739,10 +902,13 @@
         .menu-box {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: space-evenly !important; /* Répartit les 3 slots équitablement */
+            justify-content: space-evenly !important;
+            /* Répartit les 3 slots équitablement */
             align-items: center !important;
-            width: 60% !important; /* Ajuste selon la largeur du meuble */
-            height: 61% !important; /* Ajuste selon la hauteur totale des 3 étagères */
+            width: 60% !important;
+            /* Ajuste selon la largeur du meuble */
+            height: 61% !important;
+            /* Ajuste selon la hauteur totale des 3 étagères */
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
@@ -758,7 +924,7 @@
             font-size: 28px;
             font-weight: 900;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .menu-btn {
@@ -770,7 +936,7 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             margin: 10px 0;
             width: 100%;
             box-sizing: border-box;
@@ -812,19 +978,42 @@
             color: white;
         }
 
-        .gender-btn.male { background-color: #2980b9; }
-        .gender-btn.female { background-color: #8e44ad; }
-        .gender-btn.selected { border-color: white;  }
+        .gender-btn.male {
+            background-color: #2980b9;
+        }
+
+        .gender-btn.female {
+            background-color: #8e44ad;
+        }
+
+        .gender-btn.selected {
+            border-color: white;
+        }
 
 
 
         @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
+
         .shake-animation {
             animation: shake 0.3s ease-in-out;
         }
@@ -847,66 +1036,81 @@
             align-items: center !important;
             transform: translateY(-8px) !important;
             width: 100% !important;
-            height: 30% !important; /* Occupe un tiers de la menu-box */
+            height: 30% !important;
+            /* Occupe un tiers de la menu-box */
             background: transparent !important;
             border: none !important;
         }
+
         .save-slot-title {
             font-size: 18px;
             font-weight: bold;
             color: #ecf0f1;
             display: none !important;
         }
+
         .save-name {
             text-align: center !important;
             width: 100% !important;
             margin: 0 0 8px 0 !important;
             font-weight: bold !important;
             color: #ffffff !important;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
+
         .save-slot-info {
             font-size: 14px;
             color: #bdc3c7;
         }
+
         .save-actions {
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             gap: 6px !important;
         }
+
         .save-slot-actions {
             display: flex;
             justify-content: space-between;
             gap: 10px;
         }
-        .save-slot button, .start-menu button {
-            border-radius: 4px !important; /* Presque carré pour rentrer dans le casier */
+
+        .save-slot button,
+        .start-menu button {
+            border-radius: 4px !important;
+            /* Presque carré pour rentrer dans le casier */
             border: none !important;
-            padding: 8px 16px !important; /* Compact pour ne pas dépasser */
+            padding: 8px 16px !important;
+            /* Compact pour ne pas dépasser */
             font-size: 14px !important;
             font-weight: bold !important;
-            font-family: 'Courier New', monospace !important; /* Style industriel/photo */
+            font-family: 'Courier New', monospace !important;
+            /* Style industriel/photo */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
             transition: all 0.2s ease;
-            margin: 0 5px !important; /* Espace entre Jouer et Supprimer */
+            margin: 0 5px !important;
+            /* Espace entre Jouer et Supprimer */
             cursor: pointer;
         }
 
         /* Effet au toucher/survol */
-        .save-slot button:active, .start-menu button:hover {
+        .save-slot button:active,
+        .start-menu button:hover {
             background-color: #ffffff !important;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
         }
 
-        .btn-play, .btn-delete {
+        .btn-play,
+        .btn-delete {
             background-color: #bdc3c7 !important;
             color: #2c3e50 !important;
         }
 
         .btn-delete {
-            background-color: #e74c3c !important; /* Rouge discret pour supprimer */
+            background-color: #e74c3c !important;
+            /* Rouge discret pour supprimer */
             color: #fff !important;
         }
 
@@ -919,177 +1123,348 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            white-space: normal !important; /* Permet le retour à la ligne */
+            white-space: normal !important;
+            /* Permet le retour à la ligne */
             font-size: 12px !important;
-            background-color: #F8F9FA !important; /* Blanc perle */
-            color: #2C3E50 !important; /* Texte gris anthracite foncé */
+            background-color: #F8F9FA !important;
+            /* Blanc perle */
+            color: #2C3E50 !important;
+            /* Texte gris anthracite foncé */
             border: 1px solid #ddd !important;
             text-transform: uppercase;
         }
+
         .btn-new {
             background-color: #f39c12 !important;
             color: #fff !important;
             text-transform: uppercase;
         }
+
         /* New App Container and Layout Styles */
-        .app-container { display: flex; flex-direction: column; height: 100dvh; width: 100vw; overflow: hidden; }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+        }
 
 
-       #grid-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; padding: 10px; width: 100%; box-sizing: border-box; }
+        #grid-area {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
 
-        .cell img { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; max-width: 85% !important; max-height: 85% !important; object-fit: contain !important; }
+        .cell img {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 85% !important;
+            max-height: 85% !important;
+            object-fit: contain !important;
+        }
 
-        #game-header, #mission-area, #game-footer { flex-shrink: 0; position: relative; z-index: 10; margin: 0; }
+        #game-header,
+        #mission-area,
+        #game-footer {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            margin: 0;
+        }
 
-       #grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)) !important; grid-template-rows: repeat(9, minmax(0, 1fr)) !important; gap: 2px; max-height: 100%; max-width: 100%; aspect-ratio: 7 / 9 !important; margin: 0 auto; }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+            grid-template-rows: repeat(9, minmax(0, 1fr)) !important;
+            gap: 2px;
+            max-height: 100%;
+            max-width: 100%;
+            aspect-ratio: 7 / 9 !important;
+            margin: 0 auto;
+        }
 
-#loading-screen { position: fixed; z-index: 999999 !important; top: 0; left: 0; width: 100vw; height: 100dvh; background: #000; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 10vh; transition: opacity 0.8s ease; }
-        .loading-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 1 !important; filter: none !important; }
-.film-strip-container { position: relative; z-index: 2; width: 80%; max-width: 400px; text-align: center; }
-        .film-strip-bar { position: relative; background: rgba(0,0,0,0.7); padding: 10px 0; border-radius: 4px; box-shadow: 0 0 30px rgba(0,0,0,0.5); overflow: hidden; }
-.film-perforations { height: 8px; background-image: radial-gradient(circle, #fff 40%, transparent 45%); background-size: 20px 20px; background-repeat: repeat-x; animation: movePerforations 0.5s linear infinite; opacity: 0.8; }
-.film-progress { height: 4px; background: #fff; width: 0%; margin: 5px 0; box-shadow: 0 0 15px #fff; animation: fillProgress 3s cubic-bezier(0.1, 0, 0.3, 1) forwards; }
-.loading-text { color: #fff; font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px; margin-top: 15px; text-shadow: 0 0 5px #fff; animation: blink 1s infinite; }
-@keyframes movePerforations { from { background-position: 0 0; } to { background-position: 20px 0; } }
-@keyframes fillProgress { 0% { width: 0%; } 100% { width: 100%; } }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-</style>
+        #loading-screen {
+            position: fixed;
+            z-index: 999999 !important;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 10vh;
+            transition: opacity 0.8s ease;
+        }
+
+        .loading-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 1 !important;
+            filter: none !important;
+        }
+
+        .film-strip-container {
+            position: relative;
+            z-index: 2;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .film-strip-bar {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 0;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .film-perforations {
+            height: 8px;
+            background-image: radial-gradient(circle, #fff 40%, transparent 45%);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+            animation: movePerforations 0.5s linear infinite;
+            opacity: 0.8;
+        }
+
+        .film-progress {
+            height: 4px;
+            background: #fff;
+            width: 0%;
+            margin: 5px 0;
+            box-shadow: 0 0 15px #fff;
+            animation: fillProgress 3s cubic-bezier(0.1, 0, 0.3, 1) forwards;
+        }
+
+        .loading-text {
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-top: 15px;
+            text-shadow: 0 0 5px #fff;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes movePerforations {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 20px 0;
+            }
+        }
+
+        @keyframes fillProgress {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div id="loading-screen">
-    <img src="assets/personnage_femme.png/femme_dem.png" alt="Loading" class="loading-bg">
-    <div class="film-strip-container">
-        <div class="film-strip-bar">
-            <div class="film-perforations"></div>
-            <div class="film-progress"></div>
-            <div class="film-perforations"></div>
+    <div id="loading-screen">
+        <img src="assets/personnage_femme.png/femme_dem.png" alt="Loading" class="loading-bg">
+        <div class="film-strip-container">
+            <div class="film-strip-bar">
+                <div class="film-perforations"></div>
+                <div class="film-progress"></div>
+                <div class="film-perforations"></div>
+            </div>
+            <p class="loading-text">DÉVELOPPEMENT EN COURS...</p>
         </div>
-        <p class="loading-text">DÉVELOPPEMENT EN COURS...</p>
     </div>
-</div>
 
     <!-- Écran de Démarrage -->
-    <div id="start-menu" class="overlay-menu" style="background-image: url('assets/arriere_plan/fond_slot.png'); background-size: cover; background-position: center; width: 100vw; height: 100dvh; display: flex; justify-content: center; align-items: center;">
+    <div id="start-menu" class="overlay-menu"
+        style="background-image: url('assets/arriere_plan/fond_slot.png'); background-size: cover; background-position: center; width: 100vw; height: 100dvh; display: flex; justify-content: center; align-items: center;">
         <div class="menu-box" style="background: transparent; border: none; box-shadow: none;">
             <!-- menu-title hidden to align properly with shelves -->
             <div class="menu-title" style="display: none;">Merge & Snap</div>
-            <div id="save-slots-container" style="display: flex; flex-direction: column; justify-content: space-evenly; width: 100%; height: 100%;">
+            <div id="save-slots-container"
+                style="display: flex; flex-direction: column; justify-content: space-evenly; width: 100%; height: 100%;">
                 <!-- Slots will be generated here -->
             </div>
         </div>
     </div>
 
     <!-- Écran Création Personnage -->
-    <div id="character-creator" style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing.png'); background-size: cover; background-position: center; color: white; flex-direction: column; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; z-index: 50;">
+    <div id="character-creator"
+        style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing.png'); background-size: cover; background-position: center; color: white; flex-direction: column; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; z-index: 50;">
         <h2>Créez votre Photographe</h2>
 
-        <div id="character-display" style="position: relative; width: 100%; height: 50%; max-height: 400px; margin-bottom: 20px;">
-            <img id="body-layer" src="assets/decor_perso/femme_dressing.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;">
-            <img id="bottom-layer" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 10;">
-            <img id="top-layer" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 20;">
-            <img id="hair-layer" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 30;">
+        <div id="character-display"
+            style="position: relative; width: 100%; height: 50%; max-height: 400px; margin-bottom: 20px;">
+            <img id="body-layer" src="assets/decor_perso/femme_dressing.png"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;">
+            <img id="bottom-layer" src=""
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 10;">
+            <img id="top-layer" src=""
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 20;">
+            <img id="hair-layer" src=""
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 30;">
         </div>
 
-        <input type="text" id="player-name-input" placeholder="Votre Nom" style="padding: 10px; margin: 10px; border-radius: 5px; border: none;">
+        <input type="text" id="player-name-input" placeholder="Votre Nom"
+            style="padding: 10px; margin: 10px; border-radius: 5px; border: none;">
 
-        <div class="gender-select" style="display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px;">
-            <button class="gender-btn male" onclick="selectGender('homme', this)" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #2980b9;">Homme</button>
-            <button class="gender-btn female" onclick="selectGender('femme', this)" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #8e44ad;">Femme</button>
+        <div class="gender-select"
+            style="display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px;">
+            <button class="gender-btn male" onclick="selectGender('homme', this)"
+                style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #2980b9;">Homme</button>
+            <button class="gender-btn female" onclick="selectGender('femme', this)"
+                style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #8e44ad;">Femme</button>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
                 <span style="color: white; font-weight: bold;">Cheveux</span>
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
                 <span style="color: white; font-weight: bold;">Haut</span>
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
                 <span style="color: white; font-weight: bold;">Bas</span>
-                <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
+                <button
+                    style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
             </div>
         </div>
 
-        <button style="background-color: #f39c12; color: #fff; padding: 15px 30px; font-size: 18px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);" onclick="validateCreation()">VALIDER MON HÉROS</button>
-        <button class="menu-btn menu-btn-secondary" style="margin-top: 10px; background: transparent; border: none; text-decoration: underline; color: #bdc3c7;" onclick="backToMenu()">Retour</button>
+        <button
+            style="background-color: #f39c12; color: #fff; padding: 15px 30px; font-size: 18px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"
+            onclick="validateCreation()">VALIDER MON HÉROS</button>
+        <button class="menu-btn menu-btn-secondary"
+            style="margin-top: 10px; background: transparent; border: none; text-decoration: underline; color: #bdc3c7;"
+            onclick="backToMenu()">Retour</button>
     </div>
 
-    <div id="game-ui" class="app-container" style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;">
-    <div class="fence"></div>
-    <header id="game-header">
-        <div id="header">
-            <div class="header-item header-item-lvl" id="ui-level">
-                LVL 1
+    <div id="game-ui" class="app-container"
+        style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;">
+        <div class="fence"></div>
+        <header id="game-header">
+            <div id="header">
+                <div class="header-item header-item-lvl" id="ui-level">
+                    LVL 1
+                </div>
+                <div class="header-item header-item-energy">
+                    <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
+                    <button class="btn-plus btn-plus-energy">+</button>
+                    <div id="ui-energy-timer"
+                        style="position: absolute; bottom: -18px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">
+                        MAX</div>
+                </div>
+                <div class="header-item header-item-coins">
+                    <span class="header-icon">💰</span> <span id="ui-coins">427</span>
+                    <button class="btn-plus btn-plus-coins">+</button>
+                </div>
+                <div class="header-item header-item-gems">
+                    <span class="header-icon">💎</span> <span id="ui-gems">18</span>
+                    <button class="btn-plus btn-plus-gems">+</button>
+                </div>
             </div>
-            <div class="header-item header-item-energy">
-                <span class="header-icon">⚡</span> <span id="ui-energy">457</span>
-                <button class="btn-plus btn-plus-energy">+</button>
-                <div id="ui-energy-timer" style="position: absolute; bottom: -18px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #2c3e50; font-weight: bold; text-shadow: 0px 0px 2px white;">MAX</div>
-            </div>
-            <div class="header-item header-item-coins">
-                <span class="header-icon">💰</span> <span id="ui-coins">427</span>
-                <button class="btn-plus btn-plus-coins">+</button>
-            </div>
-            <div class="header-item header-item-gems">
-                <span class="header-icon">💎</span> <span id="ui-gems">18</span>
-                <button class="btn-plus btn-plus-gems">+</button>
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Dialog & Mission Zone -->
-    <section id="mission-area"></section>
+        <!-- Dialog & Mission Zone -->
+        <section id="mission-area"></section>
 
-    <!-- Confetti Container -->
-    <div class="confetti-container" id="confetti"></div>
+        <!-- Confetti Container -->
+        <div class="confetti-container" id="confetti"></div>
 
-    <!-- Grille de Jeu -->
-    <main id="grid-area">
-        <div class="studio-container">
-            <div class="grid" id="grid">
-                <!-- Cellules générées ici -->
+        <!-- Grille de Jeu -->
+        <main id="grid-area">
+            <div class="studio-container">
+                <div class="grid" id="grid">
+                    <!-- Cellules générées ici -->
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!-- Bottom Controls (Inventory) -->
-    <footer id="game-footer">
-        <div class="bottom-controls" id="bottom-controls">
-            <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-                📦 <br> <span style="font-size: 10px;">Stock</span>
-            </button>
-        </div>
-    </footer>
-
-    <!-- Inventory Modal -->
-    <div id="inventory-modal">
-        <div class="inventory-header">
-            <span>📦 Stockage Studio</span>
-            <button class="inventory-close" onclick="closeInventory()">X</button>
-        </div>
-        <div class="inventory-content">
-            <div class="inventory-grid" id="inventory-grid">
-                <!-- 160 slots seront générés en JS -->
+        <!-- Bottom Controls (Inventory) -->
+        <footer id="game-footer">
+            <div class="bottom-controls" id="bottom-controls">
+                <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+                    📦 <br> <span style="font-size: 10px;">Stock</span>
+                </button>
             </div>
+        </footer>
+
+        <!-- Inventory Modal -->
+        <div id="inventory-modal">
+            <div class="inventory-header">
+                <span>📦 Stockage Studio</span>
+                <button class="inventory-close" onclick="closeInventory()">X</button>
+            </div>
+            <div class="inventory-content">
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- 160 slots seront générés en JS -->
+                </div>
+            </div>
+            <button id="buy-slots-btn" onclick="buyInventorySlots()"
+                style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
+                +8 cases (100 💎)</button>
         </div>
-        <button id="buy-slots-btn" onclick="buyInventorySlots()" style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter +8 cases (100 💎)</button>
+
+        <div id="message"></div>
+
+        <button onclick="localStorage.clear(); window.location.reload();"
+            style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄
+            Reset Save</button>
+
+
     </div>
 
-    <div id="message"></div>
-
-    <button onclick="localStorage.clear(); window.location.reload();" style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄 Reset Save</button>
-
-
-    </div>
-
-        <script>
+    <script>
         const gridElement = document.getElementById('grid');
         const cols = 7;
         const rows = 9;
@@ -1100,14 +1475,14 @@
 
 
 
-        window.buyInventorySlots = function() {
+        window.buyInventorySlots = function () {
             if (gems >= 100) {
                 gems -= 100;
                 document.getElementById('ui-gems').textContent = gems;
 
                 const invGrid = document.getElementById('inventory-grid');
                 const currentCount = document.querySelectorAll('.inventory-slot').length;
-                for(let i=0; i<8; i++) {
+                for (let i = 0; i < 8; i++) {
                     const slot = document.createElement('div');
                     slot.className = 'inventory-slot';
                     slot.dataset.index = currentCount + i;
@@ -1126,7 +1501,7 @@
 
         function initInventory() {
             const invGrid = document.getElementById('inventory-grid');
-            for(let i=0; i<inventorySize; i++) {
+            for (let i = 0; i < inventorySize; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'inventory-slot';
                 slot.dataset.index = i;
@@ -1139,17 +1514,17 @@
         // --- CLICK TO MOVE LOGIC ---
         let isInventoryOpen = false;
 
-        window.openInventory = function() {
+        window.openInventory = function () {
             var modal = document.getElementById('inventory-modal');
-            if(modal) {
+            if (modal) {
                 modal.style.display = 'flex';
                 isInventoryOpen = true;
             }
         };
 
-        window.closeInventory = function() {
+        window.closeInventory = function () {
             var modal = document.getElementById('inventory-modal');
-            if(modal) {
+            if (modal) {
                 modal.style.display = 'none';
                 isInventoryOpen = false;
             }
@@ -1260,7 +1635,7 @@ Partie</button>
 
             // On s'assure que la grille est affichée
             const gridEl = document.getElementById('grid');
-            if(gridEl) { gridEl.style.display = 'grid'; }
+            if (gridEl) { gridEl.style.display = 'grid'; }
 
             startGame();
         }
@@ -1326,7 +1701,7 @@ Partie</button>
 
             // On s'assure que la grille est affichée
             const gridEl = document.getElementById('grid');
-            if(gridEl) { gridEl.style.display = 'grid'; }
+            if (gridEl) { gridEl.style.display = 'grid'; }
 
             startGame();
         }
@@ -1494,7 +1869,7 @@ Partie</button>
                 }
 
                 // Cap level if needed
-                if(currentLevel > 3) {
+                if (currentLevel > 3) {
                     currentLevel = 3;
                     currentMissionIndex = 2;
                 }
@@ -1548,7 +1923,7 @@ Partie</button>
 
             // Update Dialog/Mission
             const levelData = levelsData[currentLevel];
-            if(!levelData) return; // End of game
+            if (!levelData) return; // End of game
 
             const missionArea = document.getElementById('mission-area');
             missionArea.innerHTML = '';
@@ -1606,7 +1981,8 @@ Partie</button>
             checkMissionStatus();
         }
 
-        function checkMissionStatus() { console.log("checkMissionStatus called");
+        function checkMissionStatus() {
+            console.log("checkMissionStatus called");
             if (currentLevel > 5 || !levelsData[currentLevel]) return;
             const req = levelsData[currentLevel].missions[currentMissionIndex].req;
             const itemsOnGrid = document.querySelectorAll('.item');
@@ -1699,10 +2075,10 @@ Partie</button>
 
 
         const itemNames = {
-            'A': ['📦 Sténopé', '📻 Brownie', '📷 Télémétrique', '📸 Reflex 70s', '📹 Caméscope 90s', '🎥 Caméra Epaule', '📽️ Projo Super8', '📱 Smartphone Cam', '🚁 Drone 4K', '🛸 Capteur Stellaire'],
-            'B': ['🐙 Gorillapod', '🦯 Monopode', '🗼 Trépied Alu', '🏗️ Trépied Pro', '🦾 Trépied Carbone', '🗜️ Tête Fluide', '⚖️ Steadicam', '🕹️ Gimbal 1-axe', '🚁 Gimbal 3-axes', '🛰️ Drone Optique'],
-            'C': ['🪞 Daguerréotype', '🎞️ Rouleau 120', '🎞️ Cartouche 35mm', '🎞️ Diapositive', '💾 Disquette', '🗃️ Carte SD 1GB', '🗂️ Carte SD Pro', '💽 Disque Dur', '⚡ SSD Portable', '💎 Hologramme'],
-            'D': ['🧱 Brique', '📟 Clapet', '📱 Feature Phone', '📱 Smartphone V1', '📸 Smart Flash', '📱 Dual-Cam', '📱 Triple-Cam', '📖 Pliable', '📱 Ultra Capteur', '👁️ Optique Rétinienne']
+            'A': ['Appareil Lvl 1', 'Appareil Lvl 2', 'Appareil Lvl 3', 'Appareil Lvl 4', 'Appareil Lvl 5', 'Appareil Lvl 6', 'Appareil Lvl 7', 'Appareil Lvl 8', 'Appareil Lvl 9', 'Appareil Lvl 10'],
+            'B': ['Objectif Lvl 1', 'Objectif Lvl 2', 'Objectif Lvl 3', 'Objectif Lvl 4', 'Objectif Lvl 5', 'Objectif Lvl 6', 'Objectif Lvl 7', 'Objectif Lvl 8', 'Objectif Lvl 9', 'Objectif Lvl 10'],
+            'C': ['Pellicule Lvl 1', 'Pellicule Lvl 2', 'Pellicule Lvl 3', 'Pellicule Lvl 4', 'Pellicule Lvl 5', 'Pellicule Lvl 6', 'Pellicule Lvl 7', 'Pellicule Lvl 8', 'Pellicule Lvl 9', 'Pellicule Lvl 10'],
+            'D': ['Téléphone Lvl 1', 'Téléphone Lvl 2', 'Téléphone Lvl 3', 'Téléphone Lvl 4', 'Téléphone Lvl 5', 'Téléphone Lvl 6', 'Téléphone Lvl 7', 'Téléphone Lvl 8', 'Téléphone Lvl 9', 'Téléphone Lvl 10']
         };
         const families = ['A', 'B', 'C', 'D'];
 
@@ -1737,7 +2113,7 @@ Partie</button>
 
                 // Cases Spéciales
                 const papierIndices = [8, 12, 24];
-                const coffreIndices = [19, 25];
+                const coffreIndices = [19, 21, 25];
                 const sortieIndex = 62; // Dernière case en bas
 
                 for (let i = 0; i < gridSize; i++) {
@@ -1801,7 +2177,7 @@ Partie</button>
             item.dataset.family = family;
             item.dataset.level = level;
             item.dataset.locked = isLocked ? 'true' : 'false';
-            
+
             const contentDiv = document.createElement('div');
 
             if (family === "GENERATOR") {
@@ -1821,7 +2197,7 @@ Partie</button>
                     contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">🚪</span>';
                 }
 
-                item.addEventListener('click', function(e) {
+                item.addEventListener('click', function (e) {
                     if (this.parentElement.dataset.fogState !== 'clear') return;
 
                     const myFamily = this.dataset.family;
@@ -1835,12 +2211,31 @@ Partie</button>
                         cell.dataset.unlocked = 'true';
                         saveGame();
                     } else if (myFamily === "COFFRE") {
-                        const numDrops = Math.floor(Math.random() * 3) + 2; // 2 to 4 items
+                        const cellIndex = parseInt(cell.dataset.index);
+                        const adjacentIndices = [
+                            cellIndex - cols, // Top
+                            cellIndex + cols, // Bottom
+                            (cellIndex % cols !== 0) ? cellIndex - 1 : -1, // Left
+                            (cellIndex % cols !== cols - 1) ? cellIndex + 1 : -1 // Right
+                        ].filter(idx => idx >= 0 && idx < gridSize);
+
+                        const cells = document.querySelectorAll('.cell');
+                        let emptyAdjacents = adjacentIndices.map(idx => cells[idx]).filter(c => c && !c.hasChildNodes());
+
+                        const numDrops = Math.floor(Math.random() * 3) + 1; // 1 to 3 items
                         let spawned = 0;
                         for (let i = 0; i < numDrops; i++) {
-                            const f = ['A', 'B', 'C'][Math.floor(Math.random() * 3)];
+                            const f = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
                             const l = Math.floor(Math.random() * 2) + 1;
-                            if (spawnSpecificItem(f, l)) spawned++;
+
+                            if (emptyAdjacents.length > 0) {
+                                const targetCell = emptyAdjacents.pop();
+                                targetCell.appendChild(createItemElement(f, l, false));
+                                spawned++;
+                            } else {
+                                // Fallback to any empty cell
+                                if (spawnSpecificItem(f, l, false)) spawned++;
+                            }
                         }
                         if (spawned > 0) {
                             showMessage("Coffre ouvert !");
@@ -1923,8 +2318,8 @@ Partie</button>
 
                 if (!isLocked) {
                     item.addEventListener('dragstart', handleDragStart);
-                    item.addEventListener('touchstart', handleTouchStart, {passive: false});
-                    item.addEventListener('touchmove', handleTouchMove, {passive: false});
+                    item.addEventListener('touchstart', handleTouchStart, { passive: false });
+                    item.addEventListener('touchmove', handleTouchMove, { passive: false });
                     item.addEventListener('touchend', handleTouchEnd);
                     item.addEventListener('touchcancel', handleTouchEnd);
                 }
@@ -2037,7 +2432,7 @@ Partie</button>
             // Ensure the item is returned to a valid container temporarily so it isn't stuck on the body
             if (!draggedItem.parentElement || draggedItem.parentElement === document.body) {
                 if (sourceCell) {
-                     sourceCell.appendChild(draggedItem);
+                    sourceCell.appendChild(draggedItem);
                 }
             }
 
@@ -2073,7 +2468,7 @@ Partie</button>
 
         function handleDragEnter(e) {
             e.preventDefault();
-            if(this !== sourceCell) {
+            if (this !== sourceCell) {
                 this.style.background = '#e8dcc8';
                 this.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.1)';
             }
@@ -2129,7 +2524,7 @@ Partie</button>
         function processDropLogic(draggedItem, sourceCell, targetCell) {
             if (targetCell === sourceCell || !draggedItem) {
                 if (targetCell && targetCell !== sourceCell && !targetCell.classList.contains('cell')) {
-                     sourceCell.appendChild(draggedItem);
+                    sourceCell.appendChild(draggedItem);
                 }
                 return;
             }
@@ -2198,10 +2593,11 @@ Partie</button>
         function handleGeneratorClick(e) {
             if (energy > 0) {
                 // Determine drop family based on progression
-                let possibleFamilies = ['A'];
-                if (currentLevel >= 2) possibleFamilies.push('B');
-                if (currentLevel >= 3) possibleFamilies.push('C');
-                if (currentLevel >= 4) possibleFamilies.push('D');
+                let possibleFamilies = ['A', 'B']; // Phase 1
+                if (currentLevel >= 2) {
+                    possibleFamilies.push('C'); // Phase 2
+                    possibleFamilies.push('D');
+                }
 
                 const randomFamily = possibleFamilies[Math.floor(Math.random() * possibleFamilies.length)];
 
@@ -2223,7 +2619,7 @@ Partie</button>
         window.addEventListener('load', () => {
             const loader = document.getElementById('loading-screen');
             setTimeout(() => {
-                if(loader) {
+                if (loader) {
                     loader.style.opacity = '0';
                     setTimeout(() => loader.style.display = 'none', 800);
                 }
@@ -2232,4 +2628,5 @@ Partie</button>
 
     </script>
 </body>
+
 </html>
