@@ -1184,10 +1184,14 @@
         }
 
         #grid-area, .studio-container {
-            margin-top: 220px !important; /* Espace pour le décor du haut */
-            background: transparent !important; /* Enlever tout fond disgracieux */
-            z-index: 10 !important;
+            display: block !important;
+            visibility: visible !important;
             position: relative !important;
+            z-index: 20 !important;
+            margin-top: 250px !important; /* Calé sur la zone blanche dessinée */
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
 
@@ -1196,21 +1200,21 @@
         #game-footer, .controls {
             position: absolute !important;
             bottom: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            z-index: 100 !important;
+            left: 0 !important;
+            width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 10px !important;
-            width: auto !important;
+            align-items: center !important;
+            z-index: 100 !important;
+            margin: 0;
         }
 
         #grid {
             display: grid !important;
             grid-template-columns: repeat(7, 1fr) !important;
             grid-template-rows: repeat(9, 1fr) !important;
-            gap: 2px;
-            width: 95%;
+            gap: 2px !important;
+            width: 100% !important;
             max-width: 400px;
             margin: 0 auto;
             z-index: 101;
