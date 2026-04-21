@@ -1540,44 +1540,50 @@
         <div class="confetti-container" id="confetti"></div>
 
         <!-- Grille de Jeu -->
+
+
+        <div id="ui-level" style="display: none;"></div>
+        <span id="ui-energy-timer" style="display: none;"></span>
+
         <main id="grid-area">
-            <div class="studio-container">
-                <div class="grid" id="grid">
-                    <!-- Cellules générées ici -->
+            <main id="grid-area">
+                <div class="studio-container">
+                    <div class="grid" id="grid">
+                        <!-- Cellules générées ici -->
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
 
-        <!-- Bottom Controls (Inventory) -->
-        <footer id="game-footer">
-            <div class="bottom-controls" id="bottom-controls">
-                <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-                    📦 <br> <span style="font-size: 10px;">Stock</span>
-                </button>
-            </div>
-        </footer>
-
-        <!-- Inventory Modal -->
-        <div id="inventory-modal">
-            <div class="inventory-header">
-                <span>📦 Stockage Studio</span>
-                <button class="inventory-close" onclick="closeInventory()">X</button>
-            </div>
-            <div class="inventory-content">
-                <div class="inventory-grid" id="inventory-grid">
-                    <!-- 160 slots seront générés en JS -->
+            <!-- Bottom Controls (Inventory) -->
+            <footer id="game-footer">
+                <div class="bottom-controls" id="bottom-controls">
+                    <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+                        📦 <br> <span style="font-size: 10px;">Stock</span>
+                    </button>
                 </div>
+            </footer>
+
+            <!-- Inventory Modal -->
+            <div id="inventory-modal">
+                <div class="inventory-header">
+                    <span>📦 Stockage Studio</span>
+                    <button class="inventory-close" onclick="closeInventory()">X</button>
+                </div>
+                <div class="inventory-content">
+                    <div class="inventory-grid" id="inventory-grid">
+                        <!-- 160 slots seront générés en JS -->
+                    </div>
+                </div>
+                <button id="buy-slots-btn" onclick="buyInventorySlots()"
+                    style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
+                    +8 cases (100 💎)</button>
             </div>
-            <button id="buy-slots-btn" onclick="buyInventorySlots()"
-                style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
-                +8 cases (100 💎)</button>
-        </div>
 
-        <div id="message"></div>
+            <div id="message"></div>
 
-        <button onclick="localStorage.clear(); window.location.reload();"
-            style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄
-            Reset Save</button>
+            <button onclick="localStorage.clear(); window.location.reload();"
+                style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄
+                Reset Save</button>
 
 
     </div>
