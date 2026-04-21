@@ -1559,7 +1559,8 @@
                 📦 <br> <span style="font-size: 10px;">Stock</span>
             </button>
             <button onclick="localStorage.clear(); window.location.reload();"
-                style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄 Reset Save</button>
+                style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
+                Reset Save</button>
         </footer>
 
         <!-- Inventory Modal -->
@@ -2778,7 +2779,8 @@ Partie</button>
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            margin-top: 380px !important; /* Calage précis dans le carré blanc */
+            margin-top: 380px !important;
+            /* Calage précis dans le carré blanc */
             margin-left: auto !important;
             margin-right: auto !important;
             width: 85% !important;
@@ -2797,7 +2799,8 @@ Partie</button>
             border: 1px dashed rgba(0, 0, 0, 0.2) !important;
         }
 
-        .grid-cell img, .cell img {
+        .grid-cell img,
+        .cell img {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
@@ -2819,6 +2822,32 @@ Partie</button>
             align-items: center !important;
             gap: 20px !important;
             z-index: 10000 !important;
+        }
+
+        /* ---- SAUVETAGE DE LA GRILLE AU MILLIMÈTRE ---- */
+        #grid-area,
+        .studio-container {
+            position: absolute !important;
+            top: 38% !important;
+            /* ⬅️ HAUTEUR : Baisse ce chiffre pour MONTER la grille, augmente-le pour la DESCENDRE */
+            left: 50% !important;
+            /* Centre horizontalement */
+            transform: translateX(-50%) !important;
+            /* Ajustement parfait du centrage */
+            width: 88% !important;
+            /* ⬅️ LARGEUR : Ajuste pour que ça rentre dans ton dessin */
+            margin: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            z-index: 50 !important;
+        }
+
+        #grid {
+            display: grid !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: transparent !important;
         }
     </style>
 </body>
