@@ -2770,19 +2770,18 @@ Partie</button>
         /* --- FORÇAGE DE LA GRILLE --- */
         #grid-area,
         .studio-container {
-            position: absolute !important;
-            top: 38% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 85% !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+            z-index: 9999 !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            z-index: 9999 !important;
-            margin: 0 !important;
+            margin-top: 380px !important; /* Calage précis dans le carré blanc */
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 85% !important;
         }
 
         #grid {
