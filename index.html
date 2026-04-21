@@ -1292,7 +1292,7 @@
         }
 
         #grid {
-            display: grid;
+            display: grid !important;
             grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
             grid-template-rows: repeat(9, minmax(0, 1fr)) !important;
             gap: 2px;
@@ -1300,6 +1300,8 @@
             max-width: 100%;
             aspect-ratio: 7 / 9 !important;
             margin: 0 auto;
+            position: relative;
+            z-index: 11 !important;
         }
 
         #loading-screen {
