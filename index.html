@@ -30,15 +30,15 @@
         }
 
         #header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            width: 100% !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
-            width: 100% !important;
-            display: flex !important;
-            justify-content: space-evenly !important;
-            align-items: center !important;
-            padding: 10px 0 !important;
-            z-index: 1000 !important;
+            padding: 5px !important;
+            z-index: 100 !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
@@ -1546,44 +1546,39 @@
         <span id="ui-energy-timer" style="display: none;"></span>
 
         <main id="grid-area">
-            <main id="grid-area">
-                <div class="studio-container">
-                    <div class="grid" id="grid">
-                        <!-- Cellules générées ici -->
-                    </div>
+            <div class="studio-container">
+                <div class="grid" id="grid">
+                    <!-- Cellules générées ici -->
                 </div>
-            </main>
-
-            <!-- Bottom Controls (Inventory) -->
-            <footer id="game-footer">
-                <div class="bottom-controls" id="bottom-controls">
-                    <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-                        📦 <br> <span style="font-size: 10px;">Stock</span>
-                    </button>
-                </div>
-            </footer>
-
-            <!-- Inventory Modal -->
-            <div id="inventory-modal">
-                <div class="inventory-header">
-                    <span>📦 Stockage Studio</span>
-                    <button class="inventory-close" onclick="closeInventory()">X</button>
-                </div>
-                <div class="inventory-content">
-                    <div class="inventory-grid" id="inventory-grid">
-                        <!-- 160 slots seront générés en JS -->
-                    </div>
-                </div>
-                <button id="buy-slots-btn" onclick="buyInventorySlots()"
-                    style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
-                    +8 cases (100 💎)</button>
             </div>
+        </main>
 
-            <div id="message"></div>
-
+        <!-- Bottom Controls -->
+        <footer id="game-footer">
+            <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+                📦 <br> <span style="font-size: 10px;">Stock</span>
+            </button>
             <button onclick="localStorage.clear(); window.location.reload();"
-                style="display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; opacity: 0.8; z-index: 1000; position: relative;">🔄
-                Reset Save</button>
+                style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄 Reset Save</button>
+        </footer>
+
+        <!-- Inventory Modal -->
+        <div id="inventory-modal">
+            <div class="inventory-header">
+                <span>📦 Stockage Studio</span>
+                <button class="inventory-close" onclick="closeInventory()">X</button>
+            </div>
+            <div class="inventory-content">
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- 160 slots seront générés en JS -->
+                </div>
+            </div>
+            <button id="buy-slots-btn" onclick="buyInventorySlots()"
+                style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
+                +8 cases (100 💎)</button>
+        </div>
+
+        <div id="message"></div>
 
 
     </div>
@@ -2775,20 +2770,19 @@ Partie</button>
         /* --- FORÇAGE DE LA GRILLE --- */
         #grid-area,
         .studio-container {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: relative !important;
-            z-index: 9999 !important;
-            /* On la force à passer TOUT DEVANT */
+            position: absolute !important;
+            top: 38% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 85% !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            margin-top: 280px !important;
-            /* Modifie ça pour la caler dans ton carré */
-            width: 90% !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 9999 !important;
+            margin: 0 !important;
         }
 
         #grid {
@@ -2796,6 +2790,7 @@ Partie</button>
             visibility: visible !important;
             opacity: 1 !important;
             background: transparent !important;
+            width: 100% !important;
         }
 
         .grid-cell {
@@ -2803,22 +2798,27 @@ Partie</button>
             border: 1px dashed rgba(0, 0, 0, 0.2) !important;
         }
 
-        .grid-cell img {
+        .grid-cell img, .cell img {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
             width: 100% !important;
             height: 100% !important;
             object-fit: contain !important;
+            background: transparent !important;
+            border-radius: 0 !important;
         }
 
         /* --- BOUTONS EN BAS --- */
-        #game-footer,
-        .controls {
+        #game-footer {
             position: absolute !important;
-            bottom: 20px !important;
+            bottom: 15px !important;
             left: 0 !important;
             width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 20px !important;
             z-index: 10000 !important;
         }
     </style>
