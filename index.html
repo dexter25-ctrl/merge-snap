@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f4ece1;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         }
 
         /* Clôture en bois blanc cartoon */
@@ -28,19 +25,33 @@
         }
 
         #header {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 50;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: space-evenly !important;
+            align-items: center !important;
+            padding: 10px 0 !important;
+            z-index: 1000 !important;
             background: transparent !important;
-            border: none;
-            box-shadow: none;
-            padding: 10px 0;
-            box-sizing: border-box;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        #header > div {
+            height: 45px !important;
+            flex: 1 !important;
+            background-size: 100% 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            margin: 0 2px !important;
+        }
+
+        /* SUPPRESSION RADICALE DU ROND BLANC */
+        .recipe-avatar, #header img[style*="border-radius: 50%"], .avatar-container {
+            display: none !important; 
         }
 
         .header-item {
@@ -55,27 +66,7 @@
             display: none;
         }
 
-        .header-item-gems,
-        .header-item-energy,
-        .header-item-coins,
-        .header-item-shop {
-            height: 45px !important;
-            flex: 1;
-            background-size: 100% 100% !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin: 0 2px;
-            background-color: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 14px;
-        }
+
 
         .header-item-gems {
             background-image: url('./assets/decor_perso/barre_1(1).png') !important;
@@ -264,13 +255,19 @@
 
         .cell {
             position: relative !important;
-            width: 100%;
-            height: 100%;
-            min-width: 0 !important;
-            min-height: 0 !important;
+            width: 50px;
+            height: 50px;
+            min-width: 50px !important;
+            min-height: 50px !important;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .cell img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
         }
 
         /* Items premium 3D */
@@ -1177,57 +1174,35 @@
 
         /* New App Container and Layout Styles */
         .app-container {
+            background-image: url('./assets/decor_perso/arriereplan_lvl1.png') !important;
+            background-size: cover !important; /* Force l'image jusqu'en bas */
+            background-position: center top !important;
+            height: 100vh !important;
             display: flex;
             flex-direction: column;
-            height: 100dvh;
-            width: 100vw;
-            overflow: hidden;
-            padding-top: 60px;
-            box-sizing: border-box;
-            background-image: url('./assets/decor_perso/arriereplan_lvl1.png');
-            background-size: 100% auto;
-            background-position: top center;
-            background-repeat: no-repeat;
-        }
-
-        #grid-area {
-            flex-grow: 1;
-            display: flex !important;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow: visible;
-            padding: 0;
-            margin-top: 300px !important;
-            /* Cloué sur la table dessinée */
-            margin-bottom: auto;
-            width: 100%;
-            box-sizing: border-box;
             position: relative;
-            z-index: 100;
+        }
+
+        #grid-area, .studio-container {
+            margin-top: 220px !important; /* Espace pour le décor du haut */
+            background: transparent !important; /* Enlever tout fond disgracieux */
+            z-index: 10 !important;
+            position: relative !important;
         }
 
 
-        .cell img {
+
+
+        #game-footer, .controls {
             position: absolute !important;
-            top: 50% !important;
+            bottom: 20px !important;
             left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            max-width: 85% !important;
-            max-height: 85% !important;
-            object-fit: contain !important;
-        }
-
-        #game-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 100;
-            margin: 0;
+            transform: translateX(-50%) !important;
+            z-index: 100 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            width: auto !important;
         }
 
         #grid {
