@@ -1184,14 +1184,17 @@
         }
 
         #grid-area, .studio-container {
-            display: block !important;
-            visibility: visible !important;
-            position: relative !important;
-            z-index: 20 !important;
-            margin-top: 250px !important; /* Calé sur la zone blanche dessinée */
+            display: flex !important;
+            justify-content: center;
+            align-items: flex-start;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            position: relative;
+            z-index: 20;
+            margin: 280px auto 0 !important; /* Aligné précisément sur le carré blanc dessiné */
+            width: 90% !important;
+            box-sizing: border-box;
         }
 
 
@@ -1200,13 +1203,12 @@
         #game-footer, .controls {
             position: absolute !important;
             bottom: 20px !important;
-            left: 0 !important;
+            left: 0;
             width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            z-index: 100 !important;
-            margin: 0;
+            z-index: 100;
         }
 
         #grid {
@@ -1219,6 +1221,17 @@
             margin: 0 auto;
             z-index: 101;
             background: transparent;
+        }
+
+        .cell img, .grid-cell img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            display: block !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
         }
 
         #loading-screen {
