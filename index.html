@@ -55,7 +55,10 @@
             display: none;
         }
 
-        .header-item-gems, .header-item-energy, .header-item-coins, .header-item-shop {
+        .header-item-gems,
+        .header-item-energy,
+        .header-item-coins,
+        .header-item-shop {
             height: 45px !important;
             flex: 1;
             background-size: 100% 100% !important;
@@ -74,10 +77,21 @@
             font-size: 14px;
         }
 
-        .header-item-gems { background-image: url('./assets/decor_perso/barre_1(1).png') !important; }
-        .header-item-energy { background-image: url('./assets/decor_perso/barre_1(3).png') !important; }
-        .header-item-coins { background-image: url('./assets/decor_perso/barre_1(4).png') !important; }
-        .header-item-shop { background-image: url('./assets/decor_perso/barre_1(2).png') !important; }
+        .header-item-gems {
+            background-image: url('./assets/decor_perso/barre_1(1).png') !important;
+        }
+
+        .header-item-energy {
+            background-image: url('./assets/decor_perso/barre_1(3).png') !important;
+        }
+
+        .header-item-coins {
+            background-image: url('./assets/decor_perso/barre_1(4).png') !important;
+        }
+
+        .header-item-shop {
+            background-image: url('./assets/decor_perso/barre_1(2).png') !important;
+        }
 
         .energy-bar-container {
             position: relative;
@@ -109,6 +123,8 @@
             font-size: 11px;
             font-weight: 900;
         }
+
+        .plus-btn {
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -524,7 +540,8 @@
         /* Missions & Validation */
         #mission-area {
             position: absolute;
-            top: 140px; /* Positioned above the grid on the table */
+            top: 140px;
+            /* Positioned above the grid on the table */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -549,7 +566,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0; 
+            margin: 0;
             zoom: 1;
         }
 
@@ -572,6 +589,7 @@
             opacity: 0.5;
             filter: grayscale(1);
         }
+
         .mission-card-client {
             width: 100%;
             height: 100%;
@@ -586,7 +604,7 @@
             height: 100%;
             object-fit: contain;
         }
-        
+
 
         .mission-card.active .mission-card-client {
             border-color: #f39c12;
@@ -1180,7 +1198,8 @@
             align-items: center;
             overflow: visible;
             padding: 0;
-            margin-top: 300px !important; /* Cloué sur la table dessinée */
+            margin-top: 300px !important;
+            /* Cloué sur la table dessinée */
             margin-bottom: auto;
             width: 100%;
             box-sizing: border-box;
@@ -1362,7 +1381,8 @@
         style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing.png'); background-size: cover; background-position: center bottom; color: white; flex-direction: column; justify-content: flex-start; align-items: center; position: fixed; top: 0; left: 0; z-index: 50; padding-top: 5vh; box-sizing: border-box;">
         <h2 style="display: none;">Créez votre Photographe</h2>
 
-        <div id="character-display" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.8); width: 100%; height: 50vh; max-height: 450px; perspective: 1000px; z-index: 1;">
+        <div id="character-display"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.8); width: 100%; height: 50vh; max-height: 450px; perspective: 1000px; z-index: 1;">
             <img id="body-layer" src="./assets/decor_perso/homme_1_.png"
                 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 1; transform-origin: bottom center;">
             <img id="bottom-layer" src=""
@@ -1373,7 +1393,8 @@
                 style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 30; transform-origin: bottom center;">
         </div>
 
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; padding-bottom: 40px; box-sizing: border-box; background: transparent !important; border-radius: 30px 30px 0 0; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <div
+            style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; padding-bottom: 40px; box-sizing: border-box; background: transparent !important; border-radius: 30px 30px 0 0; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 10px;">
             <input type="text" id="player-name-input" placeholder="Votre Nom"
                 style="padding: 10px; margin: 10px; border-radius: 5px; border: none;">
 
@@ -1385,7 +1406,8 @@
                     style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #8e44ad;">Femme</button>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
+            <div
+                style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
                     <button
@@ -1432,7 +1454,7 @@
                     <span id="ui-gems">18</span>
                 </div>
                 <div class="header-item header-item-energy">
-                    <img src="./assets/icones/icone_eclair.png" 
+                    <img src="./assets/icones/icone_eclair.png"
                         style="width: 20px; height: 20px; position: absolute; left: 8px; z-index: 2;" />
                     <div class="energy-bar-container">
                         <div class="energy-bar-fill" id="ui-energy-fill"></div>
@@ -1441,7 +1463,7 @@
                     <button class="btn-plus btn-plus-energy">+</button>
                 </div>
                 <div class="header-item header-item-coins">
-                    <img src="./assets/icones/icone_piece.png" 
+                    <img src="./assets/icones/icone_piece.png"
                         style="width: 20px; height: 20px; position: absolute; left: 8px; z-index: 2;" />
                     <span id="ui-coins">427</span>
                     <button class="btn-plus btn-plus-coins">+</button>
