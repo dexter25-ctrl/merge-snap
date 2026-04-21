@@ -55,51 +55,41 @@
             display: none;
         }
 
-        .header-item-gems {
-            display: flex;
-            background-image: url('./assets/decor_perso/barre_1(1).png') !important;
-            background-size: contain !important;
+        .header-item-gems, .header-item-energy, .header-item-coins, .header-item-shop {
+            height: 45px !important;
+            flex: 1;
+            background-size: 100% 100% !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
-            background-color: transparent !important;
-            color: #ffffff;
-            border-radius: 0;
-            padding: 5px 10px 5px 35px;
-            box-shadow: none !important;
-            font-weight: 900;
-            border: none !important;
+            display: flex;
             align-items: center;
-            font-size: 14px;
-            width: 100px;
-            height: 45px;
+            justify-content: center;
             position: relative;
+            margin: 0 2px;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 14px;
         }
 
-        .header-item-energy {
-            flex-grow: 0;
-            width: 120px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            background-image: url('./assets/decor_perso/barre_1(3).png') !important;
-            background-size: contain !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            height: 45px;
-            padding: 0 10px;
-        }
+        .header-item-gems { background-image: url('./assets/decor_perso/barre_1(1).png') !important; }
+        .header-item-energy { background-image: url('./assets/decor_perso/barre_1(3).png') !important; }
+        .header-item-coins { background-image: url('./assets/decor_perso/barre_1(4).png') !important; }
+        .header-item-shop { background-image: url('./assets/decor_perso/barre_1(2).png') !important; }
 
         .energy-bar-container {
             position: relative;
-            width: 70%;
-            height: 14px;
+            width: 60%;
+            height: 10px;
             background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 7px;
+            border-radius: 5px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 25px;
+            margin-left: 15px;
         }
 
         .energy-bar-fill {
@@ -109,7 +99,6 @@
             height: 100%;
             width: 100%;
             background: linear-gradient(90deg, #f1c40f, #f39c12, #e67e22);
-            border-radius: 14px;
             transition: width 0.3s ease;
         }
 
@@ -117,71 +106,9 @@
             position: relative;
             z-index: 1;
             color: white;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 900;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
         }
-
-        .header-item-coins {
-            background-image: url('./assets/decor_perso/barre_1(4).png') !important;
-            background-size: contain !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            background-color: transparent !important;
-            color: #ffffff;
-            border-radius: 0;
-            padding: 5px 10px 5px 20px;
-            box-shadow: none !important;
-            font-weight: 900;
-            border: none !important;
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            width: 90px;
-            height: 45px;
-        }
-
-        .header-item-shop {
-            background-image: url('./assets/decor_perso/barre_1(2).png') !important;
-            background-size: contain !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            width: 60px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            border: none;
-            background-color: transparent;
-            position: relative;
-        }
-
-        .hud-avatar-circle {
-            position: absolute;
-            left: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 48px;
-            height: 48px;
-            background: #fff;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 5;
-        }
-
-        .hud-avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-        }
-
-        .btn-plus {
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -1253,7 +1180,8 @@
             align-items: center;
             overflow: visible;
             padding: 0;
-            margin-top: 240px; /* Aligné précisément sur le bord de la table du décor */
+            margin-top: 300px !important; /* Cloué sur la table dessinée */
+            margin-bottom: auto;
             width: 100%;
             box-sizing: border-box;
             position: relative;
@@ -1271,12 +1199,15 @@
             object-fit: contain !important;
         }
 
-        #game-header,
-        #mission-area,
         #game-footer {
-            flex-shrink: 0;
-            position: relative;
-            z-index: 10;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 100;
             margin: 0;
         }
 
@@ -1496,13 +1427,9 @@
         <header id="game-header">
             <div id="header">
                 <div class="header-item header-item-gems">
-                    <div class="hud-avatar-circle" id="hud-avatar">
-                        <!-- Caractère dynamique via JS -->
-                    </div>
                     <img src="./assets/icones/diamond_icon.png"
                         style="width: 18px; height: 18px; margin-right: 5px; object-fit: contain;" />
                     <span id="ui-gems">18</span>
-                    <button class="btn-plus btn-plus-gems">+</button>
                 </div>
                 <div class="header-item header-item-energy">
                     <img src="./assets/icones/icone_eclair.png" 
@@ -2050,12 +1977,7 @@ Partie</button>
                 './assets/clients/femme_prof1.png'
             ];
 
-            // Update HUD Avatar
-            const hudAvatar = document.getElementById('hud-avatar');
-            if (hudAvatar) {
-                const baseSrc = playerGender === 'homme' ? 'assets/decor_perso/homme_1_dressing.png' : 'assets/decor_perso/femme_dressing.png';
-                hudAvatar.innerHTML = `<img src="${baseSrc}" />`;
-            }
+
 
             // Limit to two missions
             const missionsToRender = levelData.missions.slice(0, 2);
