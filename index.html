@@ -32,27 +32,32 @@
 
         #header {
             display: flex !important;
-            justify-content: space-between !important;
-            align-items: flex-start !important;
+            justify-content: space-evenly !important;
+            align-items: center !important;
             width: 100% !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
             padding: 5px !important;
             z-index: 100 !important;
-            background: transparent !important;
+            background-image: url('assets/icones/new_barre.png') !important;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
             border: none !important;
             box-shadow: none !important;
+            height: 60px !important;
+            box-sizing: border-box !important;
         }
 
         #header>div {
             height: 45px !important;
             flex: 1 !important;
-            background-size: 100% 100% !important;
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
             margin: 0 2px !important;
+            background: none !important;
         }
 
         /* SUPPRESSION RADICALE DU ROND BLANC */
@@ -1182,7 +1187,7 @@
 
         /* New App Container and Layout Styles */
         .app-container {
-            background-image: url('./assets/decor_perso/arriereplan_lvl1.png') !important;
+            background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
             background-size: cover !important;
             /* Force l'image jusqu'en bas */
             background-position: center top !important;
@@ -1197,15 +1202,18 @@
             display: flex !important;
             justify-content: center;
             align-items: flex-start;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            position: relative;
-            z-index: 20;
-            margin: 280px auto 0 !important;
-            /* Aligné précisément sur le carré blanc dessiné */
+            position: absolute !important;
+            top: 60% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
             width: 90% !important;
+            z-index: 50 !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+            padding: 10px !important;
             box-sizing: border-box;
+            margin: 0 !important;
         }
 
 
@@ -1357,19 +1365,8 @@
         /* 1. Placer la zone de jeu PILE sur le carré blanc dessiné */
         .studio-container,
         #grid-area {
-            background: transparent !important;
-            /* On veut voir ton carré blanc derrière ! */
-            border: none !important;
-            box-shadow: none !important;
-            margin-top: 320px !important;
-            /* ⚠️ C'EST LE REGLAGE HAUTEUR : augmente ou baisse ce chiffre pour caler la grille */
-            width: 85% !important;
-            /* Ajuste la largeur pour rentrer dans le dessin */
-            margin-left: auto !important;
-            margin-right: auto !important;
-            position: relative !important;
-            z-index: 20 !important;
-            display: block !important;
+            /* Styles gérés par la déclaration précédente */
+            display: flex !important;
         }
 
         /* 2. Réveiller les objets disparus */
@@ -1508,29 +1505,29 @@
 
         <header id="game-header">
             <div id="header">
-                <div class="header-item header-item-gems">
-                    <img src="./assets/icones/diamond_icon.png"
-                        style="width: 18px; height: 18px; margin-right: 5px; object-fit: contain;" />
-                    <span id="ui-gems">18</span>
+                <!-- Emplacement 1 : Niveau -->
+                <div class="header-item">
+                    <div id="ui-level" style="font-size: 14px; font-weight: bold; color: white; text-align: center; line-height: 1.2;">LVL 1</div>
                 </div>
-                <div class="header-item header-item-energy">
-                    <img src="./assets/icones/icone_eclair.png"
-                        style="width: 20px; height: 20px; position: absolute; left: 8px; z-index: 2;" />
-                    <div class="energy-bar-container">
-                        <div class="energy-bar-fill" id="ui-energy-fill"></div>
-                        <div class="energy-text"><span id="ui-energy">457</span></div>
+                <!-- Emplacement 2 : Energie -->
+                <div class="header-item" style="display: flex; align-items: center; justify-content: center; position: relative;">
+                    <img src="assets/icones/icon_eclair.png" style="width: 20px; height: 20px; margin-right: 5px;" />
+                    <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
+                        <span id="ui-energy" style="font-size: 14px; font-weight: bold; color: white;">457</span>
+                        <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f; font-weight: bold;"></span>
                     </div>
-                    <button class="btn-plus btn-plus-energy">+</button>
+                    <div id="ui-energy-fill" style="display: none;"></div> <!-- Fallback JS -->
                 </div>
-                <div class="header-item header-item-coins">
-                    <img src="./assets/icones/icone_piece.png"
-                        style="width: 20px; height: 20px; position: absolute; left: 8px; z-index: 2;" />
-                    <span id="ui-coins">427</span>
-                    <button class="btn-plus btn-plus-coins">+</button>
+                <!-- Emplacement 3 : Pièces -->
+                <div class="header-item">
+                    <img src="assets/icones/icon_piece.png" style="width: 20px; height: 20px; margin-right: 5px;" />
+                    <span id="ui-coins" style="font-size: 14px; font-weight: bold; color: white;">427</span>
                 </div>
-                <button class="header-item-shop">
-                    <span style="font-size: 20px;">🛒</span>
-                </button>
+                <!-- Emplacement 4 : Diamants -->
+                <div class="header-item">
+                    <img src="assets/icones/icon_diamand.png" style="width: 20px; height: 20px; margin-right: 5px;" />
+                    <span id="ui-gems" style="font-size: 14px; font-weight: bold; color: white;">18</span>
+                </div>
             </div>
         </header>
 
@@ -1541,10 +1538,6 @@
         <div class="confetti-container" id="confetti"></div>
 
         <!-- Grille de Jeu -->
-
-
-        <div id="ui-level" style="display: none;"></div>
-        <span id="ui-energy-timer" style="display: none;"></span>
 
         <main id="grid-area">
             <div class="studio-container">
@@ -2057,8 +2050,8 @@ Partie</button>
             missionArea.innerHTML = '';
 
             const avatars = [
-                './assets/clients/homme_prof1.png',
-                './assets/clients/femme_prof1.png'
+                'assets/clients/femme_prof.png',
+                'assets/clients/homme_prof.png'
             ];
 
 
