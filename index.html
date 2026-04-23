@@ -22,16 +22,11 @@
 
         /* Top HUD */
         #game-header {
-            padding-left: 24% !important;
             position: fixed !important;
             top: 0 !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            /* Centre parfaitement la barre */
+            left: 0 !important;
 
-            width: 100% !important;
-            max-width: 450px !important;
-            /* Limite la largeur pour correspondre au jeu */
+            width: 100vw !important;
             height: 70px !important;
 
             background-image: url('assets/icones/new_barre.png') !important;
@@ -40,15 +35,11 @@
 
             display: flex !important;
             justify-content: space-evenly !important;
-            /* Répartit les compteurs dans les ovales */
             align-items: center !important;
             z-index: 99999 !important;
 
-            /* 🎯 LE SECRET DE L'ALIGNEMENT EST ICI */
             padding-left: 24% !important;
-            /* Pousse le texte pour sauter l'icône Caméra */
             padding-right: 4% !important;
-            /* Petite marge à droite */
 
             margin: 0 !important;
             box-sizing: border-box !important;
@@ -1410,7 +1401,7 @@
 
 <body>
     <header id="game-header"
-        style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; max-width: 450px; height: 75px; background-image: url('assets/icones/new_barre.png'); background-size: 100% 100%; display: flex; justify-content: space-evenly; align-items: center; z-index: 999999; padding-left: 24%; padding-right: 4%; box-sizing: border-box; margin: 0; pointer-events: none;">
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 75px; background-image: url('assets/icones/new_barre.png'); background-size: 100% 100%; display: flex; justify-content: space-evenly; align-items: center; z-index: 999999; padding-left: 24%; padding-right: 4%; box-sizing: border-box; margin: 0; pointer-events: none;">
 
         <div style="color: white; font-weight: bold; font-size: 15px; text-shadow: 1px 1px 2px black;">
             <span id="ui-level">LVL 1</span>
@@ -2941,7 +2932,7 @@ Partie</button>
             newBar.id = 'game-header';
 
             // 3. On force le CSS absolu (impossible à contredire)
-            newBar.style.cssText = "position: fixed !important; top: 0 !important; left: 50% !important; transform: translateX(-50%) !important; width: 100vw !important; max-width: 450px !important; height: 75px !important; background-image: url('assets/icones/new_barre.png') !important; background-size: 100% 100% !important; display: flex !important; justify-content: space-evenly !important; align-items: center !important; z-index: 999999 !important; padding-left: 22% !important; padding-right: 2% !important; margin: 0 !important; box-sizing: border-box !important;";
+            newBar.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 75px !important; background-image: url('assets/icones/new_barre.png') !important; background-size: 100% 100% !important; display: flex !important; justify-content: space-evenly !important; align-items: center !important; z-index: 999999 !important; padding-left: 24% !important; padding-right: 4% !important; margin: 0 !important; box-sizing: border-box !important;";
 
             // 4. On place les compteurs dedans
             newBar.innerHTML = `
