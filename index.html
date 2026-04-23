@@ -24,20 +24,31 @@
         #game-header {
             position: fixed !important;
             top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            /* Force la largeur totale de l'écran */
-            height: 60px !important;
-            /* Ajuste selon ton image */
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            /* Centre parfaitement la barre */
+
+            width: 100% !important;
+            max-width: 450px !important;
+            /* Limite la largeur pour correspondre au jeu */
+            height: 70px !important;
+
             background-image: url('assets/icones/new_barre.png') !important;
             background-size: 100% 100% !important;
-            /* Étire l'image de bord à bord */
             background-repeat: no-repeat !important;
+
             display: flex !important;
-            justify-content: space-around !important;
+            justify-content: space-evenly !important;
+            /* Répartit les compteurs dans les ovales */
             align-items: center !important;
             z-index: 99999 !important;
-            padding: 0 !important;
+
+            /* 🎯 LE SECRET DE L'ALIGNEMENT EST ICI */
+            padding-left: 24% !important;
+            /* Pousse le texte pour sauter l'icône Caméra */
+            padding-right: 4% !important;
+            /* Petite marge à droite */
+
             margin: 0 !important;
             box-sizing: border-box !important;
         }
