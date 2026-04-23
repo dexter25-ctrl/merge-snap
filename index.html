@@ -64,20 +64,19 @@
 
         /* --- HUD : LA BARRE DORÉE --- */
         #game-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 75px;
-            background-image: url('assets/icones/new_barre.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 10000;
-            padding: 0 5px;
-            box-sizing: border-box;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            /* Prend toute la largeur de l'écran */
+            height: 65px !important;
+            background-image: url('assets/icones/new_barre.png') !important;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            z-index: 10000 !important;
         }
 
         .header-item {
@@ -262,16 +261,19 @@
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // --- 1. VARIABLES GLOBALES (TES DONNÉES) ---
         let energy = 100;
         let coins = 1500;
         let gems = 50;
-        let level = 1;
+        let currentLevel = 1;
+        let playerName = "Photographe";
+        const cols = 7;
+        const gridSize = 63; // 7x9
 
-        // --- CHARGEMENT ---
+        // --- 2. CHARGEMENT & INITIALISATION ---
         window.addEventListener('load', () => {
             const fill = document.getElementById('load-fill');
-            fill.style.width = '100%';
+            if (fill) fill.style.width = '100%';
 
             setTimeout(() => {
                 document.getElementById('loading-screen').style.opacity = '0';
@@ -279,48 +281,146 @@
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('game-ui').style.display = 'block';
                     initGrid();
+                    loadGame(); // On recharge ta progression
                 }, 800);
-            }, 3500);
+            }, 3000);
         });
 
-        // --- LOGIQUE GRILLE ---
+        // --- 3. CRÉATION DE LA GRILLE ---
         function initGrid() {
             const gridEl = document.getElementById('grid');
             gridEl.innerHTML = '';
-
-            for (let i = 0; i < 63; i++) { // 7x9
+            for (let i = 0; i < gridSize; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.index = i;
 
-                // Ajouter le générateur en case 3 (milieu haut)
-                if (i === 3) {
-                    cell.innerHTML = `<div class="item" onclick="generateItem()">📦</div>`;
-                }
+                // Drag & Drop events
+                cell.addEventListener('dragover', e => e.preventDefault());
+                cell.addEventListener('drop', handleDrop);
 
                 gridEl.appendChild(cell);
             }
+            // Le spawner (ton bouton boite) en haut au milieu
+            const spawnerCell = document.querySelector('.cell[data-index="3"]');
+            if (spawnerCell) {
+                spawnerCell.innerHTML = `<div class="item spawner" onclick="generateItem()" style="cursor:pointer">📦</div>`;
+            }
         }
 
+        // --- 4. LOGIQUE DE GÉNÉRATION (TON CODE) ---
         function generateItem() {
-            if (energy <= 0) return alert("Plus d'énergie !");
+            if (energy <= 0) return showMessage("Plus d'énergie !");
 
             const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
-            if (emptyCells.length === 0) return alert("Grille pleine !");
+            if (emptyCells.length === 0) return showMessage("Grille pleine !");
 
             energy--;
-            document.getElementById('ui-energy').textContent = energy;
+            updateUI();
 
             const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            const newItem = document.createElement('div');
-            newItem.className = 'item';
-            // Exemple Famille A Niveau 1
-            newItem.innerHTML = `<img src="assets/Famille_A/appareil_lvl1.png">`;
+            const newItem = createItem('A', 1); // Créer Appareil Lvl 1
             randomCell.appendChild(newItem);
+            saveGame();
+        }
+
+        function createItem(family, level) {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.draggable = true;
+            item.dataset.family = family;
+            item.dataset.level = level;
+
+            // Image dynamique selon la famille et le niveau
+            item.innerHTML = `<img src="assets/Famille_${family}/${family === 'A' ? 'appareil' : 'objet'}_lvl${level}.png" style="width:80%; height:80%; object-fit:contain; pointer-events:none;">`;
+
+            item.addEventListener('dragstart', handleDragStart);
+            return item;
+        }
+
+        // --- 5. SYSTÈME DE MERGE (FUSION) ---
+        let draggedItem = null;
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            e.dataTransfer.setData('text/plain', ''); // Requis pour Firefox
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const targetCell = this;
+            const sourceCell = draggedItem.parentElement;
+
+            if (targetCell.hasChildNodes()) {
+                const targetItem = targetCell.firstChild;
+
+                // Si même famille et même niveau = FUSION
+                if (targetItem.dataset.family === draggedItem.dataset.family &&
+                    targetItem.dataset.level === draggedItem.dataset.level) {
+
+                    const newLevel = parseInt(targetItem.dataset.level) + 1;
+                    targetCell.removeChild(targetItem);
+                    targetCell.appendChild(createItem(draggedItem.dataset.family, newLevel));
+                    sourceCell.removeChild(draggedItem);
+                    showMessage("Fusion réussie !");
+                } else {
+                    // Sinon on échange les places (si ce n'est pas le spawner)
+                    if (!targetItem.classList.contains('spawner')) {
+                        sourceCell.appendChild(targetItem);
+                        targetCell.appendChild(draggedItem);
+                    }
+                }
+            } else {
+                targetCell.appendChild(draggedItem);
+            }
+            saveGame();
+        }
+
+        // --- 6. SAUVEGARDE & UI ---
+        function updateUI() {
+            document.getElementById('ui-energy').textContent = energy;
+            document.getElementById('ui-coins').textContent = coins;
+            document.getElementById('ui-gems').textContent = gems;
+            document.getElementById('ui-level').textContent = `LVL ${currentLevel}`;
+        }
+
+        function showMessage(msg) {
+            console.log(msg); // Tu peux remettre ton système de message flottant ici
+        }
+
+        function saveGame() {
+            const gridData = [];
+            document.querySelectorAll('.cell').forEach((cell, i) => {
+                if (cell.firstChild && !cell.firstChild.classList.contains('spawner')) {
+                    gridData.push({
+                        index: i,
+                        family: cell.firstChild.dataset.family,
+                        level: cell.firstChild.dataset.level
+                    });
+                }
+            });
+            localStorage.setItem('mergeGame_save', JSON.stringify({ energy, coins, gems, currentLevel, gridData }));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('mergeGame_save');
+            if (saved) {
+                const data = JSON.parse(saved);
+                energy = data.energy;
+                coins = data.coins;
+                gems = data.gems;
+                currentLevel = data.currentLevel;
+                // Replacer les objets
+                data.gridData.forEach(item => {
+                    const cell = document.querySelector(`.cell[data-index="${item.index}"]`);
+                    if (cell) cell.appendChild(createItem(item.family, item.level));
+                });
+                updateUI();
+            }
         }
 
         function resetSave() {
-            if (confirm("Tout effacer ?")) {
+            if (confirm("Effacer ta progression ?")) {
                 localStorage.clear();
                 window.location.reload();
             }
