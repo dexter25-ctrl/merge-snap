@@ -2,11 +2,11 @@
 <html lang="fr">
 
 <head>
-    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
+        /* --- BASES & RESET --- */
         body,
         html {
             margin: 0;
@@ -14,1215 +14,13 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #000;
         }
 
-        /* Clôture en bois blanc cartoon */
-
-
-
-        /* Top HUD */
-        #game-header {
-            width: 100%;
-            height: 60px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-        }
-
-
-
-        #header>div {
-            height: 45px !important;
-            flex: 1 !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            margin: 0 2px !important;
-            background: none !important;
-        }
-
-        /* SUPPRESSION RADICALE DU ROND BLANC */
-        .recipe-avatar,
-        #header img[style*="border-radius: 50%"],
-        .avatar-container {
-            display: none !important;
-        }
-
-        .header-item {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            font-size: 16px;
-            position: relative;
-        }
-
-        .header-item-lvl {
-            display: none;
-        }
-
-
-
-        .header-item-gems {
-            background-image: url('./assets/decor_perso/barre_1(1).png') !important;
-        }
-
-        .header-item-energy {
-            background-image: url('./assets/decor_perso/barre_1(3).png') !important;
-        }
-
-        .header-item-coins {
-            background-image: url('./assets/decor_perso/barre_1(4).png') !important;
-        }
-
-        .header-item-shop {
-            background-image: url('./assets/decor_perso/barre_1(2).png') !important;
-        }
-
-        .energy-bar-container {
-            position: relative;
-            width: 60%;
-            height: 10px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 15px;
-        }
-
-        .energy-bar-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, #f1c40f, #f39c12, #e67e22);
-            transition: width 0.3s ease;
-        }
-
-        .energy-text {
-            position: relative;
-            z-index: 1;
-            color: white;
-            font-size: 11px;
-            font-weight: 900;
-        }
-
-        .plus-btn {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 8px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0;
-        }
-
-        .btn-plus-energy {
-            background-color: #2980b9;
-            color: white;
-        }
-
-        .btn-plus-coins {
-            background-color: #f39c12;
-            color: black;
-        }
-
-        .btn-plus-gems {
-            background-color: #732d91;
-            color: white;
-        }
-
-        .header-icon {
-            margin-right: 6px;
-            font-size: 18px;
-        }
-
-
-        /* Recipe Zone (Client order) */
-        .recipe-zone {
-            position: relative;
-            background: linear-gradient(to bottom, #ff94c2, #ff69b4);
-            border: 3px solid #ff1493;
-            border-radius: 12px;
-            padding: 5px 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            margin-left: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: white;
-            font-weight: bold;
-            transform: scale(0.6) !important;
-            transform-origin: top center !important;
-        }
-
-        .recipe-avatar {
-            position: absolute;
-            top: -15px;
-            left: -15px;
-            width: 50px;
-            height: 60px;
-            background: #ccc;
-            /* Placeholder for character */
-            border-radius: 25px 25px 0 0;
-            border: 2px solid #fff;
-            border-bottom: none;
-            overflow: hidden;
-            background-image: radial-gradient(circle at center, #f0e6d2, #d2b48c);
-        }
-
-        .recipe-avatar::after {
-            content: '🧔';
-            /* King/Character emoji */
-            font-size: 40px;
-            position: absolute;
-            bottom: -5px;
-            left: 2px;
-        }
-
-        .recipe-reward {
-            background: #fff;
-            color: #ff8c00;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 12px;
-            position: fixed;
-            top: -10px;
-            right: 10px;
-            border: 2px solid #ff8c00;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .recipe-items {
-            display: flex;
-            gap: 5px;
-            margin-left: 30px;
-            /* Space for avatar */
-            background: rgba(255, 255, 255, 0.4);
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .recipe-item-box {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(145deg, #a8e6cf, #dcedc1);
-            border-radius: 6px;
-            border: 1px solid #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Grille Principale */
-        .studio-container {
-            background: transparent;
-            padding: 0;
-            border-radius: 0;
-            box-shadow: none;
-            margin-top: 0 !important;
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            box-sizing: border-box;
-        }
-
-        /* Contour décoratif style cadre en bois */
-        .studio-container::before {
-            display: none;
-        }
-
-
-
-        .cell {
-            position: relative !important;
-            width: 50px;
-            height: 50px;
-            min-width: 50px !important;
-            min-height: 50px !important;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cell img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-        }
-
-        /* Items premium 3D */
-        .item {
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: grab;
-            user-select: none;
-            transition: transform 0.1s;
-            position: relative;
-            filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
-            box-sizing: border-box;
-        }
-
-        .item:active {
-            cursor: grabbing;
-
-            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.3));
-
-        }
-
-        /* Les icônes Premium dessinées en CSS (Data URIs ou dégradés complexes) */
-        .item-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            position: relative;
-            /* Effet brillant universel sur tous les objets */
-        }
-
-        .item-icon::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            right: 5px;
-            height: 15px;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
-            border-radius: 6px 6px 10px 10px;
-            pointer-events: none;
-        }
-
-        /* Styles spécifiques par famille et niveau pour simuler de la 3D cartoon */
-
-        /* Famille A: Appareils (Corps métallique/cuir) */
-        .item[data-family="A"][data-level="1"] .item-icon {
-            /* Daguerréotype: Boîte en bois */
-            background: linear-gradient(135deg, #8b5a2b, #5c3a21);
-            border: 2px solid #3d2616;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .item[data-family=\"A\"][data-level=\"1\"] .item-icon::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #333 30%, #666 40%, #222 50%);
-            border-radius: 50%;
-            border: 2px solid #daa520;
-        }
-
-        .item[data-family="A"][data-level="2"] .item-icon {
-            /* Brownie: Cuir noir et métal */
-            background: linear-gradient(135deg, #2c3e50, #1a252f);
-            border-radius: 5px;
-            border: 1px solid #000;
-        }
-
-        .item[data-family=\"A\"][data-level=\"2\"] .item-icon::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle, #000 20%, #444 40%, #111 60%);
-            border-radius: 50%;
-            border: 3px solid #bdc3c7;
-        }
-
-        .item[data-family="A"][data-level="3"] .item-icon {
-            /* Argentique: Métal brossé et cuir */
-            background: linear-gradient(to bottom, #ecf0f1 30%, #34495e 30%);
-            border-radius: 8px;
-            box-shadow: inset 0 2px 0 #fff;
-        }
-
-        .item[data-family=\"A\"][data-level=\"3\"] .item-icon::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 34px;
-            height: 34px;
-            background: radial-gradient(circle, #111 20%, #2980b9 40%, #111 60%);
-            border-radius: 50%;
-            border: 4px solid #bdc3c7;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Famille B: Objectifs (Verre et métal noir) */
-        .item[data-family="B"] .item-icon {
-            border-radius: 50%;
-            margin: auto;
-        }
-
-        .item[data-family="B"][data-level="1"] .item-icon {
-            width: 30px;
-            height: 30px;
-            margin-top: 10px;
-            background: radial-gradient(circle at 30% 30%, #e0f7fa, #006064);
-            border: 4px solid #222;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .item[data-family="B"][data-level="2"] .item-icon {
-            width: 40px;
-            height: 40px;
-            margin-top: 5px;
-            background: radial-gradient(circle at 30% 30%, #b2ebf2, #004d40);
-            border: 5px solid #111;
-            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .item[data-family="B"][data-level="3"] .item-icon {
-            width: 46px;
-            height: 46px;
-            margin-top: 2px;
-            background: radial-gradient(circle at 40% 40%, #80deea, #000, #333);
-            border: 6px solid #0a0a0a;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), inset 0 0 5px #fff;
-        }
-
-        /* Famille D: Consommables (Boîtes jaunes / pellicules) */
-        .item[data-family="D"][data-level="1"] .item-icon {
-            /* Pellicule noire */
-            background: linear-gradient(to right, #111 20%, #333 50%, #111 80%);
-            border-radius: 4px;
-            width: 25px;
-            height: 40px;
-            margin: 5px auto;
-            border-top: 4px solid #ccc;
-            border-bottom: 4px solid #ccc;
-        }
-
-        .item[data-family="D"][data-level="2"] .item-icon {
-            /* Boîte jaune Kodak-style */
-            background: linear-gradient(135deg, #f1c40f, #f39c12);
-            border-radius: 4px;
-            border: 1px solid #d35400;
-            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .item[data-family=\"D\"][data-level=\"2\"] .item-icon::before {
-            content: 'Film';
-            position: absolute;
-            top: 15px;
-            left: 8px;
-            color: #c0392b;
-            font-weight: bold;
-            font-size: 10px;
-            font-family: sans-serif;
-        }
-
-        .item[data-family="D"][data-level="3"] .item-icon {
-            /* Carte SD Bleue */
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            width: 35px;
-            height: 45px;
-            margin: 2px auto;
-            border-radius: 4px;
-            clip-path: polygon(0 0, 70% 0, 100% 15%, 100% 100%, 0 100%);
-            border-left: 2px solid #74b9ff;
-        }
-
-        /* Familles C et E (Fallback avec emojis améliorés pour le reste) */
-        .item-emoji {
-            font-size: 38px;
-            line-height: 50px;
-            text-align: center;
-            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
-        }
-
-        /* Feedback visuel de niveau (petits éclairs ou étoiles) */
-        .item-level-indicator {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            display: flex;
-        }
-
-        .level-star-icon {
-            color: #ffd700;
-            font-size: 12px;
-            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8));
-            margin-left: -4px;
-        }
-
-
-        .controls {
-            margin-top: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-
-            position: relative;
-        }
-
-        /* Panneau de contrôle du bas (style Image 2) */
-        .bottom-panel {
-            background: #fdfaf3;
-            border: 4px solid #d2b48c;
-            border-radius: 15px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 300px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .panel-text {
-            font-size: 12px;
-            color: #8b5a2b;
-            font-weight: bold;
-            text-align: center;
-            flex-grow: 1;
-            padding: 0 10px;
-        }
-
-        /* Boutons verts carrés arrondis style Image 2 */
-        .btn-green {
-            background: linear-gradient(to bottom, #76c945, #55a326);
-            border: 3px solid #fff;
-            border-radius: 12px;
-            width: 50px;
-            height: 50px;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #3a7a16, 0 6px 10px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .btn-green:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #3a7a16, 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-
-        /* Missions & Validation */
-        #mission-area {
-            position: absolute;
-            top: 140px;
-            /* Positioned above the grid on the table */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 40px;
-            width: 100%;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .mission-card {
-            background: transparent;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            text-align: left;
-            width: 100px;
-            height: 120px;
-            box-shadow: none;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            zoom: 1;
-        }
-
-        .mission-card.active {
-            border-color: #f39c12;
-            box-shadow: 0 0 6px rgba(243, 156, 18, 0.5);
-            transform: translateY(-1px);
-        }
-
-        .mission-card.active-validable {
-            border-color: #2ecc71;
-            box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-            background: #e8f8f5;
-        }
-
-        .mission-card.completed {
-            border-color: #4CAF50;
-            opacity: 0.5;
-            filter: grayscale(1);
-        }
-
-        .mission-card-client {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .mission-card-client img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-
-        .mission-card.active .mission-card-client {
-            border-color: #f39c12;
-        }
-
-        .mission-card-req {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .mission-card-req img {
-            max-width: 22px;
-            max-height: 22px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
-        }
-
-        .mission-card-reward {
-            background: #f1c40f;
-            color: #fff;
-            font-size: 9px;
-            font-weight: bold;
-            padding: 1px 4px;
-            border-radius: 6px;
-            border: 1px solid #d4ac0d;
-            position: absolute;
-            bottom: -6px;
-            right: -5px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-            z-index: 3;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        /* Confetti */
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            animation: fall 3s linear infinite;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
-        /* Niveau 1 : Frontière (Papier Brûlé) - On devine l'objet */
-        .fog-burned {
-            position: relative;
-            pointer-events: auto;
-        }
-
-        .fog-burned::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('./assets/papier_brule.png') center/cover no-repeat !important;
-            border-radius: 8px;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .fog-burned img {
-            filter: grayscale(50%) brightness(70%);
-            z-index: 1;
-        }
-
-        /* Niveau 2 : Inconnu (Vieux Papier) - Totalement caché */
-        .fog-solid {
-            position: relative;
-            pointer-events: none;
-        }
-
-        .fog-solid::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('./assets/vieux_papier.png') center/cover no-repeat !important;
-            border-radius: 8px;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .fog-solid img {
-            display: none !important;
-        }
-
-        /* Backgrounds based on level */
-        body.level-1 {
-            background: linear-gradient(to bottom, #d7ccc8, #a1887f);
-            /* Old Paris Studio */
-        }
-
-        body.level-1::before {
-            background: none;
-            /* remove default clouds */
-        }
-
-
-
-        body.level-2 {
-            background: linear-gradient(to bottom, #bbdefb, #c8e6c9);
-            /* Flowery street */
-        }
-
-        body.level-3 {
-            background: linear-gradient(to bottom, #fff9c4, #ffcc80);
-            /* Chic Exam Room */
-        }
-
-        body.level-3::before {
-            background: none;
-        }
-
-
-
-
-        /* L'éclair au-dessus d'un objet prêt à être spawner */
-        .spawn-highlight {
-            position: relative;
-        }
-
-        .spawn-highlight::after {
-            content: '⚡';
-            position: absolute;
-            top: -15px;
-            right: -10px;
-            font-size: 20px;
-            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
-            animation: bounce 1s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from {
-                transform: translateY(0);
-            }
-
-            to {
-                transform: translateY(-5px);
-            }
-        }
-
-        #message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 18px;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-
-        .item:active {
-            cursor: grabbing;
-
-        }
-
-        .item-text {
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Inventaire Modal */
-        #inventory-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            max-height: 80vh;
-            /* Permettre le scroll vertical */
-            background-color: #2c3e50;
-            border: 2px solid silver;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            padding: 15px;
-            color: white;
-            box-sizing: border-box;
-            flex-direction: column;
-        }
-
-        #inventory-modal[style*="display: block"] {
-            display: flex !important;
-            /* Force flex quand affiché */
-        }
-
-        .inventory-content {
-            overflow-y: auto;
-            /* Scroll vertical */
-            flex-grow: 1;
-            padding-right: 5px;
-        }
-
-        /* Custom scrollbar pour l'inventaire */
-        .inventory-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .inventory-content::-webkit-scrollbar-track {
-            background: #1a252f;
-            border-radius: 3px;
-        }
-
-        .inventory-content::-webkit-scrollbar-thumb {
-            background: silver;
-            border-radius: 3px;
-        }
-
-        .inventory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid silver;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .inventory-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            /* 8 colonnes */
-            gap: 4px;
-        }
-
-        .inventory-slot {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-            aspect-ratio: 1 / 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-sizing: border-box;
-            container-type: inline-size;
-        }
-
-
-
-
-
-        /* Menus Overlays */
-        .overlay-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('assets/arriere_plan/fond_slot.png');
-            background-size: cover;
-            background-position: center;
-            background-color: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            flex-direction: column;
-        }
-
-        .menu-box {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-evenly !important;
-            /* Répartit les 3 slots équitablement */
-            align-items: center !important;
-            width: 60% !important;
-            /* Ajuste selon la largeur du meuble */
-            height: 61% !important;
-            /* Ajuste selon la hauteur totale des 3 étagères */
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            margin: 0 auto !important;
-            position: absolute !important;
-            top: 55% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            z-index: 10;
-        }
-
-        .menu-title {
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .menu-btn {
-            background: linear-gradient(to bottom, #2ecc71, #27ae60);
-            border: 2px solid #2ecc71;
-            border-radius: 10px;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            margin: 10px 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .menu-btn-secondary {
-            background: #34495e;
-            border-color: #7f8c8d;
-            font-size: 16px;
-            padding: 10px 20px;
-        }
-
-        .menu-input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 8px;
-            border: 2px solid silver;
-            background-color: #34495e;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .gender-select {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .gender-btn {
-            flex: 1;
-            padding: 10px;
-            margin: 0 5px;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-        }
-
-        .gender-btn.male {
-            background-color: #2980b9;
-        }
-
-        .gender-btn.female {
-            background-color: #8e44ad;
-        }
-
-        .gender-btn.selected {
-            border-color: white;
-        }
-
-
-
-        @keyframes shake {
-            0% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-5px);
-            }
-
-            50% {
-                transform: translateX(5px);
-            }
-
-            75% {
-                transform: translateX(-5px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
-        }
-
-        .shake-animation {
-            animation: shake 0.3s ease-in-out;
-        }
-
-
-        .item img {
-            width: 85% !important;
-            height: 85% !important;
-            object-fit: contain !important;
-            max-width: 100% !important;
-            display: block;
-            margin: auto;
-        }
-
-        /* Save Slots Styles */
-        .save-slot {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            transform: translateY(-8px) !important;
-            width: 100% !important;
-            height: 30% !important;
-            /* Occupe un tiers de la menu-box */
-            background: transparent !important;
-            border: none !important;
-        }
-
-        .save-slot-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ecf0f1;
-            display: none !important;
-        }
-
-        .save-name {
-            text-align: center !important;
-            width: 100% !important;
-            margin: 0 0 8px 0 !important;
-            font-weight: bold !important;
-            color: #ffffff !important;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        .save-slot-info {
-            font-size: 14px;
-            color: #bdc3c7;
-        }
-
-        .save-actions {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 6px !important;
-        }
-
-        .save-slot-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .save-slot button,
-        .start-menu button {
-            border-radius: 4px !important;
-            /* Presque carré pour rentrer dans le casier */
-            border: none !important;
-            padding: 8px 16px !important;
-            /* Compact pour ne pas dépasser */
-            font-size: 14px !important;
-            font-weight: bold !important;
-            font-family: 'Courier New', monospace !important;
-            /* Style industriel/photo */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
-            transition: all 0.2s ease;
-            margin: 0 5px !important;
-            /* Espace entre Jouer et Supprimer */
-            cursor: pointer;
-        }
-
-        /* Effet au toucher/survol */
-        .save-slot button:active,
-        .start-menu button:hover {
-            background-color: #ffffff !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
-        }
-
-        .btn-play,
-        .btn-delete {
-            background-color: #bdc3c7 !important;
-            color: #2c3e50 !important;
-        }
-
-        .btn-delete {
-            background-color: #e74c3c !important;
-            /* Rouge discret pour supprimer */
-            color: #fff !important;
-        }
-
-
-        .btn-new-game {
-            width: 80px !important;
-            height: 80px !important;
-            padding: 0 !important;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            white-space: normal !important;
-            /* Permet le retour à la ligne */
-            font-size: 12px !important;
-            background-color: #F8F9FA !important;
-            /* Blanc perle */
-            color: #2C3E50 !important;
-            /* Texte gris anthracite foncé */
-            border: 1px solid #ddd !important;
-            text-transform: uppercase;
-        }
-
-        .btn-new {
-            background-color: #f39c12 !important;
-            color: #fff !important;
-            text-transform: uppercase;
-        }
-
-        /* New App Container and Layout Styles */
-        .app-container {
-            background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
-            background-size: cover !important;
-            /* Force l'image jusqu'en bas */
-            background-position: center top !important;
-            height: 100vh !important;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-
-
-
-
-
-        #game-footer,
-        .controls {
-            position: absolute !important;
-            bottom: 20px !important;
-            left: 0;
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            z-index: 100;
-        }
-
-        #grid {
-            display: grid !important;
-            grid-template-columns: repeat(7, 1fr) !important;
-            grid-template-rows: repeat(9, 1fr) !important;
-            gap: 2px !important;
-            width: 100% !important;
-            max-width: 400px;
-            margin: 0 auto;
-            z-index: 101;
-            background: transparent;
-        }
-
-        .cell img,
-        .grid-cell img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-            display: block !important;
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            transform: none !important;
-        }
-
+        /* --- ÉCRAN DE CHARGEMENT --- */
         #loading-screen {
             position: fixed;
-            z-index: 999999 !important;
             top: 0;
             left: 0;
             width: 100vw;
@@ -1233,6 +31,7 @@
             justify-content: flex-end;
             align-items: center;
             padding-bottom: 10vh;
+            z-index: 999999;
             transition: opacity 0.8s ease;
         }
 
@@ -1243,1688 +42,290 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 1;
-            opacity: 1 !important;
-            filter: none !important;
+            opacity: 0.6;
         }
 
-        .film-strip-container {
-            position: relative;
-            z-index: 2;
+        .progress-bar {
             width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .film-strip-bar {
-            position: relative;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 0;
-            border-radius: 4px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
             overflow: hidden;
+            z-index: 2;
         }
 
-        .film-perforations {
-            height: 8px;
-            background-image: radial-gradient(circle, #fff 40%, transparent 45%);
-            background-size: 20px 20px;
-            background-repeat: repeat-x;
-            animation: movePerforations 0.5s linear infinite;
-            opacity: 0.8;
-        }
-
-        .film-progress {
-            height: 4px;
-            background: #fff;
+        #load-fill {
             width: 0%;
-            margin: 5px 0;
-            box-shadow: 0 0 15px #fff;
-            animation: fillProgress 3s cubic-bezier(0.1, 0, 0.3, 1) forwards;
+            height: 100%;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+            transition: width 3s linear;
         }
 
-        .loading-text {
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            letter-spacing: 3px;
-            margin-top: 15px;
-            text-shadow: 0 0 5px #fff;
-            animation: blink 1s infinite;
+        /* --- HUD : LA BARRE DORÉE --- */
+        #game-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background-image: url('assets/icones/new_barre.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10000;
+            padding: 0 5px;
+            box-sizing: border-box;
         }
 
-        @keyframes movePerforations {
-            from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 20px 0;
-            }
+        .header-item {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
         }
 
-        @keyframes fillProgress {
-            0% {
-                width: 0%;
-            }
-
-            100% {
-                width: 100%;
-            }
+        .hud-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+            object-fit: contain;
         }
 
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
+        .hud-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
         }
 
-        /* ---- REPRISE DE CONTRÔLE MANUELLE ---- */
+        #ui-level {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
 
-        /* 1. Placer la zone de jeu PILE sur le carré blanc dessiné */
-        .studio-container,
+        /* --- ZONE DE JEU --- */
+        .app-container {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            background-image: url('assets/arriere_plan/arriereplan_studio.png');
+            background-size: cover;
+            background-position: center;
+            display: none;
+            /* Affiché après loading */
+        }
+
+        /* Missions Clients */
+        #mission-area {
+            position: absolute;
+            top: 85px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        /* Grille de Merge */
         #grid-area {
-            /* Styles gérés par la déclaration précédente */
-            display: flex !important;
+            position: absolute;
+            top: 42%;
+            /* Ajustement sur le carré blanc du fond */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 50;
         }
 
-        /* 2. Réveiller les objets disparus */
         #grid {
-            display: grid !important;
-            width: 100% !important;
-            background: transparent !important;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            gap: 4px;
+            width: 100%;
         }
 
-        .grid-cell {
-            background: transparent !important;
-            /* Retire le vieux beige des cases */
-            border: 1px dashed rgba(0, 0, 0, 0.1) !important;
-            /* Petits pointillés légers pour t'aider à voir les cases */
+        .cell {
+            aspect-ratio: 1/1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        .grid-cell img {
-            display: block !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
+        /* Objets */
+        .item {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
         }
 
-        /* 3. Aspirer les boutons rebelles tout en bas */
-        #game-footer,
-        .controls,
-        button[onclick="resetSave()"] {
-            position: absolute !important;
-            bottom: 20px !important;
-            left: 0 !important;
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            z-index: 100 !important;
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Brouillard */
+        .fog-solid {
+            background-image: url('./assets/vieux_papier.png') !important;
+            background-size: cover;
+            z-index: 10;
+        }
+
+        .fog-burned {
+            background-image: url('./assets/papier_brule.png') !important;
+            background-size: cover;
+            z-index: 10;
+        }
+
+        /* Footer */
+        #game-footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .btn-footer {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #d35400;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-
-
-    </div>
-
     <div id="loading-screen">
-        <img src="assets/personnages_femme/femme_dem.png" alt="Loading" class="loading-bg">
-        <div class="film-strip-container">
-            <div class="film-strip-bar">
-                <div class="film-perforations"></div>
-                <div class="film-progress"></div>
-                <div class="film-perforations"></div>
-            </div>
-            <p class="loading-text">DÉVELOPPEMENT EN COURS...</p>
+        <img src="assets/personnages_femme/femme_dem.png" class="loading-bg">
+        <div class="progress-bar">
+            <div id="load-fill"></div>
         </div>
+        <p style="color: white; z-index: 2; margin-top: 10px; font-size: 12px;">CHARGEMENT DU STUDIO...</p>
     </div>
 
-    <!-- Écran de Démarrage -->
-    <div id="start-menu" class="overlay-menu"
-        style="background-image: url('assets/arriere_plan/fond_slot.png'); background-size: cover; background-position: center; width: 100vw; height: 100dvh; display: flex; justify-content: center; align-items: center;">
-        <div class="menu-box" style="background: transparent; border: none; box-shadow: none;">
-            <!-- menu-title hidden to align properly with shelves -->
-            <div class="menu-title" style="display: none;">Merge & Snap</div>
-            <div id="save-slots-container"
-                style="display: flex; flex-direction: column; justify-content: space-evenly; width: 100%; height: 100%;">
-                <!-- Slots will be generated here -->
+    <header id="game-header">
+        <div class="header-item">
+            <span id="ui-level">LVL 1</span>
+        </div>
+        <div class="header-item">
+            <img src="assets/icones/icon_eclair.png" class="hud-icon">
+            <div class="hud-column">
+                <span id="ui-energy">100</span>
+                <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f;">MAX</span>
             </div>
         </div>
-    </div>
-
-    <!-- Écran Création Personnage -->
-    <div id="character-creator"
-        style="display: none; width: 100vw; height: 100dvh; background-image: url('assets/decor_perso/dressing.png'); background-size: cover; background-position: center bottom; color: white; flex-direction: column; justify-content: flex-start; align-items: center; position: fixed; top: 0; left: 0; z-index: 50; padding-top: 5vh; box-sizing: border-box;">
-        <h2 style="display: none;">Créez votre Photographe</h2>
-
-        <div id="character-display"
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.8); width: 100%; height: 50vh; max-height: 450px; perspective: 1000px; z-index: 1;">
-            <img id="body-layer" src="./assets/decor_perso/homme_1_dressing.png"
-                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 1; transform-origin: bottom center;">
-            <img id="bottom-layer" src=""
-                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 10; transform-origin: bottom center;">
-            <img id="top-layer" src=""
-                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 20; transform-origin: bottom center;">
-            <img id="hair-layer" src=""
-                style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: auto; height: 100%; object-fit: contain; z-index: 30; transform-origin: bottom center;">
+        <div class="header-item">
+            <img src="assets/icones/icon_piece.png" class="hud-icon">
+            <span id="ui-coins">1500</span>
         </div>
-
-        <div
-            style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; padding-bottom: 40px; box-sizing: border-box; background: transparent !important; border-radius: 30px 30px 0 0; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-            <input type="text" id="player-name-input" placeholder="Votre Nom"
-                style="padding: 10px; margin: 10px; border-radius: 5px; border: none;">
-
-            <div class="gender-select"
-                style="display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px;">
-                <button class="gender-btn male" onclick="selectGender('homme', this)"
-                    style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #2980b9;">Homme</button>
-                <button class="gender-btn female" onclick="selectGender('femme', this)"
-                    style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid transparent; font-weight: bold; cursor: pointer; color: white; background-color: #8e44ad;">Femme</button>
-            </div>
-
-            <div
-                style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0; width: 80%; max-width: 300px;">
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Cheveux</span>
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Haut</span>
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <span style="color: white; font-weight: bold;">Bas</span>
-                    <button
-                        style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&gt;</button>
-                </div>
-            </div>
-
-            <button
-                style="background-color: #f39c12; color: #fff; padding: 15px 30px; font-size: 18px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"
-                onclick="validateCreation()">VALIDER MON HÉROS</button>
-            <button class="menu-btn menu-btn-secondary"
-                style="margin-top: 10px; background: transparent; border: none; text-decoration: underline; color: #bdc3c7;"
-                onclick="backToMenu()">Retour</button>
+        <div class="header-item">
+            <img src="assets/icones/icon_diamant.png" class="hud-icon">
+            <span id="ui-gems">50</span>
         </div>
-    </div>
+    </header>
 
-    <div id="game-ui" class="app-container"
-        style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;">
+    <div id="game-ui" class="app-container">
 
-        <header id="game-header">
-            <div id="header">
-                <!-- Emplacement 1 : Niveau -->
-                <div class="header-item">
-                    <div id="ui-level"
-                        style="font-size: 14px; font-weight: bold; color: white; text-align: center; line-height: 1.2;">
-                        LVL 1</div>
-                </div>
-                <!-- Emplacement 2 : Energie -->
-                <div class="header-item"
-                    style="display: flex; align-items: center; justify-content: center; position: relative;">
-                    <img src="assets/icones/icon_eclair.png" style="width: 20px; height: 20px; margin-right: 5px;" />
-                    <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
-                        <span id="ui-energy" style="font-size: 14px; font-weight: bold; color: white;">457</span>
-                        <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f; font-weight: bold;"></span>
-                    </div>
-                    <div id="ui-energy-fill" style="display: none;"></div> <!-- Fallback JS -->
-                </div>
-                <!-- Emplacement 3 : Pièces -->
-                <div class="header-item">
-                    <img src="assets/icones/icon_piece.png" style="width: 20px; height: 20px; margin-right: 5px;" />
-                    <span id="ui-coins" style="font-size: 14px; font-weight: bold; color: white;">427</span>
-                </div>
-                <!-- Emplacement 4 : Diamants -->
-                <div class="header-item">
-                    <img src="assets/icones/icon_diamant.png" style="width: 20px; height: 20px; margin-right: 5px;" />
-                    <span id="ui-gems" style="font-size: 14px; font-weight: bold; color: white;">18</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Dialog & Mission Zone -->
         <section id="mission-area"></section>
 
-        <!-- Confetti Container -->
-        <div class="confetti-container" id="confetti"></div>
-
-        <!-- Grille de Jeu -->
-
         <main id="grid-area">
-            <div class="studio-container">
-                <div class="grid" id="grid">
-                    <!-- Cellules générées ici -->
-                </div>
-            </div>
+            <div id="grid"></div>
         </main>
 
-        <!-- Bottom Controls -->
         <footer id="game-footer">
-            <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-                📦 <br> <span style="font-size: 10px;">Stock</span>
-            </button>
-            <button onclick="localStorage.clear(); window.location.reload();"
-                style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
-                Reset Save</button>
+            <button class="btn-footer" onclick="alert('Inventaire bientôt !')">📦 STOCK</button>
+            <button class="btn-footer" style="background:#e74c3c; box-shadow: 0 4px 0 #c0392b;" onclick="resetSave()">🔄
+                RESET</button>
         </footer>
-
-        <!-- Inventory Modal -->
-        <div id="inventory-modal">
-            <div class="inventory-header">
-                <span>📦 Stockage Studio</span>
-                <button class="inventory-close" onclick="closeInventory()">X</button>
-            </div>
-            <div class="inventory-content">
-                <div class="inventory-grid" id="inventory-grid">
-                    <!-- 160 slots seront générés en JS -->
-                </div>
-            </div>
-            <button id="buy-slots-btn" onclick="buyInventorySlots()"
-                style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
-                +8 cases (100 💎)</button>
-        </div>
-
-        <div id="message"></div>
-
-
     </div>
 
     <script>
-        const gridElement = document.getElementById('grid');
-        const cols = 7;
-        const rows = 9;
-        const gridSize = cols * rows;
-        let draggedItem = null;
-        let sourceCell = null;
-
-
-
-
-        window.buyInventorySlots = function () {
-            if (gems >= 100) {
-                gems -= 100;
-                document.getElementById('ui-gems').textContent = gems;
-
-                const invGrid = document.getElementById('inventory-grid');
-                const currentCount = document.querySelectorAll('.inventory-slot').length;
-                for (let i = 0; i < 8; i++) {
-                    const slot = document.createElement('div');
-                    slot.className = 'inventory-slot';
-                    slot.dataset.index = currentCount + i;
-                    invGrid.appendChild(slot);
-                }
-                showMessage("+8 cases d'inventaire !");
-            } else {
-                showMessage("Pas assez de diamants !");
-            }
-        };
-
-        // --- INVENTORY INIT ---
-        const inventoryCols = 8;
-        const inventoryRows = 20;
-        const inventorySize = inventoryCols * inventoryRows;
-
-        function initInventory() {
-            const invGrid = document.getElementById('inventory-grid');
-            for (let i = 0; i < inventorySize; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'inventory-slot';
-                slot.dataset.index = i;
-                invGrid.appendChild(slot);
-            }
-        }
-        initInventory();
-
-
-        // --- CLICK TO MOVE LOGIC ---
-        let isInventoryOpen = false;
-
-        window.openInventory = function () {
-            var modal = document.getElementById('inventory-modal');
-            if (modal) {
-                modal.style.display = 'flex';
-                isInventoryOpen = true;
-            }
-        };
-
-        window.closeInventory = function () {
-            var modal = document.getElementById('inventory-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                isInventoryOpen = false;
-            }
-        };
-
-
-        const invBtn = document.getElementById('inventory-btn');
-        if (invBtn) {
-            invBtn.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                invBtn.style.transform = 'scale(1.1)';
-            });
-            invBtn.addEventListener('dragleave', (e) => {
-                invBtn.style.transform = '';
-            });
-            invBtn.addEventListener('drop', (e) => {
-                e.preventDefault();
-                invBtn.style.transform = '';
-                if (draggedItem && draggedItem.parentElement.classList.contains('cell')) {
-                    const emptySlots = Array.from(document.querySelectorAll('.inventory-slot')).filter(s => !s.hasChildNodes());
-                    if (emptySlots.length > 0) {
-                        emptySlots[0].appendChild(draggedItem);
-                    } else {
-                        showMessage("Inventaire plein !");
-                    }
-                }
-            });
-        }
-
-        function handleItemClick(e) {
-            if (!isInventoryOpen) return;
-
-            const item = e.currentTarget;
-            if (item.dataset.locked === 'true') {
-                showMessage("Cet objet est verrouillé !");
-                return;
-            }
-            const parent = item.parentElement;
-
-            if (parent.classList.contains('cell')) {
-                // Déplacer vers l'inventaire
-                const emptySlots = Array.from(document.querySelectorAll('.inventory-slot')).filter(s => !s.hasChildNodes());
-                if (emptySlots.length > 0) {
-                    emptySlots[0].appendChild(item);
-                } else {
-                    showMessage("Inventaire plein !");
-                }
-            } else if (parent.classList.contains('inventory-slot')) {
-                // Déplacer vers la grille principale
-                const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
-                if (emptyCells.length > 0) {
-                    emptyCells[0].appendChild(item);
-                } else {
-                    showMessage("Grille principale pleine !");
-                }
-            }
-            saveGame();
-        }
-
-
-
-
-
-        // --- PROFIL & MENUS ---
-        let selectedGender = null;
-        let currentSlot = 1;
-        let currentCharacter = { gender: 'femme', hair: 1, top: 1, bottom: 1 };
-
-        function renderMainMenu() {
-            document.getElementById('game-ui').style.display = 'none';
-            document.getElementById('character-creator').style.display = 'none';
-            document.getElementById('start-menu').style.display = 'flex';
-
-            const container = document.getElementById('save-slots-container');
-            container.innerHTML = '';
-
-            for (let i = 1; i <= 3; i++) {
-                const saved = localStorage.getItem(`save_slot_${i}`);
-                const slotDiv = document.createElement('div');
-                slotDiv.className = 'save-slot';
-
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    slotDiv.innerHTML = `
-                        <p class="save-name">${data.name || 'Inconnu'}</p>
-                        <div class="save-actions">
-                            <button class="save-slot-btn btn-play" onclick="playSlot(${i})">Jouer</button>
-                            <button class="save-slot-btn btn-delete" onclick="deleteSlot(${i})">🗑️</button>
-                        </div>
-                    `;
-                } else {
-                    slotDiv.innerHTML = `
-                        <div class="save-slot-title">Slot ${i}</div>
-                        <button class="save-slot-btn btn-new-game" onclick="newGameSlot(${i})">Nouvelle
-
-
-Partie</button>
-                    `;
-                }
-                container.appendChild(slotDiv);
-            }
-        }
-
-        function playSlot(slot) {
-            currentSlot = slot;
-            document.getElementById('start-menu').style.display = 'none';
-            document.getElementById('game-ui').style.display = 'flex';
-
-            // On s'assure que la grille est affichée
-            const gridEl = document.getElementById('grid');
-            if (gridEl) { gridEl.style.display = 'grid'; }
-
-            startGame();
-        }
-
-        function deleteSlot(slot) {
-            if (confirm("Voulez-vous vraiment effacer cette sauvegarde ?")) {
-                localStorage.removeItem(`save_slot_${slot}`);
-                renderMainMenu();
-            }
-        }
-
-        function newGameSlot(slot) {
-            currentSlot = slot;
-            // Hide start menu and show character creator
-            document.getElementById('start-menu').style.display = 'none';
-            document.getElementById('character-creator').style.display = 'flex';
-        }
-
-        function backToMenu() {
-            document.getElementById('character-creator').style.display = 'none';
-            renderMainMenu();
-        }
-
-        function selectGender(gender, btnElement) {
-            selectedGender = gender;
-            currentCharacter.gender = gender;
-
-            const bodyLayer = document.getElementById('body-layer');
-            if (gender === 'femme') {
-                bodyLayer.src = 'assets/decor_perso/femme_dressing.png';
-            } else if (gender === 'homme') {
-                bodyLayer.src = 'assets/decor_perso/homme_1_dressing.png';
-            }
-
-            document.querySelectorAll('.gender-btn').forEach(btn => btn.classList.remove('selected'));
-            btnElement.classList.add('selected');
-        }
-
-        function validateCreation() {
-            console.log('Valider mon Héros');
-            const nameInput = document.getElementById('player-name-input').value.trim();
-            if (!nameInput) {
-                alert("Veuillez entrer un nom.");
-                return;
-            }
-            if (!selectedGender) {
-                alert("Veuillez choisir un genre.");
-                return;
-            }
-
-            playerName = nameInput;
-            playerGender = selectedGender;
-
-            // Clear current variables for new game
-            currentLevel = 1;
-            energy = 100; // Reset
-            coins = 0;
-            gems = 0;
-            currentMissionIndex = 0;
-
-            document.getElementById('character-creator').style.display = 'none';
-            document.getElementById('game-ui').style.display = 'flex';
-
-            // On s'assure que la grille est affichée
-            const gridEl = document.getElementById('grid');
-            if (gridEl) { gridEl.style.display = 'grid'; }
-
-            startGame();
-        }
-
-
-
-        function startGame() {
-            document.getElementById('ui-level').innerHTML = `LVL ${currentLevel} <br> <span style="font-size: 10px;">${playerName}</span>`;
-            initGrid();
-        }
-
-
-        // --- GAME STATE & SAVE SYSTEM ---
-        let currentLevel = 1;
-        let energy = 457;
-        let coins = 427;
-        let playerName = "C";
-        let playerGender = "female";
-        let gems = 18;
-        let currentMissionIndex = 0; // 0, 1, 2 for the 3 missions per level
-
-        const MAX_ENERGY = 100;
-        const ENERGY_REGEN_TIME = 90000; // 1m30s
-        let lastEnergyTime = Date.now();
-
-        function updateEnergyTimer() {
-            const timerEl = document.getElementById('ui-energy-timer');
-            if (energy >= MAX_ENERGY) {
-                lastEnergyTime = Date.now(); // Reset timer so it doesn't instantly jump when energy drops
-                timerEl.textContent = 'MAX';
-            } else {
-                let elapsed = Date.now() - lastEnergyTime;
-                if (elapsed >= ENERGY_REGEN_TIME) {
-                    energy++;
-                    lastEnergyTime += ENERGY_REGEN_TIME; // Advance time by exactly one cycle
-                    document.getElementById('ui-energy').textContent = energy;
-                    let fillEl = document.getElementById('ui-energy-fill');
-                    if (fillEl) fillEl.style.width = Math.min(100, (energy / MAX_ENERGY) * 100) + '%';
-                    saveGame();
-
-                    if (energy >= MAX_ENERGY) {
-                        timerEl.textContent = 'MAX';
-                        return;
-                    }
-                    elapsed = Date.now() - lastEnergyTime; // Recalculate for display
-                }
-
-                const remaining = ENERGY_REGEN_TIME - elapsed;
-                const totalSeconds = Math.floor(remaining / 1000);
-                const minutes = Math.floor(totalSeconds / 60);
-                const seconds = totalSeconds % 60;
-                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-        }
-        setInterval(updateEnergyTimer, 1000);
-
-        const levelsData = {
-            1: {
-                mentor: 'Prof. Alistair',
-                avatar: '👨‍🦳',
-                missions: [
-                    { text: 'Appareil (Niv 3)', req: { family: 'A', level: 3 }, reward: 100 },
-                    { text: 'Objectif (Niv 3)', req: { family: 'B', level: 3 }, reward: 150 },
-                    { text: 'Appareil (Niv 4)', req: { family: 'A', level: 4 }, reward: 200 }
-                ]
-            },
-            2: {
-                mentor: 'Prof. Elena',
-                avatar: '👩‍🏫',
-                missions: [
-                    { text: 'Objectif (Niv 5)', req: { family: 'B', level: 5 }, reward: 300 },
-                    { text: 'Pellicule (Niv 5)', req: { family: 'C', level: 5 }, reward: 300 },
-                    { text: 'Téléphone (Niv 5)', req: { family: 'D', level: 5 }, reward: 400 }
-                ]
-            },
-            3: {
-                mentor: 'Prof. Dupont',
-                avatar: '👨‍🎨',
-                missions: [
-                    { text: 'Objectif (Niv 6)', req: { family: 'B', level: 6 }, reward: 500 },
-                    { text: 'Pellicule (Niv 6)', req: { family: 'C', level: 6 }, reward: 500 },
-                    { text: 'Téléphone (Niv 7)', req: { family: 'D', level: 7 }, reward: 600 }
-                ]
-            },
-            4: {
-                mentor: 'Directrice',
-                avatar: '👩‍💼',
-                missions: [
-                    { text: 'Appareil (Niv 8)', req: { family: 'A', level: 8 }, reward: 800 },
-                    { text: 'Objectif (Niv 8)', req: { family: 'B', level: 8 }, reward: 800 },
-                    { text: 'Pellicule (Niv 8)', req: { family: 'C', level: 8 }, reward: 900 }
-                ]
-            },
-            5: {
-                mentor: 'Examen Final',
-                avatar: '🎓',
-                missions: [
-                    { text: 'Téléphone (Niv 9)', req: { family: 'D', level: 9 }, reward: 1200 },
-                    { text: 'Appareil (Niv 10)', req: { family: 'A', level: 10 }, reward: 1500 },
-                    { text: 'Objectif (Niv 10)', req: { family: 'B', level: 10 }, reward: 2000 }
-                ]
-            }
-        };
-
-        function saveGame() {
-            const gridCells = [];
-            const cells = document.querySelectorAll('.cell');
-            const fogStates = [];
-            cells.forEach((cell, index) => {
-                fogStates.push(cell.dataset.fogState || 'clear');
-                if (cell.firstChild) {
-                    gridCells.push({
-                        index: index,
-                        family: cell.firstChild.dataset.family,
-                        level: cell.firstChild.dataset.level,
-                        isLocked: cell.firstChild.dataset.locked === 'true'
-                    });
-                }
-            });
-
-            const state = {
-                name: playerName,
-                gender: playerGender,
-                level: currentLevel,
-                energy: energy,
-                coins: coins,
-                gems: gems,
-                mission: currentMissionIndex,
-                grid: gridCells,
-                fogStates: fogStates,
-                lastEnergyTime: lastEnergyTime
-            };
-            localStorage.setItem(`save_slot_${currentSlot}`, JSON.stringify(state));
-        }
-
-        function loadGame() {
-            const saved = localStorage.getItem(`save_slot_${currentSlot}`);
-            if (saved) {
-                const state = JSON.parse(saved);
-                playerName = state.name || "C";
-                playerGender = state.gender || "female";
-                currentLevel = state.level || 1;
-                energy = state.energy !== undefined ? state.energy : 457;
-                coins = state.coins || 427;
-                gems = state.gems || 18;
-                currentMissionIndex = state.mission || 0;
-
-                const savedLastEnergyTime = state.lastEnergyTime || Date.now();
-                if (energy < MAX_ENERGY) {
-                    const elapsedOffline = Date.now() - savedLastEnergyTime;
-                    const gainedEnergy = Math.floor(elapsedOffline / ENERGY_REGEN_TIME);
-
-                    if (gainedEnergy > 0) {
-                        energy += gainedEnergy;
-                        if (energy >= MAX_ENERGY) {
-                            energy = MAX_ENERGY;
-                            lastEnergyTime = Date.now();
-                        } else {
-                            // Preserve the remaining fractional time towards the next point
-                            lastEnergyTime = Date.now() - (elapsedOffline % ENERGY_REGEN_TIME);
-                        }
-                    } else {
-                        lastEnergyTime = savedLastEnergyTime;
-                    }
-                } else {
-                    lastEnergyTime = Date.now();
-                }
-
-                // Cap level if needed
-                if (currentLevel > 3) {
-                    currentLevel = 3;
-                    currentMissionIndex = 2;
-                }
-
-                if (state.grid) {
-                    // Rebuild grid
-                    const cells = document.querySelectorAll('.cell');
-                    cells.forEach((cell, index) => {
-                        cell.innerHTML = ''; // Clear before loading
-                        cell.classList.remove('fog-solid', 'fog-burned');
-                        let fogState = 'clear';
-                        if (state.fogStates && state.fogStates[index]) {
-                            fogState = state.fogStates[index];
-                        }
-                        cell.dataset.fogState = fogState;
-                        if (fogState === 'solid') {
-                            cell.classList.add('fog-solid');
-                        } else if (fogState === 'burned') {
-                            cell.classList.add('fog-burned');
-                        }
-                    });
-
-                    state.grid.forEach(itemData => {
-                        if (cells[itemData.index]) {
-                            // Support legacy save states
-                            let isLocked = false;
-                            if (itemData.isLocked !== undefined) {
-                                isLocked = itemData.isLocked;
-                            } else if (itemData.locked === true) {
-                                isLocked = true;
-                            } else if (itemData.isLocked) {
-                                isLocked = true;
-                            }
-                            cells[itemData.index].appendChild(createItemElement(itemData.family, parseInt(itemData.level), isLocked));
-                        }
-                    });
-                }
-            }
-            updateUI();
-        }
-
-        function updateUI() {
-            // Update Background
-            document.body.className = `level-${currentLevel}`;
-
-            // Update HUD
-            document.getElementById('ui-level').innerHTML = `LVL ${currentLevel} <br> <span style=\"font-size: 10px;\">${playerName}</span>`;
-            document.getElementById('ui-coins').textContent = coins;
-            document.getElementById('ui-energy').textContent = energy;
-            document.getElementById('ui-gems').textContent = gems;
-
-            let fillEl = document.getElementById('ui-energy-fill');
-            if (fillEl) {
-                fillEl.style.width = Math.min(100, (energy / MAX_ENERGY) * 100) + '%';
-            }
-
-            // Update Dialog/Mission
-            const levelData = levelsData[currentLevel];
-            if (!levelData) return; // End of game
-
-            const missionArea = document.getElementById('mission-area');
-            missionArea.innerHTML = '';
-
-            const avatars = [
-                'assets/clients/femme_lunette2.png',
-                'assets/clients/homme_prof_2.png'
-            ];
-
-
-
-            // Limit to two missions
-            const missionsToRender = levelData.missions.slice(0, 2);
-
-            missionsToRender.forEach((mission, index) => {
-                const card = document.createElement('div');
-                card.className = 'mission-card';
-                if (index < currentMissionIndex) {
-                    card.classList.add('completed');
-                } else if (index === currentMissionIndex) {
-                    card.classList.add('active');
-                    card.id = 'active-mission-card';
-                }
-
-                const clientDiv = document.createElement('div');
-                clientDiv.className = 'mission-card-client';
-                const avatarImg = document.createElement('img');
-                avatarImg.src = avatars[index % avatars.length];
-                clientDiv.appendChild(avatarImg);
-
-                const reqDiv = document.createElement('div');
-                reqDiv.className = 'mission-card-req';
-
-                if (mission.req.family === 'A') {
-                    reqDiv.innerHTML = `<img src="assets/Famille_A/appareil_lvl${mission.req.level}.png?v=2" />`;
-                } else if (mission.req.family === 'B') {
-                    reqDiv.innerHTML = `<img src="assets/Famille_B/objectif_lvl${mission.req.level}.png" />`;
-                } else if (mission.req.family === 'C') {
-                    reqDiv.innerHTML = `<img src="assets/Famille_C/pellicule_lvl${mission.req.level}.png" />`;
-                } else if (mission.req.family === 'D') {
-                    reqDiv.innerHTML = `<img src="assets/Famille_D/telephone_lvl${mission.req.level}.png" />`;
-                } else {
-                    const nameParts = (itemNames[mission.req.family] && itemNames[mission.req.family][mission.req.level - 1] ? itemNames[mission.req.family][mission.req.level - 1] : "Obj").split(" ");
-                    reqDiv.textContent = nameParts[0].substring(0, 2); // Fallback emoji/text
-                    // Try to extract emoji from name
-                    if (itemNames[mission.req.family]) {
-                        const emojiMatch = itemNames[mission.req.family][mission.req.level - 1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}/gu);
-                        if (emojiMatch) {
-                            reqDiv.textContent = emojiMatch[0];
-                        }
-                    }
-                }
-
-                const rewardDiv = document.createElement('div');
-                rewardDiv.className = 'mission-card-reward';
-                rewardDiv.textContent = `🪙 +${mission.reward}`;
-
-                card.appendChild(clientDiv);
-                card.appendChild(reqDiv);
-                card.appendChild(rewardDiv);
-
-                missionArea.appendChild(card);
-            });
-
-            checkMissionStatus();
-        }
-
-        function checkMissionStatus() {
-            console.log("checkMissionStatus called");
-            if (currentLevel > 5 || !levelsData[currentLevel]) return;
-            const req = levelsData[currentLevel].missions[currentMissionIndex].req;
-            const itemsOnGrid = document.querySelectorAll('.item');
-            let hasItem = false;
-
-            itemsOnGrid.forEach(item => {
-                if (item.dataset.family === req.family && parseInt(item.dataset.level) === req.level) {
-                    hasItem = true;
-                }
-            });
-
-            const activeCard = document.getElementById('active-mission-card');
-            if (activeCard) {
-                if (hasItem) {
-                    activeCard.classList.add('active-validable');
-                    activeCard.onclick = () => validateMission(currentMissionIndex);
-                } else {
-                    activeCard.classList.remove('active-validable');
-                    activeCard.onclick = null;
-                }
-            }
-        }
-
-        function validateMission(index) {
-            if (index !== currentMissionIndex) return;
-
-            const mission = levelsData[currentLevel].missions[currentMissionIndex];
-
-            // Find and consume the item
-            const itemsOnGrid = document.querySelectorAll('.item');
-            let itemConsumed = false;
-            itemsOnGrid.forEach(item => {
-                if (!itemConsumed && item.dataset.family === mission.req.family && parseInt(item.dataset.level) === mission.req.level) {
-                    item.parentElement.removeChild(item);
-                    itemConsumed = true;
-                }
-            });
-
-            if (itemConsumed) {
-                // Reward
-                coins += mission.reward;
-                energy += 15; // +15 Energy Bonus
-
-                // Advance Mission
-                currentMissionIndex++;
-                if (currentMissionIndex >= 3) {
-                    currentMissionIndex = 0;
-                    currentLevel++;
-                    showLevelUp();
-                }
-
-                if (currentLevel > 5) {
-                    currentLevel = 5; // Max level reached
-                    currentMissionIndex = 2;
-                    showMessage("Toutes les missions terminées !");
-                }
-
-                saveGame();
-                updateUI();
-            }
-        }
-
-        function showLevelUp() {
-            showMessage(`Félicitations Clara ! Niveau ${currentLevel} débloqué`);
-            fireConfetti();
-        }
-
-        function fireConfetti() {
-            const container = document.getElementById('confetti');
-            container.style.display = 'block';
-            container.innerHTML = '';
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
-
-            for (let i = 0; i < 100; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                conf.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(conf);
-            }
+        // --- CONFIGURATION ---
+        let energy = 100;
+        let coins = 1500;
+        let gems = 50;
+        let level = 1;
+
+        // --- CHARGEMENT ---
+        window.addEventListener('load', () => {
+            const fill = document.getElementById('load-fill');
+            fill.style.width = '100%';
 
             setTimeout(() => {
-                container.style.display = 'none';
-            }, 5000);
-        }
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('game-ui').style.display = 'block';
+                    initGrid();
+                }, 800);
+            }, 3500);
+        });
 
-        // --- END GAME STATE ---
-
-
-        const itemNames = {
-            'A': ['Appareil Lvl 1', 'Appareil Lvl 2', 'Appareil Lvl 3', 'Appareil Lvl 4', 'Appareil Lvl 5', 'Appareil Lvl 6', 'Appareil Lvl 7', 'Appareil Lvl 8', 'Appareil Lvl 9', 'Appareil Lvl 10'],
-            'B': ['Objectif Lvl 1', 'Objectif Lvl 2', 'Objectif Lvl 3', 'Objectif Lvl 4', 'Objectif Lvl 5', 'Objectif Lvl 6', 'Objectif Lvl 7', 'Objectif Lvl 8', 'Objectif Lvl 9', 'Objectif Lvl 10'],
-            'C': ['Pellicule Lvl 1', 'Pellicule Lvl 2', 'Pellicule Lvl 3', 'Pellicule Lvl 4', 'Pellicule Lvl 5', 'Pellicule Lvl 6', 'Pellicule Lvl 7', 'Pellicule Lvl 8', 'Pellicule Lvl 9', 'Pellicule Lvl 10'],
-            'D': ['Téléphone Lvl 1', 'Téléphone Lvl 2', 'Téléphone Lvl 3', 'Téléphone Lvl 4', 'Téléphone Lvl 5', 'Téléphone Lvl 6', 'Téléphone Lvl 7', 'Téléphone Lvl 8', 'Téléphone Lvl 9', 'Téléphone Lvl 10']
-        };
-        const families = ['A', 'B', 'C', 'D'];
-
-
-
+        // --- LOGIQUE GRILLE ---
         function initGrid() {
-            gridElement.innerHTML = ''; // clear grid before init
-            for (let i = 0; i < gridSize; i++) {
+            const gridEl = document.getElementById('grid');
+            gridEl.innerHTML = '';
+
+            for (let i = 0; i < 63; i++) { // 7x9
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.index = i;
 
-                cell.addEventListener('dragover', handleDragOver);
-                cell.addEventListener('dragenter', handleDragEnter);
-                cell.addEventListener('dragleave', handleDragLeave);
-                cell.addEventListener('drop', handleDrop);
-
-                gridElement.appendChild(cell);
-            }
-
-            loadGame(); // Load save here
-
-            // Generate initial items only if grid is still completely empty (meaning no save was loaded)
-            const cells = document.querySelectorAll('.cell');
-            let hasItems = Array.from(cells).some(c => c.hasChildNodes());
-
-            if (!hasItems) {
-                // Initialisation du Brouillard
-                // 9 cases libres autour du générateur
-                const freeIndices = [2, 3, 4, 9, 10, 11, 16, 17, 18];
-                const burnedIndices = [1, 5, 8, 12, 15, 19, 23, 24, 25];
-
-                // Cases Spéciales
-                const papierIndices = [8, 12, 24];
-                const coffreIndices = [19, 21, 25];
-                const sortieIndex = 62; // Dernière case en bas
-
-                for (let i = 0; i < gridSize; i++) {
-                    const cell = cells[i];
-                    if (freeIndices.includes(i)) {
-                        cell.dataset.fogState = 'clear';
-                    } else if (burnedIndices.includes(i)) {
-                        cell.dataset.fogState = 'burned';
-                        cell.classList.add('fog-burned');
-                        if (papierIndices.includes(i)) {
-                            cell.appendChild(createItemElement('PAPIER', 1, true));
-                        } else if (coffreIndices.includes(i)) {
-                            cell.appendChild(createItemElement('COFFRE', 1, true));
-                        } else {
-                            const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
-                            cell.appendChild(createItemElement('A', randomLevel, true));
-                        }
-                    } else {
-                        cell.dataset.fogState = 'solid';
-                        cell.classList.add('fog-solid');
-                        if (i === sortieIndex) {
-                            cell.appendChild(createItemElement('SORTIE', 1, true));
-                        } else if (papierIndices.includes(i)) {
-                            cell.appendChild(createItemElement('PAPIER', 1, true));
-                        } else if (coffreIndices.includes(i)) {
-                            cell.appendChild(createItemElement('COFFRE', 1, true));
-                        } else {
-                            const randomLevel = Math.floor(Math.random() * 4) + 1; // Niveaux 1 à 4
-                            cell.appendChild(createItemElement('A', randomLevel, true));
-                        }
-                    }
+                // Ajouter le générateur en case 3 (milieu haut)
+                if (i === 3) {
+                    cell.innerHTML = `<div class="item" onclick="generateItem()">📦</div>`;
                 }
 
-                // Le Spawner en [0,3] (index 3)
-                const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
-                if (generatorCell) generatorCell.appendChild(createItemElement("GENERATOR", 1));
-
-                saveGame();
-            } else {
-                // Ensure generator is always present
-                const generatorCell = document.querySelector(".cell[data-index=\"3\"]");
-                if (generatorCell && !generatorCell.querySelector('[data-family="GENERATOR"]')) {
-                    if (generatorCell.firstChild) {
-                        // Move whatever is there to the first available slot
-                        const emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
-                        if (emptyCells.length > 0) {
-                            emptyCells[0].appendChild(generatorCell.firstChild);
-                        }
-                    }
-                    generatorCell.appendChild(createItemElement("GENERATOR", 1));
-                }
+                gridEl.appendChild(cell);
             }
         }
 
+        function generateItem() {
+            if (energy <= 0) return alert("Plus d'énergie !");
 
+            const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
+            if (emptyCells.length === 0) return alert("Grille pleine !");
 
-        function createItemElement(family, level, isLocked = false) {
-            const item = document.createElement('div');
-            item.className = 'item';
+            energy--;
+            document.getElementById('ui-energy').textContent = energy;
 
-            item.dataset.family = family;
-            item.dataset.level = level;
-            item.dataset.locked = isLocked ? 'true' : 'false';
-
-            const contentDiv = document.createElement('div');
-
-            if (family === "GENERATOR") {
-                item.draggable = false;
-                item.dataset.locked = 'true';
-                contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📦</span>';
-                item.addEventListener('click', handleGeneratorClick);
-            } else if (family === "PAPIER" || family === "COFFRE" || family === "SORTIE") {
-                item.draggable = false;
-                item.dataset.locked = 'true';
-
-                if (family === "PAPIER") {
-                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">📄</span>';
-                } else if (family === "COFFRE") {
-                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">🧰</span>';
-                } else if (family === "SORTIE") {
-                    contentDiv.innerHTML = '<span style="font-size: clamp(2rem, 8cqw, 3rem);">🚪</span>';
-                }
-
-                item.addEventListener('click', function (e) {
-                    if (this.parentElement.dataset.fogState !== 'clear') return;
-
-                    const myFamily = this.dataset.family;
-                    const cell = this.parentElement;
-
-                    if (myFamily === "PAPIER") {
-                        energy += 15;
-                        document.getElementById('ui-energy').textContent = energy;
-                        showMessage("+15 Énergie !");
-                        cell.removeChild(this);
-                        cell.dataset.unlocked = 'true';
-                        saveGame();
-                    } else if (myFamily === "COFFRE") {
-                        const cellIndex = parseInt(cell.dataset.index);
-                        const adjacentIndices = [
-                            cellIndex - cols, // Top
-                            cellIndex + cols, // Bottom
-                            (cellIndex % cols !== 0) ? cellIndex - 1 : -1, // Left
-                            (cellIndex % cols !== cols - 1) ? cellIndex + 1 : -1 // Right
-                        ].filter(idx => idx >= 0 && idx < gridSize);
-
-                        const cells = document.querySelectorAll('.cell');
-                        let emptyAdjacents = adjacentIndices.map(idx => cells[idx]).filter(c => c && !c.hasChildNodes());
-
-                        const numDrops = Math.floor(Math.random() * 3) + 1; // 1 to 3 items
-                        let spawned = 0;
-                        for (let i = 0; i < numDrops; i++) {
-                            const f = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)];
-                            const l = Math.floor(Math.random() * 2) + 1;
-
-                            if (emptyAdjacents.length > 0) {
-                                const targetCell = emptyAdjacents.pop();
-                                targetCell.appendChild(createItemElement(f, l, false));
-                                spawned++;
-                            } else {
-                                // Fallback to any empty cell
-                                if (spawnSpecificItem(f, l, false)) spawned++;
-                            }
-                        }
-                        if (spawned > 0) {
-                            showMessage("Coffre ouvert !");
-                            cell.removeChild(this);
-                            cell.dataset.unlocked = 'true';
-                            saveGame();
-                        } else {
-                            showMessage("Plus de place pour le coffre !");
-                        }
-                    } else if (myFamily === "SORTIE") {
-                        if (currentLevel >= 5 && currentMissionIndex >= 2) {
-                            showMessage("Vous avez ouvert la Sortie ! Victoire !");
-                            cell.removeChild(this);
-                            cell.dataset.unlocked = 'true';
-                            saveGame();
-                        } else {
-                            showMessage("Finissez toutes les missions d'abord !");
-                        }
-                    }
-                });
-            } else {
-                item.draggable = !isLocked;
-
-                contentDiv.style.width = '100%';
-                contentDiv.style.height = '100%';
-                contentDiv.style.display = 'flex';
-                contentDiv.style.justifyContent = 'center';
-                contentDiv.style.alignItems = 'center';
-                contentDiv.style.pointerEvents = 'none';
-                contentDiv.style.setProperty("background", "transparent", "important");
-                contentDiv.style.setProperty("background-color", "transparent", "important");
-                contentDiv.style.setProperty("background-image", "none", "important");
-                contentDiv.style.setProperty("border", "none", "important");
-
-                item.style.setProperty("background", "transparent", "important");
-                item.style.setProperty("background-color", "transparent", "important");
-                item.style.setProperty("background-image", "none", "important");
-                item.style.setProperty("border", "none", "important");
-                item.style.setProperty("box-shadow", "none", "important");
-
-                if (family === "A") {
-                    const img = document.createElement("img");
-                    img.src = `assets/Famille_A/appareil_lvl${level}.png?v=2`;
-                    img.style.setProperty("background-color", "transparent", "important");
-                    img.style.setProperty("background-image", "none", "important");
-                    img.style.setProperty("border", "none", "important");
-                    contentDiv.appendChild(img);
-                } else if (family === "B") {
-                    const img = document.createElement("img");
-                    img.src = `assets/Famille_B/objectif_lvl${level}.png`;
-                    img.style.setProperty("background-color", "transparent", "important");
-                    img.style.setProperty("background-image", "none", "important");
-                    img.style.setProperty("border", "none", "important");
-                    contentDiv.appendChild(img);
-                } else if (family === "C") {
-                    const img = document.createElement("img");
-                    img.src = `assets/Famille_C/pellicule_lvl${level}.png`;
-                    img.style.setProperty("background-color", "transparent", "important");
-                    img.style.setProperty("background-image", "none", "important");
-                    img.style.setProperty("border", "none", "important");
-                    contentDiv.appendChild(img);
-                } else if (family === "D") {
-                    const img = document.createElement("img");
-                    img.src = `assets/Famille_D/telephone_lvl${level}.png`;
-                    img.style.setProperty("background-color", "transparent", "important");
-                    img.style.setProperty("background-image", "none", "important");
-                    img.style.setProperty("border", "none", "important");
-                    contentDiv.appendChild(img);
-                } else {
-                    const textSpan = document.createElement("span");
-                    textSpan.className = "item-text";
-                    let nameParts = (itemNames[family] && itemNames[family][level - 1] ? itemNames[family][level - 1] : (family + " Lvl " + level)).split(" ");
-                    if (nameParts.length > 1) {
-                        textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
-                    } else {
-                        textSpan.innerHTML = `<span style="font-size: clamp(2rem, 8cqw, 3rem); background-color: transparent !important; background-image: none !important; border: none !important;">${nameParts[0]}</span>`;
-                    }
-                    contentDiv.appendChild(textSpan);
-                }
-
-                if (!isLocked) {
-                    item.addEventListener('dragstart', handleDragStart);
-                    item.addEventListener('touchstart', handleTouchStart, { passive: false });
-                    item.addEventListener('touchmove', handleTouchMove, { passive: false });
-                    item.addEventListener('touchend', handleTouchEnd);
-                    item.addEventListener('touchcancel', handleTouchEnd);
-                }
-                item.addEventListener('dragend', handleDragEnd);
-                item.addEventListener('click', handleItemClick);
-            }
-
-            item.appendChild(contentDiv);
-
-            return item;
+            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+            // Exemple Famille A Niveau 1
+            newItem.innerHTML = `<img src="assets/Famille_A/appareil_lvl1.png">`;
+            randomCell.appendChild(newItem);
         }
 
-
-
-
-
-        function spawnSpecificItem(family, level, isLocked = false) {
-            const cells = document.querySelectorAll('.cell');
-            let emptyCells = Array.from(cells).filter(c => !c.hasChildNodes());
-
-            if (emptyCells.length > 0) {
-                let cellToUse = emptyCells[0]; // first available slot
-                if (family !== 'A' || isLocked) {
-                    // Placer aléatoirement pour les autres (setup)
-                    cellToUse = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                }
-                cellToUse.appendChild(createItemElement(family, level, isLocked));
-                checkMissionStatus(); // Check mission on spawn
-                return true;
-            } else {
-                showMessage('Grille principale pleine !');
-                return false;
+        function resetSave() {
+            if (confirm("Tout effacer ?")) {
+                localStorage.clear();
+                window.location.reload();
             }
         }
-
-
-        function showMessage(msg) {
-            const msgEl = document.getElementById('message');
-            msgEl.textContent = msg;
-            msgEl.style.opacity = '1';
-            setTimeout(() => { msgEl.style.opacity = '0'; }, 1500);
-        }
-
-        function handleDragStart(e) {
-            if (this.dataset.locked === 'true') {
-                e.preventDefault();
-                return;
-            }
-            draggedItem = this;
-            sourceCell = this.parentElement;
-            setTimeout(() => {
-                this.style.opacity = '0.7';
-                this.style.zIndex = '100';
-            }, 0);
-        }
-
-        function handleDragEnd(e) {
-            this.style.opacity = '1';
-            this.style.zIndex = '';
-            draggedItem = null;
-            sourceCell = null;
-        }
-
-        // --- TOUCH EVENTS ---
-        function handleTouchStart(e) {
-            if (this.dataset.locked === 'true') return;
-            e.preventDefault(); // Prevent scroll
-            draggedItem = this;
-            sourceCell = this.parentElement;
-
-            // Set up absolute positioning for visual dragging
-            const rect = this.getBoundingClientRect();
-            this.style.position = 'absolute';
-            this.style.zIndex = '1000';
-            this.style.pointerEvents = 'none'; // so elementFromPoint works later
-            this.style.width = rect.width + 'px';
-            this.style.height = rect.height + 'px';
-
-            // Move to center under finger
-            const touch = e.touches[0];
-            this.style.left = (touch.clientX - rect.width / 2) + 'px';
-            this.style.top = (touch.clientY - rect.height / 2) + 'px';
-            this.style.opacity = '0.7';
-
-            document.body.appendChild(this); // temporarily move to body for free movement
-        }
-
-        function handleTouchMove(e) {
-            if (!draggedItem) return;
-            e.preventDefault();
-            const touch = e.touches[0];
-            const rect = draggedItem.getBoundingClientRect();
-            draggedItem.style.left = (touch.clientX - rect.width / 2) + 'px';
-            draggedItem.style.top = (touch.clientY - rect.height / 2) + 'px';
-        }
-
-        function handleTouchEnd(e) {
-            if (!draggedItem) return;
-
-            // Reset styles
-            draggedItem.style.position = '';
-            draggedItem.style.zIndex = '';
-            draggedItem.style.pointerEvents = '';
-            draggedItem.style.width = '100% !important';
-            draggedItem.style.height = '100% !important';
-            draggedItem.style.left = '';
-            draggedItem.style.top = '';
-            draggedItem.style.opacity = '1';
-
-            // Ensure the item is returned to a valid container temporarily so it isn't stuck on the body
-            if (!draggedItem.parentElement || draggedItem.parentElement === document.body) {
-                if (sourceCell) {
-                    sourceCell.appendChild(draggedItem);
-                }
-            }
-
-            // Find drop target
-            const touch = e.changedTouches[0];
-            let targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
-
-            // Walk up to find a cell if we dropped on something inside it
-            while (targetElement && !targetElement.classList.contains('cell')) {
-                targetElement = targetElement.parentElement;
-                if (targetElement === document.body) {
-                    targetElement = null;
-                    break;
-                }
-            }
-
-            if (targetElement && targetElement.classList.contains('cell')) {
-                // Pass it to drop logic
-                processDropLogic(draggedItem, sourceCell, targetElement);
-            } else {
-                // Revert if dropped outside grid
-                sourceCell.appendChild(draggedItem);
-            }
-
-            draggedItem = null;
-            sourceCell = null;
-        }
-        // --- END TOUCH EVENTS ---
-
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDragEnter(e) {
-            e.preventDefault();
-            if (this !== sourceCell) {
-                this.style.background = '#e8dcc8';
-                this.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.1)';
-            }
-        }
-
-        function handleDragLeave(e) {
-            this.style.background = '';
-            this.style.boxShadow = '';
-        }
-
-        function updateFog() {
-            const cells = document.querySelectorAll('.cell');
-            let fogChanged = false;
-
-            for (let i = 0; i < cells.length; i++) {
-                if (cells[i].dataset.fogState === 'solid') {
-                    // Check adjacent cells
-                    const neighbors = [];
-                    // Top
-                    if (i >= cols) neighbors.push(i - cols);
-                    // Bottom
-                    if (i < gridSize - cols) neighbors.push(i + cols);
-                    // Left
-                    if (i % cols !== 0) neighbors.push(i - 1);
-                    // Right
-                    if (i % cols !== cols - 1) neighbors.push(i + 1);
-
-                    const hasClearNeighbor = neighbors.some(n => cells[n].dataset.fogState === 'clear');
-                    if (hasClearNeighbor && cells[i].dataset.unlocked !== 'true') {
-                        cells[i].dataset.fogState = 'burned';
-                        cells[i].classList.remove('fog-solid');
-                        cells[i].classList.add('fog-burned');
-                        fogChanged = true;
-                    }
-                }
-            }
-
-            if (fogChanged) {
-                saveGame();
-            }
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            this.style.background = '';
-            this.style.boxShadow = '';
-
-            if (!draggedItem) return;
-
-            processDropLogic(draggedItem, sourceCell, this);
-        }
-
-        function processDropLogic(draggedItem, sourceCell, targetCell) {
-            if (targetCell === sourceCell || !draggedItem) {
-                if (targetCell && targetCell !== sourceCell && !targetCell.classList.contains('cell')) {
-                    sourceCell.appendChild(draggedItem);
-                }
-                return;
-            }
-
-            if (targetCell.hasChildNodes()) {
-                const targetItem = targetCell.firstChild;
-                const draggedFamily = draggedItem.dataset.family;
-                const targetFamily = targetItem.dataset.family;
-                const draggedLevel = parseInt(draggedItem.dataset.level);
-                const targetLevel = parseInt(targetItem.dataset.level);
-
-                if (targetFamily === "GENERATOR" || draggedFamily === "GENERATOR") {
-                    showMessage("Impossible de déplacer cet objet !");
-                    sourceCell.appendChild(draggedItem);
-                    return;
-                }
-
-                if (draggedFamily === targetFamily && draggedLevel === targetLevel) {
-                    if (draggedLevel >= 10) {
-                        showMessage('Max level!');
-                        // Swap anyway if not locked
-                        if (targetItem.dataset.locked !== 'true') {
-                            sourceCell.appendChild(targetItem);
-                            targetCell.appendChild(draggedItem);
-                        } else {
-                            sourceCell.appendChild(draggedItem); // Return dragged item
-                        }
-                        return;
-                    }
-
-                    targetCell.removeChild(targetItem);
-                    const newItemLevel = draggedLevel + 1;
-                    // Note: new item is not locked by default
-                    targetCell.appendChild(createItemElement(draggedFamily, newItemLevel));
-                    sourceCell.removeChild(draggedItem);
-
-                    // Effet visuel simple de fusion
-                    targetCell.firstChild.style.transform = 'scale(1.3)';
-                    setTimeout(() => { targetCell.firstChild.style.transform = ''; }, 200);
-
-                    // Handle fog discovery (must be done after modifying DOM so that updateFog runs correctly)
-                    if (targetCell.dataset.fogState === 'burned') {
-                        targetCell.dataset.fogState = 'clear';
-                        targetCell.classList.remove('fog-burned');
-                        targetCell.dataset.unlocked = 'true';
-                    }
-
-                    checkMissionStatus(); // Check mission on merge
-                    updateFog(); // Check for new fog discoveries
-                } else {
-                    if (targetItem.dataset.locked === 'true') {
-                        // Cannot swap with locked items
-                        sourceCell.appendChild(draggedItem);
-                    } else {
-                        sourceCell.appendChild(targetItem);
-                        targetCell.appendChild(draggedItem);
-                    }
-                }
-            } else {
-                targetCell.appendChild(draggedItem);
-            }
-            saveGame();
-        }
-
-
-        function handleGeneratorClick(e) {
-            if (energy > 0) {
-                // Determine drop family based on progression
-                let possibleFamilies = ['A', 'B']; // Phase 1
-                if (currentLevel >= 2) {
-                    possibleFamilies.push('C'); // Phase 2
-                    possibleFamilies.push('D');
-                }
-
-                const randomFamily = possibleFamilies[Math.floor(Math.random() * possibleFamilies.length)];
-
-                // Try to spawn first
-                const spawned = spawnSpecificItem(randomFamily, 1);
-                if (spawned) {
-                    energy--;
-                    document.getElementById('ui-energy').textContent = energy;
-                    saveGame();
-                }
-            } else {
-                showMessage("Pas assez d'énergie !");
-            }
-        }
-
-
-        window.onload = renderMainMenu;
-
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loading-screen');
-            setTimeout(() => {
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 800);
-                }
-            }, 3500);
-        });
-
     </script>
-
-
-
-    <style>
-        /* --- FORÇAGE DE LA GRILLE --- */
-        #grid-area,
-        .studio-container {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: relative !important;
-            z-index: 9999 !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            margin-top: 380px !important;
-            /* Calage précis dans le carré blanc */
-            margin-left: auto !important;
-            margin-right: auto !important;
-            width: 85% !important;
-        }
-
-        #grid {
-            display: grid !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            background: transparent !important;
-            width: 100% !important;
-        }
-
-        .grid-cell {
-            background: transparent !important;
-            border: 1px dashed rgba(0, 0, 0, 0.2) !important;
-        }
-
-        .grid-cell img,
-        .cell img {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-            background: transparent !important;
-            border-radius: 0 !important;
-        }
-
-        /* --- BOUTONS EN BAS --- */
-        #game-footer {
-            position: absolute !important;
-            bottom: 15px !important;
-            left: 0 !important;
-            width: 100% !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            gap: 20px !important;
-            z-index: 10000 !important;
-        }
-
-        /* ---- SAUVETAGE DE LA GRILLE AU MILLIMÈTRE ---- */
-        #grid-area,
-        .studio-container {
-            position: absolute !important;
-            top: 42% !important;
-            /* ⬅️ HAUTEUR : Baisse ce chiffre pour MONTER la grille, augmente-le pour la DESCENDRE */
-            left: 47.5% !important;
-            /* Centre horizontalement */
-            transform: translateX(-50%) !important;
-            /* Ajustement parfait du centrage */
-            width: 91% !important;
-            /* ⬅️ LARGEUR : Ajuste pour que ça rentre dans ton dessin */
-            margin: 0 !important;
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            z-index: 50 !important;
-        }
-
-        #grid {
-            display: grid !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: transparent !important;
-        }
-
-        /* --- DESCENDRE LES CLIENTS (MÉTHODE DOUCE) --- */
-        #mission-area {
-            margin-top: 71px !important;
-            /* ⬅️ Modifie ce chiffre pour ajuster la hauteur */
-            z-index: 100 !important;
-        }
-
-        /* --- DESTRUCTION TOTALE DES FONDS BLANCS --- */
-        #mission-area,
-        #mission-area * {
-            background: transparent !important;
-            background-color: transparent !important;
-            box-shadow: none !important;
-            border: none !important;
-        }
-
-
-
-        /* Les petites boîtes arrondies pour chaque ressource */
-        .hud-section {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            /* Petit fond blanc transparent */
-            border-radius: 15px;
-            padding: 4px 8px;
-            gap: 5px;
-            /* Espace entre l'icône et le chiffre */
-        }
-
-        /* Réglage spécial pour la zone Niveau + XP (l'un au-dessus de l'autre) */
-        .level-section {
-            flex-direction: column;
-            align-items: flex-start;
-            background: none;
-            /* Pas de fond pour lui */
-            gap: 2px;
-        }
-
-        .level-badge {
-            font-size: 14px;
-            text-shadow: 1px 1px 2px black;
-            /* Ombre pour bien lire sur tous les fonds */
-        }
-
-        /* La jauge d'XP (le conteneur vide) */
-        .xp-bar-container {
-            width: 70px;
-            /* Longueur de la jauge */
-            height: 10px;
-            /* Épaisseur de la jauge */
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 5px;
-            border: 1px solid white;
-        }
-
-        /* La jauge d'XP (le remplissage coloré) */
-        .xp-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
-            /* Joli dégradé vert */
-            border-radius: 4px;
-        }
-
-        /* Taille des icônes */
-        .hud-icon {
-            width: 22px;
-            height: 22px;
-            object-fit: contain;
-        }
-
-        /* Taille du texte des compteurs */
-        .hud-value {
-            font-size: 13px;
-            text-shadow: 1px 1px 2px black;
-        }
-
-
-        /* --- LA BARRE DORÉE (MODE FORCE BRUTE) --- */
-        #header {
-            position: fixed !important;
-            /* ⬅️ LA MAGIE EST ICI : Colle la barre à l'écran ! */
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            /* 100vw = 100% de la largeur de la vitre du téléphone */
-            height: 90px !important;
-            border: 5px solid red !important;
-
-            /* L'image dorée */
-            background-image: url('assets/icones/new_barre.png') !important;
-            background-size: 100% 100% !important;
-            /* L'étire de force */
-            background-repeat: no-repeat !important;
-            background-position: center !important;
-
-            /* Sécurité */
-            z-index: 9999 !important;
-            margin: 0 !important;
-            padding: 10px 20px !important;
-            box-sizing: border-box !important;
-
-            /* Rangement des compteurs */
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            border: none !important;
-        }
-    </style>
 </body>
 
 </html>
