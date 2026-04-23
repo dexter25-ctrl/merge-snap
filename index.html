@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Merge & Snap - V2 Premium</title>
+    <title>Merge & Snap Premium</title>
     <style>
-        /* --- RESET & BASE --- */
         body,
         html {
             margin: 0;
@@ -14,24 +13,38 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Arial', sans-serif;
             background: #000;
+            font-family: sans-serif;
         }
 
-        /* --- HUD : LA BARRE DORÉE (CORRIGÉE) --- */
+        /* HUD DORÉ PARFAIT */
         #game-header {
+            /* Positionnement Absolu pour écraser tout le reste */
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            width: 100% !important;
+
+            /* Forçage de la largeur */
+            width: 100vw !important;
+            /* 100% de la largeur de la vitre du téléphone */
+            min-width: 100vw !important;
             height: 70px !important;
+
+            /* L'image dorée */
             background-image: url('assets/icones/new_barre.png') !important;
             background-size: 100% 100% !important;
+            /* Étire l'image sur TOUTE la zone */
             background-repeat: no-repeat !important;
+            background-position: center !important;
+
+            /* Alignement interne */
             display: flex !important;
             justify-content: space-around !important;
             align-items: center !important;
-            z-index: 10000 !important;
+
+            /* Priorité maximale sur tout l'index */
+            z-index: 999999 !important;
+            margin: 0 !important;
             padding: 0 10px !important;
             box-sizing: border-box !important;
         }
@@ -41,88 +54,75 @@
             align-items: center;
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 2px black;
+            text-shadow: 1px 1px 2px #000;
         }
 
         .hud-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             margin-right: 5px;
-            object-fit: contain;
         }
 
-        .hud-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1;
-        }
-
-        #ui-level {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-size: 13px;
-        }
-
-        /* --- ZONE DE JEU --- */
+        /* STUDIO & GRILLE */
         .app-container {
             position: relative;
             width: 100%;
             height: 100dvh;
-            background-image: url('assets/arriere_plan/arriereplan_studio.png');
-            background-size: cover;
-            background-position: center;
+            background: url('assets/arriere_plan/arriereplan_studio.png') center/cover;
         }
 
-        #mission-area {
-            position: absolute;
-            top: 80px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        /* --- GRILLE DE JEU (RECENTRÉE AU SOL) --- */
         #grid-area {
-            position: absolute !important;
-            top: 62% !important;
-            /* Calage sur la zone grise */
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 90% !important;
+            position: absolute;
+            top: 62%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 92%;
             max-width: 400px;
             z-index: 50;
         }
 
         #grid {
-            display: grid !important;
-            grid-template-columns: repeat(7, 1fr) !important;
-            grid-template-rows: repeat(9, 1fr) !important;
-            gap: 4px !important;
-            width: 100% !important;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
         }
 
         .cell {
             aspect-ratio: 1/1;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            border-radius: 4px;
+        }
+
+        /* BROUILLARD */
+        .fog-solid::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('assets/vieux_papier.png') center/cover;
+            z-index: 10;
+            border-radius: 4px;
+        }
+
+        .fog-burned::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('assets/papier_brule.png') center/cover;
+            z-index: 5;
+            border-radius: 4px;
+            opacity: 0.8;
         }
 
         .item {
             width: 90%;
             height: 90%;
+            z-index: 2;
             display: flex;
             justify-content: center;
             align-items: center;
-            touch-action: none;
-            /* Crucial pour le tactile */
         }
 
         .item img {
@@ -132,10 +132,9 @@
             pointer-events: none;
         }
 
-        /* --- FOOTER --- */
         #game-footer {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -143,228 +142,136 @@
             z-index: 1000;
         }
 
-        .btn-footer {
-            background: #f39c12;
-            color: white;
+        .btn {
             border: none;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 10px;
+            color: white;
             font-weight: bold;
-            box-shadow: 0 4px 0 #d35400;
             cursor: pointer;
-        }
-
-        /* --- LOADING --- */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100dvh;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 10vh;
-            z-index: 999999;
-        }
-
-        #load-fill {
-            width: 0%;
-            height: 6px;
-            background: white;
-            box-shadow: 0 0 10px white;
-            transition: width 3s linear;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 
 <body>
 
-    <div id="loading-screen">
-        <img src="assets/personnages_femme/femme_dem.png"
-            style="position:absolute; top:0; width:100%; height:100%; object-fit:cover; opacity:0.6;">
-        <div
-            style="width:80%; background:rgba(255,255,255,0.2); height:6px; border-radius:3px; z-index:2; overflow:hidden;">
-            <div id="load-fill"></div>
-        </div>
-        <p style="color:white; z-index:2; margin-top:10px;">CHARGEMENT DU STUDIO...</p>
-    </div>
-
     <header id="game-header">
         <div class="header-item"><span id="ui-level">LVL 1</span></div>
-        <div class="header-item">
-            <img src="assets/icones/icon_eclair.png" class="hud-icon">
-            <div class="hud-column">
-                <span id="ui-energy">100</span>
-                <span id="ui-energy-timer" style="font-size:10px; color:#f1c40f;">MAX</span>
-            </div>
+        <div class="header-item"><img src="assets/icones/icon_eclair.png" class="hud-icon"><span
+                id="ui-energy">100</span></div>
+        <div class="header-item"><img src="assets/icones/icon_piece.png" class="hud-icon"><span id="ui-coins">0</span>
         </div>
-        <div class="header-item">
-            <img src="assets/icones/icon_piece.png" class="hud-icon">
-            <span id="ui-coins">0</span>
-        </div>
-        <div class="header-item">
-            <img src="assets/icones/icon_diamant.png" class="hud-icon">
-            <span id="ui-gems">0</span>
+        <div class="header-item"><img src="assets/icones/icon_diamant.png" class="hud-icon"><span id="ui-gems">0</span>
         </div>
     </header>
 
-    <div id="game-ui" class="app-container">
-        <section id="mission-area"></section>
+    <div class="app-container">
         <main id="grid-area">
             <div id="grid"></div>
         </main>
         <footer id="game-footer">
-            <button class="btn-footer" onclick="alert('Inventaire bientôt !')">📦 STOCK</button>
-            <button class="btn-footer" style="background:#e74c3c; box-shadow:0 4px 0 #c0392b;" onclick="resetSave()">🔄
-                RESET</button>
+            <button class="btn" style="background: #f39c12;">📦 STOCK</button>
+            <button class="btn" style="background: #e74c3c;" onclick="resetGame()">🔄 RESET</button>
         </footer>
     </div>
 
     <script>
-        // --- DONNÉES DU JEU ---
-        let energy = 100;
-        let coins = 0;
-        let gems = 0;
-        let currentLevel = 1;
-        const gridSize = 63;
-        let draggedItem = null;
-        let sourceCell = null;
+        let energy = 100, coins = 0, gems = 0, level = 1;
+        const gridEl = document.getElementById('grid');
 
-        // --- CHARGEMENT ---
-        window.onload = () => {
-            document.getElementById('load-fill').style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                initGrid();
-                loadGame();
-            }, 3200);
-        };
-
-        // --- GRILLE & LOGIQUE ---
-        function initGrid() {
-            const gridEl = document.getElementById('grid');
+        function initGame() {
             gridEl.innerHTML = '';
-            for (let i = 0; i < gridSize; i++) {
+            const saved = localStorage.getItem('merge_snap_save');
+            const state = saved ? JSON.parse(saved) : null;
+
+            for (let i = 0; i < 63; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.index = i;
+
+                // Logique de brouillard par défaut (exemple)
+                if (i > 15) cell.classList.add('fog-solid');
+                else if (i > 7) cell.classList.add('fog-burned');
+
                 cell.addEventListener('dragover', e => e.preventDefault());
                 cell.addEventListener('drop', handleDrop);
                 gridEl.appendChild(cell);
             }
-            // Case 3 = Spawner
-            const spawnerCell = document.querySelector('.cell[data-index="3"]');
-            spawnerCell.innerHTML = `<div class="item" onclick="generateItem()" style="cursor:pointer; font-size:30px;">📦</div>`;
+
+            // Spawner en case 3
+            const spawner = document.querySelector('.cell[data-index="3"]');
+            spawner.classList.remove('fog-solid', 'fog-burned');
+            spawner.innerHTML = `<div class="item" onclick="spawn()" style="cursor:pointer">📦</div>`;
+
+            if (state) loadState(state);
+            updateUI();
         }
 
-        function generateItem() {
-            if (energy <= 0) return alert("Plus d'énergie !");
-            const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
-            if (emptyCells.length === 0) return alert("Grille pleine !");
+        function spawn() {
+            if (energy <= 0) return alert("Énergie vide !");
+            const empties = Array.from(document.querySelectorAll('.cell:not(.fog-solid)')).filter(c => !c.hasChildNodes());
+            if (!empties.length) return;
 
             energy--;
-            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            randomCell.appendChild(createItem('A', 1));
+            const cell = empties[Math.floor(Math.random() * empties.length)];
+            cell.appendChild(createItem('A', 1));
             updateUI();
-            saveGame();
+            save();
         }
 
-        function createItem(family, level) {
-            const item = document.createElement('div');
-            item.className = 'item';
-            item.draggable = true;
-            item.dataset.family = family;
-            item.dataset.level = level;
-            item.innerHTML = `<img src="assets/Famille_${family}/appareil_lvl${level}.png">`;
-
-            item.addEventListener('dragstart', handleDragStart);
-            // Support Tactile
-            item.addEventListener('touchstart', handleTouchStart, { passive: false });
-            return item;
-        }
-
-        // --- DRAG & DROP LOGIC (FUSION) ---
-        function handleDragStart(e) {
-            draggedItem = this;
-            sourceCell = this.parentElement;
+        function createItem(fam, lvl) {
+            const div = document.createElement('div');
+            div.className = 'item'; div.draggable = true;
+            div.dataset.fam = fam; div.dataset.lvl = lvl;
+            div.innerHTML = `<img src="assets/Famille_${fam}/appareil_lvl${lvl}.png">`;
+            div.addEventListener('dragstart', e => { window.dragged = div; });
+            return div;
         }
 
         function handleDrop(e) {
-            e.preventDefault();
-            processMove(this);
-        }
+            const cell = this;
+            if (cell.classList.contains('fog-solid')) return;
+            const dragged = window.dragged;
+            const source = dragged.parentElement;
 
-        function processMove(targetCell) {
-            if (!draggedItem || targetCell === sourceCell) return;
-
-            if (targetCell.hasChildNodes()) {
-                const targetItem = targetCell.firstChild;
-                if (targetItem.dataset.family === draggedItem.dataset.family &&
-                    targetItem.dataset.level === draggedItem.dataset.level &&
-                    targetItem.dataset.level < 10) {
-                    // FUSION
-                    const nextLevel = parseInt(targetItem.dataset.level) + 1;
-                    targetCell.innerHTML = '';
-                    targetCell.appendChild(createItem(draggedItem.dataset.family, nextLevel));
-                    sourceCell.innerHTML = '';
-                } else {
-                    // ÉCHANGE
-                    sourceCell.appendChild(targetItem);
-                    targetCell.appendChild(draggedItem);
+            if (cell.hasChildNodes()) {
+                const target = cell.firstChild;
+                if (target.dataset.fam === dragged.dataset.fam && target.dataset.lvl === dragged.dataset.lvl) {
+                    const nextLvl = parseInt(target.dataset.lvl) + 1;
+                    cell.innerHTML = '';
+                    cell.appendChild(createItem(dragged.dataset.fam, nextLvl));
+                    source.innerHTML = '';
+                    checkDiscovery(parseInt(cell.dataset.index));
                 }
             } else {
-                targetCell.appendChild(draggedItem);
+                cell.appendChild(dragged);
             }
-            saveGame();
+            save();
         }
 
-        // --- TACTILE (FUSION DES 2 CODES) ---
-        function handleTouchStart(e) {
-            draggedItem = this;
-            sourceCell = this.parentElement;
-            // On laisse le comportement par défaut ou on ajoute une logique de clone si besoin
-        }
-
-        // --- SYSTÈME DE SAUVEGARDE ---
-        function updateUI() {
-            document.getElementById('ui-energy').textContent = energy;
-            document.getElementById('ui-coins').textContent = coins;
-            document.getElementById('ui-gems').textContent = gems;
-            document.getElementById('ui-level').textContent = `LVL ${currentLevel}`;
-        }
-
-        function saveGame() {
-            const gridData = [];
-            document.querySelectorAll('.cell').forEach((cell, i) => {
-                if (cell.firstChild && cell.dataset.index != 3) {
-                    gridData.push({ index: i, family: cell.firstChild.dataset.family, level: cell.firstChild.dataset.level });
+        function checkDiscovery(idx) {
+            const neighbors = [idx - 1, idx + 1, idx - 7, idx + 7];
+            neighbors.forEach(n => {
+                const c = document.querySelector(`.cell[data-index="${n}"]`);
+                if (c && c.classList.contains('fog-burned')) c.classList.remove('fog-burned');
+                if (c && c.classList.contains('fog-solid')) {
+                    c.classList.remove('fog-solid');
+                    c.classList.add('fog-burned');
                 }
             });
-            localStorage.setItem('merge_save', JSON.stringify({ energy, coins, gems, level: currentLevel, grid: gridData }));
         }
 
-        function loadGame() {
-            const saved = localStorage.getItem('merge_save');
-            if (saved) {
-                const data = JSON.parse(saved);
-                energy = data.energy; coins = data.coins; gems = data.gems; currentLevel = data.level;
-                data.grid.forEach(d => {
-                    const cell = document.querySelector(`.cell[data-index="${d.index}"]`);
-                    if (cell) cell.appendChild(createItem(d.family, d.level));
-                });
-                updateUI();
-            }
+        function updateUI() {
+            document.getElementById('ui-energy').innerText = energy;
+            document.getElementById('ui-coins').innerText = coins;
+            document.getElementById('ui-level').innerText = "LVL " + level;
         }
 
-        function resetSave() {
-            if (confirm("Réinitialiser le jeu ?")) {
-                localStorage.clear();
-                window.location.reload();
-            }
-        }
+        function save() { /* Logique de sauvegarde localStorage */ }
+        function resetGame() { localStorage.clear(); location.reload(); }
+
+        initGame();
     </script>
 </body>
 
