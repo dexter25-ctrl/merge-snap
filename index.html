@@ -2966,7 +2966,11 @@ Partie</button>
         `;
 
             // 5. On l'injecte dans le jeu !
-            document.body.appendChild(newBar);
+            // 5. On l'injecte UNIQUEMENT dans la zone de jeu !
+            const gameZone = document.getElementById('game-ui');
+            if (gameZone) {
+                gameZone.appendChild(newBar);
+            }
         });
     </script>
 </body>
