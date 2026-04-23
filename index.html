@@ -2893,32 +2893,33 @@ Partie</button>
             text-shadow: 1px 1px 2px black;
         }
 
-        /* --- AGRANDISSEMENT TOTAL DE LA BARRE DORÉE --- */
+
+        /* --- LA BARRE DORÉE (LE RETOUR ET LA BONNE) --- */
         #header {
             position: absolute !important;
-            /* La détache du reste du jeu pour qu'elle soit libre */
             top: 0 !important;
             left: 0 !important;
-            width: 450px !important;
-            /* Force la largeur à 100% de l'écran */
-            max-width: 100% !important;
-            /* Détruit toute limite de taille cachée */
+            width: 100% !important;
+            /* Prend tout l'écran */
             height: 90px !important;
-            /* ⬅️ L'épaisseur de la barre */
+            /* L'épaisseur */
+
+            /* L'image dorée (indispensable pour qu'elle ne soit pas invisible) */
+            background-image: url('assets/icones/new_barre.png') !important;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+
+            z-index: 9999 !important;
             margin: 0 !important;
             padding: 10px 20px !important;
-            /* Espace pour ne pas coller les icônes aux bords */
             box-sizing: border-box !important;
-            /* Empêche les marges de la faire déborder */
 
-            background-size: 100% 100% !important;
-            /* Étire l'image sur toute la nouvelle longueur */
-            z-index: 9999 !important;
-            /* S'assure qu'elle est tout au-dessus */
-
+            /* Rangement des compteurs */
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
+            border: none !important;
         }
     </style>
 </body>
