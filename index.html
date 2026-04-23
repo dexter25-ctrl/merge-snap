@@ -2829,6 +2829,18 @@ Partie</button>
             height: 100% !important;
             background: transparent !important;
         }
+
+        /* --- DESCENDRE LES CLIENTS --- */
+        #missions-container,
+        #orders-area,
+        #customers,
+        .missions-area,
+        .customer-card {
+            position: relative !important;
+            top: 60px !important;
+            /* ⬅️ Augmente ce chiffre pour les faire descendre plus bas ! */
+            z-index: 100 !important;
+        }
     </style>
 </body>
 
