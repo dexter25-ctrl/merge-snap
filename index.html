@@ -2930,6 +2930,45 @@ Partie</button>
             text-shadow: 1px 1px 2px black;
         }
     </style>
+    <script>
+        // --- LE NETTOYEUR DE BARRE DORÉE ---
+        window.addEventListener('load', function () {
+            // 1. On détruit toutes les anciennes barres buggées
+            document.querySelectorAll('#game-header, #header').forEach(el => el.remove());
+
+            // 2. On crée la nouvelle barre parfaite
+            const newBar = document.createElement('header');
+            newBar.id = 'game-header';
+
+            // 3. On force le CSS absolu (impossible à contredire)
+            newBar.style.cssText = "position: fixed !important; top: 0 !important; left: 50% !important; transform: translateX(-50%) !important; width: 100vw !important; max-width: 450px !important; height: 75px !important; background-image: url('assets/icones/new_barre.png') !important; background-size: 100% 100% !important; display: flex !important; justify-content: space-evenly !important; align-items: center !important; z-index: 999999 !important; padding-left: 22% !important; padding-right: 2% !important; margin: 0 !important; box-sizing: border-box !important;";
+
+            // 4. On place les compteurs dedans
+            newBar.innerHTML = `
+            <div style="color: white; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px black;">
+                <span id="ui-level">LVL 1</span>
+            </div>
+            <div style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+                <img src="assets/icones/icon_eclair.png" style="width: 22px; height: 22px; margin-right: 4px; object-fit: contain;">
+                <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
+                    <span id="ui-energy">100</span>
+                    <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f;">MAX</span>
+                </div>
+            </div>
+            <div style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+                <img src="assets/icones/icon_piece.png" style="width: 22px; height: 22px; margin-right: 4px; object-fit: contain;">
+                <span id="ui-coins">0</span>
+            </div>
+            <div style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+                <img src="assets/icones/icon_diamant.png" style="width: 22px; height: 22px; margin-right: 4px; object-fit: contain;">
+                <span id="ui-gems">0</span>
+            </div>
+        `;
+
+            // 5. On l'injecte dans le jeu !
+            document.body.appendChild(newBar);
+        });
+    </script>
 </body>
 
 </html>
