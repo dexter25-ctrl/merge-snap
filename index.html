@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merge & Snap - V2 Premium</title>
     <style>
-        /* --- BASES & RESET --- */
+        /* --- RESET & BASE --- */
         body,
         html {
             margin: 0;
@@ -18,58 +18,13 @@
             background: #000;
         }
 
-        /* --- ÉCRAN DE CHARGEMENT --- */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100dvh;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 10vh;
-            z-index: 999999;
-            transition: opacity 0.8s ease;
-        }
-
-        .loading-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-        }
-
-        .progress-bar {
-            width: 80%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            overflow: hidden;
-            z-index: 2;
-        }
-
-        #load-fill {
-            width: 0%;
-            height: 100%;
-            background: #fff;
-            box-shadow: 0 0 10px #fff;
-            transition: width 3s linear;
-        }
-
-        /* --- HUD : LA BARRE DORÉE --- */
+        /* --- HUD : LA BARRE DORÉE (CORRIGÉE) --- */
         #game-header {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
-            /* Prend toute la largeur de l'écran */
-            height: 65px !important;
+            height: 70px !important;
             background-image: url('assets/icones/new_barre.png') !important;
             background-size: 100% 100% !important;
             background-repeat: no-repeat !important;
@@ -77,6 +32,8 @@
             justify-content: space-around !important;
             align-items: center !important;
             z-index: 10000 !important;
+            padding: 0 10px !important;
+            box-sizing: border-box !important;
         }
 
         .header-item {
@@ -116,14 +73,11 @@
             background-image: url('assets/arriere_plan/arriereplan_studio.png');
             background-size: cover;
             background-position: center;
-            display: none;
-            /* Affiché après loading */
         }
 
-        /* Missions Clients */
         #mission-area {
             position: absolute;
-            top: 85px;
+            top: 80px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -131,24 +85,24 @@
             z-index: 100;
         }
 
-        /* Grille de Merge */
+        /* --- GRILLE DE JEU (RECENTRÉE AU SOL) --- */
         #grid-area {
-            position: absolute;
-            top: 42%;
-            /* Ajustement sur le carré blanc du fond */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
+            position: absolute !important;
+            top: 62% !important;
+            /* Calage sur la zone grise */
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 90% !important;
             max-width: 400px;
             z-index: 50;
         }
 
         #grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            grid-template-rows: repeat(9, 1fr);
-            gap: 4px;
-            width: 100%;
+            display: grid !important;
+            grid-template-columns: repeat(7, 1fr) !important;
+            grid-template-rows: repeat(9, 1fr) !important;
+            gap: 4px !important;
+            width: 100% !important;
         }
 
         .cell {
@@ -161,36 +115,24 @@
             position: relative;
         }
 
-        /* Objets */
         .item {
             width: 90%;
             height: 90%;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: grab;
+            touch-action: none;
+            /* Crucial pour le tactile */
         }
 
         .item img {
-            width: 100%;
-            height: 100%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
+            pointer-events: none;
         }
 
-        /* Brouillard */
-        .fog-solid {
-            background-image: url('./assets/vieux_papier.png') !important;
-            background-size: cover;
-            z-index: 10;
-        }
-
-        .fog-burned {
-            background-image: url('./assets/papier_brule.png') !important;
-            background-size: cover;
-            z-index: 10;
-        }
-
-        /* Footer */
+        /* --- FOOTER --- */
         #game-footer {
             position: absolute;
             bottom: 20px;
@@ -205,11 +147,35 @@
             background: #f39c12;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 25px;
             border-radius: 10px;
             font-weight: bold;
             box-shadow: 0 4px 0 #d35400;
             cursor: pointer;
+        }
+
+        /* --- LOADING --- */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 10vh;
+            z-index: 999999;
+        }
+
+        #load-fill {
+            width: 0%;
+            height: 6px;
+            background: white;
+            box-shadow: 0 0 10px white;
+            transition: width 3s linear;
         }
     </style>
 </head>
@@ -217,76 +183,67 @@
 <body>
 
     <div id="loading-screen">
-        <img src="assets/personnages_femme/femme_dem.png" class="loading-bg">
-        <div class="progress-bar">
+        <img src="assets/personnages_femme/femme_dem.png"
+            style="position:absolute; top:0; width:100%; height:100%; object-fit:cover; opacity:0.6;">
+        <div
+            style="width:80%; background:rgba(255,255,255,0.2); height:6px; border-radius:3px; z-index:2; overflow:hidden;">
             <div id="load-fill"></div>
         </div>
-        <p style="color: white; z-index: 2; margin-top: 10px; font-size: 12px;">CHARGEMENT DU STUDIO...</p>
+        <p style="color:white; z-index:2; margin-top:10px;">CHARGEMENT DU STUDIO...</p>
     </div>
 
     <header id="game-header">
-        <div class="header-item">
-            <span id="ui-level">LVL 1</span>
-        </div>
+        <div class="header-item"><span id="ui-level">LVL 1</span></div>
         <div class="header-item">
             <img src="assets/icones/icon_eclair.png" class="hud-icon">
             <div class="hud-column">
                 <span id="ui-energy">100</span>
-                <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f;">MAX</span>
+                <span id="ui-energy-timer" style="font-size:10px; color:#f1c40f;">MAX</span>
             </div>
         </div>
         <div class="header-item">
             <img src="assets/icones/icon_piece.png" class="hud-icon">
-            <span id="ui-coins">1500</span>
+            <span id="ui-coins">0</span>
         </div>
         <div class="header-item">
             <img src="assets/icones/icon_diamant.png" class="hud-icon">
-            <span id="ui-gems">50</span>
+            <span id="ui-gems">0</span>
         </div>
     </header>
 
     <div id="game-ui" class="app-container">
-
         <section id="mission-area"></section>
-
         <main id="grid-area">
             <div id="grid"></div>
         </main>
-
         <footer id="game-footer">
             <button class="btn-footer" onclick="alert('Inventaire bientôt !')">📦 STOCK</button>
-            <button class="btn-footer" style="background:#e74c3c; box-shadow: 0 4px 0 #c0392b;" onclick="resetSave()">🔄
+            <button class="btn-footer" style="background:#e74c3c; box-shadow:0 4px 0 #c0392b;" onclick="resetSave()">🔄
                 RESET</button>
         </footer>
     </div>
 
     <script>
-        // --- 1. VARIABLES GLOBALES (TES DONNÉES) ---
+        // --- DONNÉES DU JEU ---
         let energy = 100;
-        let coins = 1500;
-        let gems = 50;
+        let coins = 0;
+        let gems = 0;
         let currentLevel = 1;
-        let playerName = "Photographe";
-        const cols = 7;
-        const gridSize = 63; // 7x9
+        const gridSize = 63;
+        let draggedItem = null;
+        let sourceCell = null;
 
-        // --- 2. CHARGEMENT & INITIALISATION ---
-        window.addEventListener('load', () => {
-            const fill = document.getElementById('load-fill');
-            if (fill) fill.style.width = '100%';
-
+        // --- CHARGEMENT ---
+        window.onload = () => {
+            document.getElementById('load-fill').style.width = '100%';
             setTimeout(() => {
-                document.getElementById('loading-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('game-ui').style.display = 'block';
-                    initGrid();
-                    loadGame(); // On recharge ta progression
-                }, 800);
-            }, 3000);
-        });
+                document.getElementById('loading-screen').style.display = 'none';
+                initGrid();
+                loadGame();
+            }, 3200);
+        };
 
-        // --- 3. CRÉATION DE LA GRILLE ---
+        // --- GRILLE & LOGIQUE ---
         function initGrid() {
             const gridEl = document.getElementById('grid');
             gridEl.innerHTML = '';
@@ -294,33 +251,24 @@
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.index = i;
-
-                // Drag & Drop events
                 cell.addEventListener('dragover', e => e.preventDefault());
                 cell.addEventListener('drop', handleDrop);
-
                 gridEl.appendChild(cell);
             }
-            // Le spawner (ton bouton boite) en haut au milieu
+            // Case 3 = Spawner
             const spawnerCell = document.querySelector('.cell[data-index="3"]');
-            if (spawnerCell) {
-                spawnerCell.innerHTML = `<div class="item spawner" onclick="generateItem()" style="cursor:pointer">📦</div>`;
-            }
+            spawnerCell.innerHTML = `<div class="item" onclick="generateItem()" style="cursor:pointer; font-size:30px;">📦</div>`;
         }
 
-        // --- 4. LOGIQUE DE GÉNÉRATION (TON CODE) ---
         function generateItem() {
-            if (energy <= 0) return showMessage("Plus d'énergie !");
-
+            if (energy <= 0) return alert("Plus d'énergie !");
             const emptyCells = Array.from(document.querySelectorAll('.cell')).filter(c => !c.hasChildNodes());
-            if (emptyCells.length === 0) return showMessage("Grille pleine !");
+            if (emptyCells.length === 0) return alert("Grille pleine !");
 
             energy--;
-            updateUI();
-
             const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            const newItem = createItem('A', 1); // Créer Appareil Lvl 1
-            randomCell.appendChild(newItem);
+            randomCell.appendChild(createItem('A', 1));
+            updateUI();
             saveGame();
         }
 
@@ -330,45 +278,42 @@
             item.draggable = true;
             item.dataset.family = family;
             item.dataset.level = level;
-
-            // Image dynamique selon la famille et le niveau
-            item.innerHTML = `<img src="assets/Famille_${family}/${family === 'A' ? 'appareil' : 'objet'}_lvl${level}.png" style="width:80%; height:80%; object-fit:contain; pointer-events:none;">`;
+            item.innerHTML = `<img src="assets/Famille_${family}/appareil_lvl${level}.png">`;
 
             item.addEventListener('dragstart', handleDragStart);
+            // Support Tactile
+            item.addEventListener('touchstart', handleTouchStart, { passive: false });
             return item;
         }
 
-        // --- 5. SYSTÈME DE MERGE (FUSION) ---
-        let draggedItem = null;
-
+        // --- DRAG & DROP LOGIC (FUSION) ---
         function handleDragStart(e) {
             draggedItem = this;
-            e.dataTransfer.setData('text/plain', ''); // Requis pour Firefox
+            sourceCell = this.parentElement;
         }
 
         function handleDrop(e) {
             e.preventDefault();
-            const targetCell = this;
-            const sourceCell = draggedItem.parentElement;
+            processMove(this);
+        }
+
+        function processMove(targetCell) {
+            if (!draggedItem || targetCell === sourceCell) return;
 
             if (targetCell.hasChildNodes()) {
                 const targetItem = targetCell.firstChild;
-
-                // Si même famille et même niveau = FUSION
                 if (targetItem.dataset.family === draggedItem.dataset.family &&
-                    targetItem.dataset.level === draggedItem.dataset.level) {
-
-                    const newLevel = parseInt(targetItem.dataset.level) + 1;
-                    targetCell.removeChild(targetItem);
-                    targetCell.appendChild(createItem(draggedItem.dataset.family, newLevel));
-                    sourceCell.removeChild(draggedItem);
-                    showMessage("Fusion réussie !");
+                    targetItem.dataset.level === draggedItem.dataset.level &&
+                    targetItem.dataset.level < 10) {
+                    // FUSION
+                    const nextLevel = parseInt(targetItem.dataset.level) + 1;
+                    targetCell.innerHTML = '';
+                    targetCell.appendChild(createItem(draggedItem.dataset.family, nextLevel));
+                    sourceCell.innerHTML = '';
                 } else {
-                    // Sinon on échange les places (si ce n'est pas le spawner)
-                    if (!targetItem.classList.contains('spawner')) {
-                        sourceCell.appendChild(targetItem);
-                        targetCell.appendChild(draggedItem);
-                    }
+                    // ÉCHANGE
+                    sourceCell.appendChild(targetItem);
+                    targetCell.appendChild(draggedItem);
                 }
             } else {
                 targetCell.appendChild(draggedItem);
@@ -376,7 +321,14 @@
             saveGame();
         }
 
-        // --- 6. SAUVEGARDE & UI ---
+        // --- TACTILE (FUSION DES 2 CODES) ---
+        function handleTouchStart(e) {
+            draggedItem = this;
+            sourceCell = this.parentElement;
+            // On laisse le comportement par défaut ou on ajoute une logique de clone si besoin
+        }
+
+        // --- SYSTÈME DE SAUVEGARDE ---
         function updateUI() {
             document.getElementById('ui-energy').textContent = energy;
             document.getElementById('ui-coins').textContent = coins;
@@ -384,43 +336,31 @@
             document.getElementById('ui-level').textContent = `LVL ${currentLevel}`;
         }
 
-        function showMessage(msg) {
-            console.log(msg); // Tu peux remettre ton système de message flottant ici
-        }
-
         function saveGame() {
             const gridData = [];
             document.querySelectorAll('.cell').forEach((cell, i) => {
-                if (cell.firstChild && !cell.firstChild.classList.contains('spawner')) {
-                    gridData.push({
-                        index: i,
-                        family: cell.firstChild.dataset.family,
-                        level: cell.firstChild.dataset.level
-                    });
+                if (cell.firstChild && cell.dataset.index != 3) {
+                    gridData.push({ index: i, family: cell.firstChild.dataset.family, level: cell.firstChild.dataset.level });
                 }
             });
-            localStorage.setItem('mergeGame_save', JSON.stringify({ energy, coins, gems, currentLevel, gridData }));
+            localStorage.setItem('merge_save', JSON.stringify({ energy, coins, gems, level: currentLevel, grid: gridData }));
         }
 
         function loadGame() {
-            const saved = localStorage.getItem('mergeGame_save');
+            const saved = localStorage.getItem('merge_save');
             if (saved) {
                 const data = JSON.parse(saved);
-                energy = data.energy;
-                coins = data.coins;
-                gems = data.gems;
-                currentLevel = data.currentLevel;
-                // Replacer les objets
-                data.gridData.forEach(item => {
-                    const cell = document.querySelector(`.cell[data-index="${item.index}"]`);
-                    if (cell) cell.appendChild(createItem(item.family, item.level));
+                energy = data.energy; coins = data.coins; gems = data.gems; currentLevel = data.level;
+                data.grid.forEach(d => {
+                    const cell = document.querySelector(`.cell[data-index="${d.index}"]`);
+                    if (cell) cell.appendChild(createItem(d.family, d.level));
                 });
                 updateUI();
             }
         }
 
         function resetSave() {
-            if (confirm("Effacer ta progression ?")) {
+            if (confirm("Réinitialiser le jeu ?")) {
                 localStorage.clear();
                 window.location.reload();
             }
