@@ -2914,22 +2914,24 @@ Partie</button>
         /* --- AGRANDISSEMENT DE LA BARRE DORÉE (HUD) --- */
         #header {
             width: 100vw !important;
-            /* 100vw = 100% de la largeur totale de l'écran (Vitre du téléphone) */
-            height: 120px !important;
-            /* ⬅️ Augmente ce chiffre (ex: 90px, 100px) pour l'épaissir ! */
+            /* Force la barre à prendre 100% de la largeur de l'écran */
+            height: 90px !important;
+            /* ⬅️ Modifie ce chiffre pour la rendre plus ou moins épaisse */
             left: 0 !important;
             top: 0 !important;
             margin: 0 !important;
-            padding: 10px 35px !important;
-            /* Donne un peu d'air aux compteurs à l'intérieur */
-            background-size: 100% 100% !important;
-            /* Étire l'image parfaitement dans la boîte */
+            padding: 10px 15px !important;
+            /* Donne un peu d'espace aux compteurs à l'intérieur */
 
-            /* Alignement des compteurs à l'intérieur */
+            /* Étire ton image dorée pour qu'elle remplisse tout l'espace sans se répéter */
+            background-size: 100% 100% !important;
+
+            /* Alignement parfait des compteurs à l'intérieur */
             display: flex !important;
             justify-content: space-between !important;
-            /* Pousse les éléments vers les bords */
+            /* Pousse les éléments vers la gauche et la droite */
             align-items: center !important;
+            /* Centre tout verticalement */
         }
     </style>
 </body>
