@@ -2894,34 +2894,34 @@ Partie</button>
         }
 
 
-        /* --- LA BARRE DORÉE (NETTOYÉE ET ÉTIRÉE) --- */
+        /* --- LA BARRE DORÉE (MODE FORCE BRUTE) --- */
         #header {
-            position: absolute !important;
+            position: fixed !important;
+            /* ⬅️ LA MAGIE EST ICI : Colle la barre à l'écran ! */
             top: 0 !important;
             left: 0 !important;
-            width: 100% !important;
-            /* On force à prendre toute la largeur du jeu */
+            width: 100vw !important;
+            /* 100vw = 100% de la largeur de la vitre du téléphone */
             height: 90px !important;
 
-            /* L'image dorée parfaitement configurée */
+            /* L'image dorée */
             background-image: url('assets/icones/new_barre.png') !important;
             background-size: 100% 100% !important;
-            /* L'étire de force sur toute la boîte */
+            /* L'étire de force */
             background-repeat: no-repeat !important;
             background-position: center !important;
 
-            /* Sécurité et placement */
+            /* Sécurité */
             z-index: 9999 !important;
             margin: 0 !important;
             padding: 10px 20px !important;
             box-sizing: border-box !important;
 
-            /* Alignement du texte (LVL, Diamants, etc.) */
+            /* Rangement des compteurs */
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
             border: none !important;
-            box-shadow: none !important;
         }
     </style>
 </body>
