@@ -2894,32 +2894,34 @@ Partie</button>
         }
 
 
-        /* --- LA BARRE DORÉE (LE RETOUR ET LA BONNE) --- */
+        /* --- LA BARRE DORÉE (NETTOYÉE ET ÉTIRÉE) --- */
         #header {
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
-            /* Prend tout l'écran */
+            /* On force à prendre toute la largeur du jeu */
             height: 90px !important;
-            /* L'épaisseur */
 
-            /* L'image dorée (indispensable pour qu'elle ne soit pas invisible) */
+            /* L'image dorée parfaitement configurée */
             background-image: url('assets/icones/new_barre.png') !important;
             background-size: 100% 100% !important;
+            /* L'étire de force sur toute la boîte */
             background-repeat: no-repeat !important;
             background-position: center !important;
 
+            /* Sécurité et placement */
             z-index: 9999 !important;
             margin: 0 !important;
             padding: 10px 20px !important;
             box-sizing: border-box !important;
 
-            /* Rangement des compteurs */
+            /* Alignement du texte (LVL, Diamants, etc.) */
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
             border: none !important;
+            box-shadow: none !important;
         }
     </style>
 </body>
