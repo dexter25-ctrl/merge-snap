@@ -1409,25 +1409,37 @@
 </head>
 
 <body>
-    <header id="game-header">
-        <div class="header-item">
+    <header id="game-header"
+        style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; max-width: 450px; height: 75px; background-image: url('assets/icones/new_barre.png'); background-size: 100% 100%; display: flex; justify-content: space-evenly; align-items: center; z-index: 999999; padding-left: 24%; padding-right: 4%; box-sizing: border-box; margin: 0; pointer-events: none;">
+
+        <div style="color: white; font-weight: bold; font-size: 15px; text-shadow: 1px 1px 2px black;">
             <span id="ui-level">LVL 1</span>
         </div>
-        <div class="header-item">
-            <img src="assets/icones/icon_eclair.png" class="hud-icon">
-            <div class="hud-column">
+
+        <div
+            style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+            <img src="assets/icones/icon_eclair.png"
+                style="width: 24px; height: 24px; margin-right: 4px; object-fit: contain;">
+            <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
                 <span id="ui-energy">100</span>
                 <span id="ui-energy-timer" style="font-size: 10px; color: #f1c40f;">MAX</span>
             </div>
         </div>
-        <div class="header-item">
-            <img src="assets/icones/icon_piece.png" class="hud-icon">
-            <span id="ui-coins">1500</span>
+
+        <div
+            style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+            <img src="assets/icones/icon_piece.png"
+                style="width: 24px; height: 24px; margin-right: 4px; object-fit: contain;">
+            <span id="ui-coins">0</span>
         </div>
-        <div class="header-item">
-            <img src="assets/icones/icon_diamant.png" class="hud-icon">
-            <span id="ui-gems">50</span>
+
+        <div
+            style="color: white; font-weight: bold; display: flex; align-items: center; text-shadow: 1px 1px 2px black;">
+            <img src="assets/icones/icon_diamant.png"
+                style="width: 24px; height: 24px; margin-right: 4px; object-fit: contain;">
+            <span id="ui-gems">0</span>
         </div>
+
     </header>
     <div id="loading-screen">
         <img src="assets/personnages_femme/femme_dem.png" alt="Loading" class="loading-bg">
