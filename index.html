@@ -2911,27 +2911,32 @@ Partie</button>
             text-shadow: 1px 1px 2px black;
         }
 
-        /* --- AGRANDISSEMENT DE LA BARRE DORÉE (HUD) --- */
+        /* --- AGRANDISSEMENT TOTAL DE LA BARRE DORÉE --- */
         #header {
-            width: 100vw !important;
-            /* Force la barre à prendre 100% de la largeur de l'écran */
-            height: 90px !important;
-            /* ⬅️ Modifie ce chiffre pour la rendre plus ou moins épaisse */
-            left: 0 !important;
+            position: absolute !important;
+            /* La détache du reste du jeu pour qu'elle soit libre */
             top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            /* Force la largeur à 100% de l'écran */
+            max-width: 100% !important;
+            /* Détruit toute limite de taille cachée */
+            height: 90px !important;
+            /* ⬅️ L'épaisseur de la barre */
             margin: 0 !important;
-            padding: 10px 15px !important;
-            /* Donne un peu d'espace aux compteurs à l'intérieur */
+            padding: 10px 20px !important;
+            /* Espace pour ne pas coller les icônes aux bords */
+            box-sizing: border-box !important;
+            /* Empêche les marges de la faire déborder */
 
-            /* Étire ton image dorée pour qu'elle remplisse tout l'espace sans se répéter */
             background-size: 100% 100% !important;
+            /* Étire l'image sur toute la nouvelle longueur */
+            z-index: 9999 !important;
+            /* S'assure qu'elle est tout au-dessus */
 
-            /* Alignement parfait des compteurs à l'intérieur */
             display: flex !important;
             justify-content: space-between !important;
-            /* Pousse les éléments vers la gauche et la droite */
             align-items: center !important;
-            /* Centre tout verticalement */
         }
     </style>
 </body>
