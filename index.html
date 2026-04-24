@@ -1505,90 +1505,97 @@
 
     <header id="game-header">
         <div class="header-item"
-            style="display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateY(2px); width: 70px;">
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translate(-15px, -8px); width: 90px;">
 
             <span id="ui-level"
-                style="font-size: 13px; font-weight: 900; color: white; text-shadow: 1px 1px 2px black;">LVL 1</span>
+                style="font-size: 15px; font-weight: 900; color: white; text-shadow: 1px 1px 2px black; text-align: center; line-height: 1.1;">LVL
+                1</span>
 
             <div
-                style="position: relative; width: 100%; height: 10px; background: rgba(0,0,0,0.6); border-radius: 5px; border: 1px solid #555; margin-top: 2px; overflow: hidden;">
+                style="position: relative; width: 100%; height: 14px; background: rgba(0,0,0,0.6); border-radius: 7px; border: 1px solid #555; margin-top: 3px; overflow: hidden;">
 
                 <div id="ui-xp-fill"
                     style="width: 45%; height: 100%; background: linear-gradient(90deg, #f1c40f, #f39c12, #f1c40f); box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);">
                 </div>
 
                 <span id="ui-xp-text"
-                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; color: #ecf0f1; font-weight: bold; text-shadow: 1px 1px 2px black; z-index: 2; white-space: nowrap;">45
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; color: #ecf0f1; font-weight: bold; text-shadow: 1px 1px 2px black; z-index: 2; white-space: nowrap;">45
                     / 100</span>
             </div>
         </div>
 
-        <div class="header-item" style="transform: translateY(2px);">
-            <img src="assets/icones/icon_eclair.png" class="hud-icon"
-                style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-            <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
-                <span id="ui-energy" style="font-size: 14px; text-shadow: 1px 1px 2px black;">100</span>
-                <span id="ui-energy-timer"
-                    style="font-size: 9px; color: #f1c40f; font-weight: bold; text-shadow: 1px 1px 1px black;">MAX</span>
-            </div>
-        </div>
+        <span id="ui-xp-text"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; color: #ecf0f1; font-weight: bold; text-shadow: 1px 1px 2px black; z-index: 2; white-space: nowrap;">45
+            / 100</span>
+</div>
+</div>
 
-        <div class="header-item" style="transform: translateY(2px);">
-            <img src="assets/icones/icon_piece.png" class="hud-icon"
-                style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-            <span id="ui-coins" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
-        </div>
-
-        <div class="header-item" style="transform: translateY(2px);">
-            <img src="assets/icones/icon_diamant.png" class="hud-icon"
-                style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-            <span id="ui-gems" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
-        </div>
-    </header>
-
-    <!-- Dialog & Mission Zone -->
-    <section id="mission-area"></section>
-
-    <!-- Confetti Container -->
-    <div class="confetti-container" id="confetti"></div>
-
-    <!-- Grille de Jeu -->
-
-    <main id="grid-area">
-        <div class="studio-container">
-            <div class="grid" id="grid">
-                <!-- Cellules générées ici -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Bottom Controls -->
-    <footer id="game-footer">
-        <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-            📦 <br> <span style="font-size: 10px;">Stock</span>
-        </button>
-        <button onclick="localStorage.clear(); window.location.reload();"
-            style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
-            Reset Save</button>
-    </footer>
-
-    <!-- Inventory Modal -->
-    <div id="inventory-modal">
-        <div class="inventory-header">
-            <span>📦 Stockage Studio</span>
-            <button class="inventory-close" onclick="closeInventory()">X</button>
-        </div>
-        <div class="inventory-content">
-            <div class="inventory-grid" id="inventory-grid">
-                <!-- 160 slots seront générés en JS -->
-            </div>
-        </div>
-        <button id="buy-slots-btn" onclick="buyInventorySlots()"
-            style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
-            +8 cases (100 💎)</button>
+<div class="header-item" style="transform: translateY(2px);">
+    <img src="assets/icones/icon_eclair.png" class="hud-icon"
+        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
+    <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
+        <span id="ui-energy" style="font-size: 14px; text-shadow: 1px 1px 2px black;">100</span>
+        <span id="ui-energy-timer"
+            style="font-size: 9px; color: #f1c40f; font-weight: bold; text-shadow: 1px 1px 1px black;">MAX</span>
     </div>
+</div>
 
-    <div id="message"></div>
+<div class="header-item" style="transform: translateY(2px);">
+    <img src="assets/icones/icon_piece.png" class="hud-icon"
+        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
+    <span id="ui-coins" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
+</div>
+
+<div class="header-item" style="transform: translateY(2px);">
+    <img src="assets/icones/icon_diamant.png" class="hud-icon"
+        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
+    <span id="ui-gems" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
+</div>
+</header>
+
+<!-- Dialog & Mission Zone -->
+<section id="mission-area"></section>
+
+<!-- Confetti Container -->
+<div class="confetti-container" id="confetti"></div>
+
+<!-- Grille de Jeu -->
+
+<main id="grid-area">
+    <div class="studio-container">
+        <div class="grid" id="grid">
+            <!-- Cellules générées ici -->
+        </div>
+    </div>
+</main>
+
+<!-- Bottom Controls -->
+<footer id="game-footer">
+    <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+        📦 <br> <span style="font-size: 10px;">Stock</span>
+    </button>
+    <button onclick="localStorage.clear(); window.location.reload();"
+        style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
+        Reset Save</button>
+</footer>
+
+<!-- Inventory Modal -->
+<div id="inventory-modal">
+    <div class="inventory-header">
+        <span>📦 Stockage Studio</span>
+        <button class="inventory-close" onclick="closeInventory()">X</button>
+    </div>
+    <div class="inventory-content">
+        <div class="inventory-grid" id="inventory-grid">
+            <!-- 160 slots seront générés en JS -->
+        </div>
+    </div>
+    <button id="buy-slots-btn" onclick="buyInventorySlots()"
+        style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
+        +8 cases (100 💎)</button>
+</div>
+
+<div id="message"></div>
 
 
 </div>
