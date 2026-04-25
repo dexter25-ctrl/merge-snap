@@ -1500,13 +1500,13 @@
 
     <header id="game-header">
         <div class="header-item"
-            style="display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translate(-18px, -19.5px); width: 190px;">
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translate(-15px, -8px); width: 90px;">
             <span id="ui-level"
                 style="font-size: 15px; font-weight: 900; color: white; text-shadow: 1px 1px 2px black; text-align: center; line-height: 1.1;">LVL
                 1</span>
 
             <div
-                style="position: relative; width: 100%; height: 18.6px; background: rgba(0,0,0,0.5); border-radius: 50px; margin-top: 3px; overflow: hidden;">
+                style="position: relative; width: 100%; height: 16px; background: rgba(0,0,0,0.5); border-radius: 50px; margin-top: 3px; overflow: hidden;">
                 <div id="ui-xp-fill"
                     style="width: 45%; height: 100%; background: linear-gradient(90deg, #f1c40f, #f39c12, #f1c40f); box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);">
                 </div>
@@ -1516,9 +1516,9 @@
             </div>
         </div>
 
-        <div class="header-item" style="transform: translate(-15px, 5px);">
-            <img src="assets/icones/icon_eclair.png" class="hud-icon"
-                style="width: 60px; height: 28px; margin-right: 4px; object-fit: contain;">
+        <div class="header-item" style="transform: translate(-5px, 5px);">
+            <img src="assets/icones/icon_eclair.png"
+                style="width: 35px; height: 35px; margin-right: 4px; object-fit: contain;">
             <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
                 <span id="ui-energy" style="font-size: 16px; color: white; text-shadow: 1px 1px 2px black;">100</span>
                 <span id="ui-energy-timer"
@@ -1526,85 +1526,62 @@
             </div>
         </div>
 
-        <div class="header-item" style="transform: translate(-20px, 5px);">
-            <img src="assets/icones/icon_piece.png" class="hud-icon"
-                style="width: 60px; height: 28px; margin-right: 4px; object-fit: contain;">
+        <div class="header-item" style="transform: translate(5px, 5px);">
+            <img src="assets/icones/icon_piece.png"
+                style="width: 35px; height: 35px; margin-right: 4px; object-fit: contain;">
             <span id="ui-coins" style="font-size: 16px; color: white; text-shadow: 1px 1px 2px black;">0</span>
         </div>
 
-        <div class="header-item" style="transform: translate(-25px, 5px);">
-            <img src="assets/icones/icon_diamant.png" class="hud-icon"
-                style="width: 28px; height: 28px; margin-right: 4px; object-fit: contain;">
+        <div class="header-item" style="transform: translate(15px, 5px);">
+            <img src="assets/icones/icon_diamant.png"
+                style="width: 35px; height: 35px; margin-right: 4px; object-fit: contain;">
             <span id="ui-gems" style="font-size: 16px; color: white; text-shadow: 1px 1px 2px black;">0</span>
         </div>
-</div>
+    </header>
 
-<div class="header-item" style="transform: translateY(2px);">
-    <img src="assets/icones/icon_eclair.png" class="hud-icon"
-        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-    <div style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
-        <span id="ui-energy" style="font-size: 14px; text-shadow: 1px 1px 2px black;">100</span>
-        <span id="ui-energy-timer"
-            style="font-size: 9px; color: #f1c40f; font-weight: bold; text-shadow: 1px 1px 1px black;">MAX</span>
-    </div>
-</div>
+    <!-- Dialog & Mission Zone -->
+    <section id="mission-area"></section>
 
-<div class="header-item" style="transform: translateY(2px);">
-    <img src="assets/icones/icon_piece.png" class="hud-icon"
-        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-    <span id="ui-coins" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
-</div>
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti"></div>
 
-<div class="header-item" style="transform: translateY(2px);">
-    <img src="assets/icones/icon_diamant.png" class="hud-icon"
-        style="width: 20px; height: 20px; margin-right: 4px; object-fit: contain;">
-    <span id="ui-gems" style="font-size: 14px; text-shadow: 1px 1px 2px black;">0</span>
-</div>
-</header>
+    <!-- Grille de Jeu -->
 
-<!-- Dialog & Mission Zone -->
-<section id="mission-area"></section>
-
-<!-- Confetti Container -->
-<div class="confetti-container" id="confetti"></div>
-
-<!-- Grille de Jeu -->
-
-<main id="grid-area">
-    <div class="studio-container">
-        <div class="grid" id="grid">
-            <!-- Cellules générées ici -->
+    <main id="grid-area">
+        <div class="studio-container">
+            <div class="grid" id="grid">
+                <!-- Cellules générées ici -->
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<!-- Bottom Controls -->
-<footer id="game-footer">
-    <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-        📦 <br> <span style="font-size: 10px;">Stock</span>
-    </button>
-    <button onclick="localStorage.clear(); window.location.reload();"
-        style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
-        Reset Save</button>
-</footer>
+    <!-- Bottom Controls -->
+    <footer id="game-footer">
+        <button class="control-btn" id="inventory-btn" onclick="openInventory()">
+            📦 <br> <span style="font-size: 10px;">Stock</span>
+        </button>
+        <button onclick="localStorage.clear(); window.location.reload();"
+            style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🔄
+            Reset Save</button>
+    </footer>
 
-<!-- Inventory Modal -->
-<div id="inventory-modal">
-    <div class="inventory-header">
-        <span>📦 Stockage Studio</span>
-        <button class="inventory-close" onclick="closeInventory()">X</button>
-    </div>
-    <div class="inventory-content">
-        <div class="inventory-grid" id="inventory-grid">
-            <!-- 160 slots seront générés en JS -->
+    <!-- Inventory Modal -->
+    <div id="inventory-modal">
+        <div class="inventory-header">
+            <span>📦 Stockage Studio</span>
+            <button class="inventory-close" onclick="closeInventory()">X</button>
         </div>
+        <div class="inventory-content">
+            <div class="inventory-grid" id="inventory-grid">
+                <!-- 160 slots seront générés en JS -->
+            </div>
+        </div>
+        <button id="buy-slots-btn" onclick="buyInventorySlots()"
+            style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
+            +8 cases (100 💎)</button>
     </div>
-    <button id="buy-slots-btn" onclick="buyInventorySlots()"
-        style="margin-top: 15px; width: 100%; padding: 10px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">Acheter
-        +8 cases (100 💎)</button>
-</div>
 
-<div id="message"></div>
+    <div id="message"></div>
 
 
 </div>
