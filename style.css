@@ -420,20 +420,22 @@ body, html {
 
 /* ============================================================
    7. ZONE DE MISSION (Clients)
+   La zone de mission est un enfant flex naturel de .app-container.
+   Elle se place entre le header (55px fixed) et la grille.
    ============================================================ */
 #mission-area {
-    position: absolute;
-    top: 140px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* ❌ Plus de position: absolute — on coule dans le flex */
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 40px;
+    gap: 20px;
     width: 100%;
+    flex-shrink: 0;
+    height: 130px;  /* Hauteur fixe pour les cartes clients */
     z-index: 100;
     pointer-events: none;
-    margin-top: 71px !important;
+    /* Pas de margin-top ici : le padding-top de .app-container gère l'espace sous le header */
 }
 
 /* Destruction des fonds blancs dans la zone mission */
@@ -500,31 +502,66 @@ body, html {
 
 /* ============================================================
    8. GRILLE DE JEU
+   Layout Flexbox colonne : header fixe en haut, puis
+   clients → grille → footer coulent naturellement.
    ============================================================ */
 .app-container {
     background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
     background-size: cover !important;
     background-position: center top !important;
     height: 100vh !important;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+    width: 100% !important;
+    /* display géré par .game-visible (sans !important pour que display:none inline marche) */
+    display: none;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-top: 55px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
-#grid-area, .studio-container {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: absolute !important;
-    top: 42% !important;
-    left: 47.5% !important;
-    transform: translateX(-50%) !important;
-    width: 91% !important;
+/* Classe ajoutée par JS pour afficher le jeu */
+.app-container.game-visible {
+    display: flex !important;
+}
+
+/* Le wrapper <main> : enfant flex de .app-container, prend l'espace restant */
+#grid-area {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     z-index: 50 !important;
+    overflow: hidden !important;
+}
+
+/* Le .studio-container remplit entièrement #grid-area */
+.studio-container {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 95% !important;
+    max-width: 420px !important;
+    height: 100% !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
 }
 
 #grid {
@@ -533,7 +570,9 @@ body, html {
     grid-template-rows: repeat(9, 1fr) !important;
     gap: 2px !important;
     width: 100% !important;
-    height: 100% !important;
+    /* La grille remplit son conteneur, mais max-height l'empêche de déborder */
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     background: transparent !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -541,10 +580,11 @@ body, html {
 
 .cell {
     position: relative !important;
-    width: 50px; height: 50px;
-    min-width: 50px !important; min-height: 50px !important;
-    display: flex;
-    justify-content: center; align-items: center;
+    /* Taille auto dans la grille pour s'adapter à max-height */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
 }
 
 .grid-cell {
@@ -553,7 +593,8 @@ body, html {
 }
 
 .cell img, .grid-cell img {
-    width: 100% !important; height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: contain !important;
     display: block !important;
     position: relative !important;
@@ -647,27 +688,51 @@ body, html {
 
 /* ============================================================
    11. ZONE DE CONTRÔLES / FOOTER
+   Enfant flex naturel en bas de .app-container
    ============================================================ */
-#game-footer, .controls {
-    position: absolute !important;
-    bottom: 15px !important;
-    left: 0 !important;
+#game-footer {
+    /* ❌ Plus de position: absolute */
+    position: relative !important;
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 20px !important;
-    z-index: 10000 !important;
+    gap: 16px !important;
+    padding: 8px 0 10px !important;
+    flex-shrink: 0 !important;
+    z-index: 200 !important;
+    background: rgba(0,0,0,0.25) !important;
+    backdrop-filter: blur(4px) !important;
 }
 
+/* Bouton Retour Menu (BOGUE 3) */
+#btn-back-to-menu {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+    color: white;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+}
+#btn-back-to-menu:active { transform: scale(0.92); background: rgba(255,255,255,0.3); }
+
 .control-btn {
-    padding: 10px 20px;
+    padding: 8px 16px;
     background: rgba(0,0,0,0.6);
     color: white;
     border: 1px solid rgba(255,255,255,0.3);
     border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     backdrop-filter: blur(4px);
 }

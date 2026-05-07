@@ -250,7 +250,9 @@ function goToSaveMenu() {
  * Affiche l'écran de sélection de slot de sauvegarde (casier).
  */
 function renderMainMenu() {
-    document.getElementById('game-ui').style.display        = 'none';
+    const gameUi = document.getElementById('game-ui');
+    gameUi.classList.remove('game-visible');
+    gameUi.style.display = '';
     document.getElementById('character-creator').style.display = 'none';
     document.getElementById('start-menu').style.display     = 'flex';
     document.getElementById('main-menu').style.display      = 'none';
@@ -282,16 +284,27 @@ function renderMainMenu() {
 }
 
 /**
+ * Retour au menu principal (BOGUE 3) depuis l'écran de jeu.
+ * Sauvegarde d'abord, puis affiche le menu principal.
+ */
+function backToMainMenu() {
+    saveGame();
+    const gameUi = document.getElementById('game-ui');
+    gameUi.classList.remove('game-visible');
+    gameUi.style.display = '';
+    document.getElementById('start-menu').style.display = 'none';
+    const mainMenu = document.getElementById('main-menu');
+    if (mainMenu) mainMenu.style.display = 'flex';
+}
+
+/**
  * Lance une partie existante depuis un slot.
  */
 function playSlot(slot) {
     currentSlot = slot;
     document.getElementById('start-menu').style.display = 'none';
-    document.getElementById('game-ui').style.display    = 'flex';
-
-    const gridEl = document.getElementById('grid');
-    if (gridEl) gridEl.style.display = 'grid';
-
+    const gameUi = document.getElementById('game-ui');
+    gameUi.classList.add('game-visible');
     startGame();
 }
 
@@ -357,10 +370,8 @@ function validateCreation() {
     currentMissionIndex = 0;
 
     document.getElementById('character-creator').style.display = 'none';
-    document.getElementById('game-ui').style.display           = 'flex';
-
-    const gridEl = document.getElementById('grid');
-    if (gridEl) gridEl.style.display = 'grid';
+    const gameUi = document.getElementById('game-ui');
+    gameUi.classList.add('game-visible');
 
     startGame();
 }
@@ -741,6 +752,14 @@ function createItemElement(family, level, isLocked = false) {
     }
 
     item.appendChild(contentDiv);
+
+    // BOGUE 2 FIX : Désactiver le drag sur TOUS les enfants (images, spans)
+    // pour éviter qu'ils interceptent l'événement et cassent le drag&drop
+    item.querySelectorAll('img, span, div').forEach(child => {
+        child.setAttribute('draggable', 'false');
+        child.style.pointerEvents = 'none';
+    });
+
     return item;
 }
 
@@ -964,46 +983,82 @@ function spawnSpecificItem(family, level, isLocked = false) {
 
 // ============================================================
 // 13. DRAG & DROP — DESKTOP
+// BOGUE 2 FIX : On utilise dataTransfer pour transporter l'index
+// de la cellule source. C'est plus robuste que la variable globale
+// seule, surtout quand les événements se chevauchent.
 // ============================================================
 
 function handleDragStart(e) {
     if (this.dataset.locked === 'true') { e.preventDefault(); return; }
+
     draggedItem = this;
     sourceCell  = this.parentElement;
+
+    // Stocker l'index de la cellule source dans dataTransfer (robustesse)
+    if (sourceCell && sourceCell.dataset.index !== undefined) {
+        e.dataTransfer.setData('text/plain', sourceCell.dataset.index);
+    }
+    e.dataTransfer.effectAllowed = 'move';
+
     setTimeout(() => {
-        this.style.opacity = '0.7';
+        this.style.opacity = '0.5';
         this.style.zIndex  = '100';
     }, 0);
 }
 
 function handleDragEnd() {
-    this.style.opacity = '1';
-    this.style.zIndex  = '';
+    // Remettre l'opacité même si le drop n'a pas eu lieu
+    if (draggedItem) {
+        draggedItem.style.opacity = '1';
+        draggedItem.style.zIndex  = '';
+    }
     draggedItem = null;
     sourceCell  = null;
 }
 
-function handleDragOver(e)  { e.preventDefault(); }
+function handleDragOver(e)  {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
 
 function handleDragEnter(e) {
     e.preventDefault();
     if (this !== sourceCell) {
-        this.style.background = '#e8dcc8';
-        this.style.boxShadow  = 'inset 0 0 10px rgba(0,0,0,0.1)';
+        this.style.background = 'rgba(232,220,200,0.5)';
+        this.style.boxShadow  = 'inset 0 0 10px rgba(0,0,0,0.15)';
     }
 }
 
-function handleDragLeave() {
-    this.style.background = '';
-    this.style.boxShadow  = '';
+function handleDragLeave(e) {
+    // Éviter le flicker quand on survole un enfant de la cellule
+    if (!this.contains(e.relatedTarget)) {
+        this.style.background = '';
+        this.style.boxShadow  = '';
+    }
 }
 
 function handleDrop(e) {
     e.preventDefault();
     this.style.background = '';
     this.style.boxShadow  = '';
+
+    // Récupérer l'item dragué — si la variable globale est perdue,
+    // on retrouve la cellule source via dataTransfer
+    if (!draggedItem) {
+        const srcIndex = e.dataTransfer.getData('text/plain');
+        if (srcIndex !== '') {
+            const srcCell = document.querySelector(`.cell[data-index="${srcIndex}"]`);
+            if (srcCell && srcCell.firstChild) {
+                draggedItem = srcCell.firstChild;
+                sourceCell  = srcCell;
+            }
+        }
+    }
+
     if (!draggedItem) return;
     processDropLogic(draggedItem, sourceCell, this);
+    draggedItem = null;
+    sourceCell  = null;
 }
 
 

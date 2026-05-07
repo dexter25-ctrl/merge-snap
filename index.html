@@ -172,7 +172,7 @@
      Contient le HUD, les missions, la grille et
      les contrôles.
      ============================================= -->
-<div id="game-ui" class="app-container" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;position:relative;">
+<div id="game-ui" class="app-container">
 
     <!-- === HUD / En-tête === -->
     <header id="game-header">
@@ -238,13 +238,16 @@
 
     <!-- === Contrôles bas de page === -->
     <footer id="game-footer">
+        <!-- BOGUE 3 : Bouton Retour au menu principal -->
+        <button id="btn-back-to-menu" onclick="backToMainMenu()" title="Menu principal">←</button>
+
         <button class="control-btn" id="inventory-btn" onclick="openInventory()">
             📦 <br><span style="font-size:10px;">Stock</span>
         </button>
         <button onclick="localStorage.clear(); window.location.reload();"
-                style="padding:10px 20px;background:#e74c3c;color:white;border:none;
-                       border-radius:5px;cursor:pointer;font-size:14px;font-weight:bold;
-                       box-shadow:0 4px 6px rgba(0,0,0,0.3);">🔄 Reset Save</button>
+                style="padding:8px 14px;background:#e74c3c;color:white;border:none;
+                       border-radius:5px;cursor:pointer;font-size:13px;font-weight:bold;
+                       box-shadow:0 4px 6px rgba(0,0,0,0.3);">&#x1F504; Reset</button>
     </footer>
 
     <!-- === Modal Inventaire === -->
