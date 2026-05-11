@@ -1,8 +1,8 @@
 /* ============================================================
-   MERGE & SNAP - STRUCTURE MOBILE NETTOYÉE
+   MERGE & SNAP - STRUCTURE MOBILE FINALE NETTOYÉE
    ============================================================ */
 
-/* ---- 1. BASE ---- */
+/* ---- 1. RESET & BASE ---- */
 * {
     box-sizing: border-box;
 }
@@ -14,24 +14,23 @@ html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
     background-color: #000;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* ---- 2. LE CONTENEUR GLOBAL (La structure en 3 tranches) ---- */
+/* ---- 2. LE CONTENEUR GLOBAL (Structure en tranches) ---- */
 .app-container {
     display: flex !important;
-    /* On force le flex */
     flex-direction: column !important;
     height: 100vh !important;
     width: 100vw !important;
     background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
     background-size: cover !important;
     background-position: center !important;
-    overflow: hidden !important;
+    position: relative;
 }
 
-/* ---- 3. HEADER FIXE (La barre dorée) ---- */
+/* ---- 3. HEADER DORÉ (Barre d'énergie/pièces) ---- */
 #game-header {
     height: 55px !important;
     width: 100% !important;
@@ -41,47 +40,39 @@ html {
     justify-content: space-evenly !important;
     align-items: center !important;
     padding-left: 20% !important;
-    z-index: 1000 !important;
-    flex-shrink: 0 !important;
+    /* Pour laisser place à l'icône appareil photo */
+    z-index: 1000;
+    flex-shrink: 0;
 }
 
-/* ---- 4. TRANCHE HAUTE : LES CLIENTS ---- */
+/* ---- 4. ZONE PERSONNAGES / CLIENTS (Haut) ---- */
 #mission-area,
 #client-orders-container {
-    flex: 0 0 25vh !important;
-    /* Prend exactement 25% de la hauteur */
+    flex: 0 0 30vh !important;
+    /* Prend 30% de la hauteur de l'écran */
     display: flex !important;
     justify-content: center !important;
     align-items: flex-end !important;
-    padding-bottom: 10px !important;
-    z-index: 100 !important;
-    pointer-events: none;
-}
-
-.mission-card {
-    width: 90px;
-    height: 110px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+    padding-bottom: 5px;
+    z-index: 10;
 }
 
 .mission-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: 25vh !important;
+    /* Taille des personnages */
+    width: auto !important;
+    object-fit: contain !important;
 }
 
-/* ---- 5. TRANCHE MILIEU : LA GRILLE (L'espace restant) ---- */
+/* ---- 5. ZONE GRILLE (Milieu) ---- */
 #grid-area {
     flex: 1 1 auto !important;
-    /* Prend tout le reste de l'écran */
+    /* Remplit tout l'espace central */
     display: flex !important;
     justify-content: center !important;
     align-items: flex-start !important;
-    padding-top: 5px !important;
-    overflow: hidden !important;
+    padding-top: 10px;
+    z-index: 5;
 }
 
 #grid,
@@ -89,7 +80,7 @@ html {
     display: grid !important;
     grid-template-columns: repeat(6, 1fr) !important;
     gap: 3px !important;
-    width: 94% !important;
+    width: 95% !important;
     max-width: 450px !important;
 }
 
@@ -98,10 +89,9 @@ html {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
     /* Carrés parfaits */
-    position: relative !important;
-    background-image: url('./assets/vieux_papier.png');
-    /* Fond par défaut */
+    background-image: url('assets/vieux_papier.png') !important;
     background-size: cover !important;
+    position: relative;
     border-radius: 4px;
 }
 
@@ -112,44 +102,42 @@ html {
     object-fit: contain !important;
 }
 
-/* ---- 6. TRANCHE BASSE : LE FOOTER ---- */
+/* ---- 6. BARRE DU BAS (Footer) ---- */
 #game-footer,
 #footer-bar {
-    height: 80px !important;
-    flex-shrink: 0 !important;
+    height: 75px !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(5px);
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 15px !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    backdrop-filter: blur(5px) !important;
-    padding-bottom: 15px !important;
-    z-index: 1000 !important;
+    gap: 15px;
+    flex-shrink: 0;
+    z-index: 1000;
 }
 
-.control-btn,
-.btn-play {
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: none;
-    font-weight: bold;
-    background: #e74c3c;
-    color: white;
+/* ---- 7. ÉCRANS SPÉCIAUX (Menu, Loading) ---- */
+#loading-screen,
+#main-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #000;
 }
 
-/* ---- 7. BROUILLARD & ANIMATIONS (On garde ton travail) ---- */
+#main-menu {
+    background-image: url('assets/decor_perso/new_demmarage.png') !important;
+    background-size: cover;
+}
+
+/* Brouillard (Cases bloquées) */
 .fog-burned::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('./assets/papier_brule.png') center/cover !important;
-    z-index: 5;
-}
-
-.fog-solid::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url('./assets/vieux_papier.png') center/cover !important;
-    z-index: 10;
+    background: url('assets/papier_brule.png') center/cover no-repeat !important;
 }
