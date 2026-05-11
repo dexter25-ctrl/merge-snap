@@ -464,17 +464,15 @@ html {
 
 /* ============================================================
    7. ZONE DE MISSION (Clients)
-   La zone de mission est un enfant flex naturel de .app-container.
-   Elle se place entre le header (55px fixed) et la grille.
+   Tranche fixe de 25vh juste sous le header.
    ============================================================ */
 #mission-area {
-    height: 20vh !important;
+    flex: 0 0 25vh !important;
     display: flex !important;
     justify-content: center !important;
     align-items: flex-end !important;
-    flex-shrink: 0 !important;
-    margin-top: 10px !important;
-    position: relative;
+    padding-bottom: 10px !important;
+    position: relative !important;
     gap: 20px;
     width: 100%;
     z-index: 100;
@@ -570,21 +568,22 @@ html {
 }
 
 /* ============================================================
-   8. GRILLE DE JEU
-   Layout Flexbox colonne : header fixe en haut, puis
-   clients → grille → footer coulent naturellement.
+   8. ÉCRAN DE JEU — STRUCTURE FLEXBOX PRINCIPALE
+   Hiérarchie stricte en tranches verticales :
+   [header 55px fixe] → [clients 25vh] → [grille flex:1] → [footer 70px]
    ============================================================ */
+
+/* Conteneur principal de l'écran de jeu */
 .app-container {
     background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
     background-size: cover !important;
     background-position: center top !important;
     height: 100vh !important;
     width: 100vw !important;
-    display: none;
+    display: none;                        /* affiché par .game-visible */
     flex-direction: column !important;
     overflow: hidden !important;
-    justify-content: space-between !important;
-    padding-top: 55px !important;
+    padding-top: 55px !important;         /* compense le header fixe */
     box-sizing: border-box !important;
     position: relative !important;
 }
@@ -594,56 +593,52 @@ html {
     display: flex !important;
 }
 
-/* Le wrapper <main> : enfant flex de .app-container, prend l'espace restant */
+/* Zone grille : prend tout l'espace entre clients et footer */
 #grid-area {
-    position: relative !important;
+    flex: 1 1 auto !important;            /* ← grandit pour remplir */
+    min-height: 0 !important;            /* indispensable dans flex-column */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
     width: 100% !important;
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    overflow: hidden !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     z-index: 50 !important;
-    overflow: hidden !important;
 }
 
-/* Le .studio-container remplit entièrement #grid-area */
+/* Wrapper intermédiaire (conservé pour compatibilité JS) */
 .studio-container {
-    position: relative !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    width: 95% !important;
-    max-width: 420px !important;
+    width: 96% !important;
     height: 100% !important;
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    margin: 0 !important;
     overflow: hidden !important;
 }
 
+/* La grille de jeu : 6 colonnes, remplit #grid-area */
 #grid {
-    flex-grow: 1 !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     display: grid !important;
     grid-template-columns: repeat(6, 1fr) !important;
     gap: 2px !important;
-    width: 96% !important;
-    margin: 10px auto 0 !important;
+    width: 100% !important;
     align-content: start !important;
     background: transparent !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
+/* Cases : carrés parfaits via aspect-ratio */
 .grid-cell,
 .cell {
     width: 100% !important;
@@ -652,10 +647,11 @@ html {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
+    background: transparent !important;
     background-size: cover !important;
     background-position: center !important;
-    background: transparent !important;
     border: 1px dashed rgba(0, 0, 0, 0.2) !important;
+    overflow: hidden !important;
 }
 
 .cell img,
@@ -1147,60 +1143,6 @@ body.level-3::before {
     background: none;
 }
 
-/* Le conteneur global qui coupe l'écran en tranches */
-#game-screen {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-}
-
-/* La tranche du haut : Les clients */
-#client-orders-container {
-    flex: 0 0 25vh;
-    /* Prend exactement 25% de l'écran en haut */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    /* Colle les clients vers le bas de cette tranche */
-    padding-bottom: 10px;
-    /* Petit espace avant la grille */
-    z-index: 10;
-    /* S'assure qu'ils restent au-dessus de tout */
-}
-
-/* La tranche du milieu : La grille */
-#game-grid {
-    flex: 1 1 auto;
-    /* Prend automatiquement toute la place restante au milieu */
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2px;
-    width: 96%;
-    margin: 0 auto;
-    align-content: start;
-    /* Pousse les cases vers le haut de la zone de grille */
-    z-index: 1;
-}
-
-/* Les cases */
-.grid-cell {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    /* Le secret pour des carrés parfaits sur mobile ! */
-    position: relative;
-    /* Tes styles de fond habituels en dessous... */
-}
-
-/* La tranche du bas : La barre */
-#footer-bar {
-    /* (ou la classe de ta barre en bas) */
-    flex: 0 0 70px;
-    /* Hauteur fixe en bas */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 15px;
-    z-index: 10;
-}
+/* Les IDs #game-screen, #game-grid, #client-orders-container, #footer-bar
+   ont été supprimés : ils n'existent pas dans le HTML.
+   Leurs rôles sont assurés par .app-container, #mission-area, #grid, #game-footer. */
