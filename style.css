@@ -424,18 +424,17 @@ body, html {
    Elle se place entre le header (55px fixed) et la grille.
    ============================================================ */
 #mission-area {
-    /* ❌ Plus de position: absolute — on coule dans le flex */
+    height: 20vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    flex-shrink: 0 !important;
+    margin-top: 10px !important;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
     gap: 20px;
     width: 100%;
-    flex-shrink: 0;
-    height: 130px;  /* Hauteur fixe pour les cartes clients */
     z-index: 100;
     pointer-events: none;
-    /* Pas de margin-top ici : le padding-top de .app-container gère l'espace sous le header */
 }
 
 /* Destruction des fonds blancs dans la zone mission */
@@ -510,16 +509,14 @@ body, html {
     background-size: cover !important;
     background-position: center top !important;
     height: 100vh !important;
-    width: 100% !important;
-    /* display géré par .game-visible (sans !important pour que display:none inline marche) */
+    width: 100vw !important;
     display: none;
     flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+    overflow: hidden !important;
+    justify-content: space-between !important;
     padding-top: 55px !important;
     box-sizing: border-box !important;
     position: relative !important;
-    overflow: hidden !important;
 }
 
 /* Classe ajoutée par JS pour afficher le jeu */
@@ -565,29 +562,27 @@ body, html {
 }
 
 #grid {
+    flex-grow: 1 !important;
     display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    grid-template-rows: repeat(9, 1fr) !important;
+    grid-template-columns: repeat(6, 1fr) !important;
     gap: 2px !important;
-    width: 100% !important;
-    /* La grille remplit son conteneur, mais max-height l'empêche de déborder */
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
+    width: 96% !important;
+    margin: 10px auto 0 !important;
+    align-content: start !important;
     background: transparent !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-.cell {
+.grid-cell, .cell {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
     position: relative !important;
-    /* Taille auto dans la grille pour s'adapter à max-height */
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    overflow: hidden !important;
-}
-
-.grid-cell {
+    background-size: cover !important;
+    background-position: center !important;
     background: transparent !important;
     border: 1px dashed rgba(0,0,0,0.2) !important;
 }
@@ -691,15 +686,15 @@ body, html {
    Enfant flex naturel en bas de .app-container
    ============================================================ */
 #game-footer {
-    /* ❌ Plus de position: absolute */
+    height: 70px !important;
+    flex-shrink: 0 !important;
+    padding-bottom: 10px !important;
     position: relative !important;
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     gap: 16px !important;
-    padding: 8px 0 10px !important;
-    flex-shrink: 0 !important;
     z-index: 200 !important;
     background: rgba(0,0,0,0.25) !important;
     backdrop-filter: blur(4px) !important;
