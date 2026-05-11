@@ -1,5 +1,5 @@
 /* ============================================================
-   MERGE & SNAP - VERSION DE SECOURS (FIX VISUEL)
+   MERGE & SNAP - COMPATIBILITÉ TOTALE
    ============================================================ */
 
 * {
@@ -14,37 +14,38 @@ html {
     height: 100%;
     overflow: hidden;
     background-color: #000;
-    font-family: sans-serif;
 }
 
-/* On cache les menus qui bloquent la vue pour l'instant */
+/* 1. CACHER LES MENUS AU DÉMARRAGE POUR VOIR LE JEU */
 #loading-screen,
 #main-menu,
-#character-creator {
+#character-creator,
+.overlay-menu {
     display: none !important;
 }
 
-/* LE CONTENEUR PRINCIPAL */
-.app-container {
+/* 2. LE CONTENEUR DU JEU */
+.app-container,
+#game-screen {
     display: flex !important;
     flex-direction: column !important;
-    height: 100dvh !important;
+    height: 100vh !important;
     width: 100vw !important;
     background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
     background-size: cover !important;
     background-position: center !important;
 }
 
-/* LE HEADER (Barre dorée) */
+/* 3. LE HEADER (Barre dorée) */
 #game-header {
     height: 55px !important;
     background-image: url('assets/icones/new_barre.png') !important;
     background-size: cover !important;
-    z-index: 100;
     flex-shrink: 0;
+    z-index: 100;
 }
 
-/* ZONE PERSONNAGES (On les réduit pour qu'ils ne mangent pas la grille) */
+/* 4. ZONE CLIENTS (Haut) */
 #mission-area,
 #client-orders-container {
     flex: 0 0 25vh !important;
@@ -54,19 +55,14 @@ html {
     z-index: 10;
 }
 
-#mission-area img,
-.mission-card img {
-    height: 20vh !important;
-    width: auto !important;
-}
-
-/* LA GRILLE (On la force à descendre) */
-#grid-area {
+/* 5. ZONE GRILLE (Milieu - On force l'affichage) */
+#grid-area,
+.studio-container {
     flex: 1 !important;
     display: flex !important;
     justify-content: center !important;
     align-items: flex-start !important;
-    padding-top: 10px !important;
+    padding-top: 15px !important;
 }
 
 #grid,
@@ -75,8 +71,11 @@ html {
     grid-template-columns: repeat(6, 1fr) !important;
     gap: 4px !important;
     width: 95% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
+/* LES CASES (Marron/Vieux papier) */
 .grid-cell,
 .cell {
     width: 100% !important;
@@ -86,13 +85,12 @@ html {
     border-radius: 4px;
 }
 
-/* LA BARRE DU BAS */
+/* 6. BARRE DU BAS */
 #game-footer,
 #footer-bar {
     height: 80px !important;
-    background: rgba(0, 0, 0, 0.5) !important;
+    flex-shrink: 0;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    flex-shrink: 0;
 }
