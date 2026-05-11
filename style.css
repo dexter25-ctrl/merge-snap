@@ -1,8 +1,7 @@
 /* ============================================================
-   MERGE & SNAP - STRUCTURE MOBILE FINALE NETTOYÉE
+   MERGE & SNAP - VERSION DE SECOURS (FIX VISUEL)
    ============================================================ */
 
-/* ---- 1. RESET & BASE ---- */
 * {
     box-sizing: border-box;
 }
@@ -15,129 +14,85 @@ html {
     height: 100%;
     overflow: hidden;
     background-color: #000;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: sans-serif;
 }
 
-/* ---- 2. LE CONTENEUR GLOBAL (Structure en tranches) ---- */
+/* On cache les menus qui bloquent la vue pour l'instant */
+#loading-screen,
+#main-menu,
+#character-creator {
+    display: none !important;
+}
+
+/* LE CONTENEUR PRINCIPAL */
 .app-container {
     display: flex !important;
     flex-direction: column !important;
-    height: 100vh !important;
+    height: 100dvh !important;
     width: 100vw !important;
     background-image: url('assets/arriere_plan/arriereplan_studio.png') !important;
     background-size: cover !important;
     background-position: center !important;
-    position: relative;
 }
 
-/* ---- 3. HEADER DORÉ (Barre d'énergie/pièces) ---- */
+/* LE HEADER (Barre dorée) */
 #game-header {
     height: 55px !important;
-    width: 100% !important;
     background-image: url('assets/icones/new_barre.png') !important;
     background-size: cover !important;
-    display: flex !important;
-    justify-content: space-evenly !important;
-    align-items: center !important;
-    padding-left: 20% !important;
-    /* Pour laisser place à l'icône appareil photo */
-    z-index: 1000;
+    z-index: 100;
     flex-shrink: 0;
 }
 
-/* ---- 4. ZONE PERSONNAGES / CLIENTS (Haut) ---- */
+/* ZONE PERSONNAGES (On les réduit pour qu'ils ne mangent pas la grille) */
 #mission-area,
 #client-orders-container {
-    flex: 0 0 30vh !important;
-    /* Prend 30% de la hauteur de l'écran */
+    flex: 0 0 25vh !important;
     display: flex !important;
     justify-content: center !important;
     align-items: flex-end !important;
-    padding-bottom: 5px;
     z-index: 10;
 }
 
+#mission-area img,
 .mission-card img {
-    height: 25vh !important;
-    /* Taille des personnages */
+    height: 20vh !important;
     width: auto !important;
-    object-fit: contain !important;
 }
 
-/* ---- 5. ZONE GRILLE (Milieu) ---- */
+/* LA GRILLE (On la force à descendre) */
 #grid-area {
-    flex: 1 1 auto !important;
-    /* Remplit tout l'espace central */
+    flex: 1 !important;
     display: flex !important;
     justify-content: center !important;
     align-items: flex-start !important;
-    padding-top: 10px;
-    z-index: 5;
+    padding-top: 10px !important;
 }
 
 #grid,
 #game-grid {
     display: grid !important;
     grid-template-columns: repeat(6, 1fr) !important;
-    gap: 3px !important;
+    gap: 4px !important;
     width: 95% !important;
-    max-width: 450px !important;
 }
 
 .grid-cell,
 .cell {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
-    /* Carrés parfaits */
     background-image: url('assets/vieux_papier.png') !important;
     background-size: cover !important;
-    position: relative;
     border-radius: 4px;
 }
 
-.grid-cell img,
-.item img {
-    width: 85% !important;
-    height: 85% !important;
-    object-fit: contain !important;
-}
-
-/* ---- 6. BARRE DU BAS (Footer) ---- */
+/* LA BARRE DU BAS */
 #game-footer,
 #footer-bar {
-    height: 75px !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    backdrop-filter: blur(5px);
+    height: 80px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 15px;
     flex-shrink: 0;
-    z-index: 1000;
-}
-
-/* ---- 7. ÉCRANS SPÉCIAUX (Menu, Loading) ---- */
-#loading-screen,
-#main-menu {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #000;
-}
-
-#main-menu {
-    background-image: url('assets/decor_perso/new_demmarage.png') !important;
-    background-size: cover;
-}
-
-/* Brouillard (Cases bloquées) */
-.fog-burned::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url('assets/papier_brule.png') center/cover no-repeat !important;
 }
