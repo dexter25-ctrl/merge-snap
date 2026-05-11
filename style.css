@@ -4,9 +4,14 @@
    ============================================================ */
 
 /* ---- 1. RESET & BASE ---- */
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -21,7 +26,8 @@ body, html {
 #loading-screen {
     position: fixed;
     z-index: 999999;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100dvh;
     background: #000;
@@ -35,7 +41,8 @@ body, html {
 
 .loading-bg {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -52,10 +59,10 @@ body, html {
 
 .film-strip-bar {
     position: relative;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     padding: 10px 0;
     border-radius: 4px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 
@@ -74,7 +81,7 @@ body, html {
     width: 0%;
     margin: 5px 0;
     box-shadow: 0 0 15px #fff;
-    animation: fillProgress 3s cubic-bezier(0.1,0,0.3,1) forwards;
+    animation: fillProgress 3s cubic-bezier(0.1, 0, 0.3, 1) forwards;
 }
 
 .loading-text {
@@ -91,9 +98,11 @@ body, html {
    3. MENU PRINCIPAL (Nouvel écran entre loading et casier)
    ============================================================ */
 #main-menu {
-    display: none; /* affiché par JS après loading */
+    display: none;
+    /* affiché par JS après loading */
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100dvh;
     background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -110,8 +119,8 @@ body, html {
     position: absolute;
     inset: 0;
     background-image:
-        radial-gradient(circle at 20% 30%, rgba(212,175,55,0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(212,175,55,0.10) 0%, transparent 40%);
+        radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.10) 0%, transparent 40%);
     pointer-events: none;
 }
 
@@ -125,13 +134,13 @@ body, html {
     font-size: clamp(28px, 7vw, 42px);
     font-weight: 900;
     color: #f1c40f;
-    text-shadow: 0 0 20px rgba(241,196,15,0.6), 2px 2px 4px rgba(0,0,0,0.8);
+    text-shadow: 0 0 20px rgba(241, 196, 15, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.8);
     letter-spacing: 2px;
 }
 
 .main-menu-subtitle {
     font-size: 13px;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.6);
     letter-spacing: 4px;
     text-transform: uppercase;
     margin-top: 4px;
@@ -155,13 +164,15 @@ body, html {
     animation: waveIn 0.8s ease both;
 }
 
-.character-figure:nth-child(2) { animation-delay: 0.3s; }
+.character-figure:nth-child(2) {
+    animation-delay: 0.3s;
+}
 
 .character-figure img {
     height: clamp(180px, 40vh, 320px);
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
     animation: characterFloat 3s ease-in-out infinite;
     transform-origin: bottom center;
 }
@@ -175,14 +186,14 @@ body, html {
     font-size: 28px;
     animation: waveHand 1.5s ease-in-out infinite;
     margin-bottom: 5px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 /* Barre de navigation du bas */
 .main-menu-navbar {
     width: 100%;
     padding: 16px 16px 32px;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -202,7 +213,7 @@ body, html {
     font-weight: 900;
     color: #1a1a2e;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(241,196,15,0.4), 0 2px 0 #b7950b;
+    box-shadow: 0 6px 20px rgba(241, 196, 15, 0.4), 0 2px 0 #b7950b;
     letter-spacing: 1px;
     transition: transform 0.15s, box-shadow 0.15s;
     text-shadow: none;
@@ -210,7 +221,7 @@ body, html {
 
 .btn-play-story:active {
     transform: translateY(3px);
-    box-shadow: 0 2px 8px rgba(241,196,15,0.3);
+    box-shadow: 0 2px 8px rgba(241, 196, 15, 0.3);
 }
 
 /* Rangée boutons secondaires */
@@ -225,8 +236,8 @@ body, html {
 .btn-secondary-menu {
     flex: 1;
     padding: 12px 6px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     color: white;
     font-size: 11px;
@@ -240,15 +251,21 @@ body, html {
     backdrop-filter: blur(4px);
 }
 
-.btn-secondary-menu:active { transform: scale(0.95); }
-.btn-secondary-menu span:first-child { font-size: 20px; }
+.btn-secondary-menu:active {
+    transform: scale(0.95);
+}
+
+.btn-secondary-menu span:first-child {
+    font-size: 20px;
+}
 
 /* ============================================================
    4. MENU CASIER (Start Menu - Écran de sauvegarde)
    ============================================================ */
 .overlay-menu {
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-image: url('assets/arriere_plan/new_casier.png');
@@ -291,7 +308,12 @@ body, html {
     border: none !important;
 }
 
-.save-slot-title { font-size: 18px; font-weight: bold; color: #ecf0f1; display: none !important; }
+.save-slot-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ecf0f1;
+    display: none !important;
+}
 
 .save-name {
     text-align: center !important;
@@ -299,7 +321,7 @@ body, html {
     margin: 0 0 8px 0 !important;
     font-weight: bold !important;
     color: #ffffff !important;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .save-actions {
@@ -316,7 +338,7 @@ body, html {
     font-size: 14px !important;
     font-weight: bold !important;
     font-family: 'Courier New', monospace !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease;
     margin: 0 5px !important;
     cursor: pointer;
@@ -325,11 +347,18 @@ body, html {
 .save-slot button:active {
     background-color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
 }
 
-.btn-play  { background-color: #bdc3c7 !important; color: #2c3e50 !important; }
-.btn-delete { background-color: #e74c3c !important; color: #fff !important; }
+.btn-play {
+    background-color: #bdc3c7 !important;
+    color: #2c3e50 !important;
+}
+
+.btn-delete {
+    background-color: #e74c3c !important;
+    color: #fff !important;
+}
 
 .btn-new-game {
     width: 80px !important;
@@ -362,12 +391,17 @@ body, html {
     justify-content: flex-start;
     align-items: center;
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     z-index: 50;
     padding-top: 5vh;
 }
 
-.gender-select { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.gender-select {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
 
 .gender-btn {
     flex: 1;
@@ -380,9 +414,17 @@ body, html {
     color: white;
 }
 
-.gender-btn.male    { background-color: #2980b9; }
-.gender-btn.female  { background-color: #8e44ad; }
-.gender-btn.selected { border-color: white; }
+.gender-btn.male {
+    background-color: #2980b9;
+}
+
+.gender-btn.female {
+    background-color: #8e44ad;
+}
+
+.gender-btn.selected {
+    border-color: white;
+}
 
 /* ============================================================
    6. EN-TÊTE DU JEU (HUD)
@@ -416,7 +458,9 @@ body, html {
     position: relative;
 }
 
-.header-item-lvl { display: none; }
+.header-item-lvl {
+    display: none;
+}
 
 /* ============================================================
    7. ZONE DE MISSION (Clients)
@@ -438,7 +482,8 @@ body, html {
 }
 
 /* Destruction des fonds blancs dans la zone mission */
-#mission-area, #mission-area * {
+#mission-area,
+#mission-area * {
     background: transparent !important;
     background-color: transparent !important;
     box-shadow: none !important;
@@ -461,28 +506,52 @@ body, html {
     margin: 0;
 }
 
-.mission-card.active       { transform: translateY(-1px); }
+.mission-card.active {
+    transform: translateY(-1px);
+}
+
 .mission-card.active-validable {
     cursor: pointer;
     animation: pulse 1.5s infinite;
 }
-.mission-card.completed    { opacity: 0.5; filter: grayscale(1); }
+
+.mission-card.completed {
+    opacity: 0.5;
+    filter: grayscale(1);
+}
 
 .mission-card-client {
-    width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1;
 }
-.mission-card-client img   { width: 100%; height: 100%; object-fit: contain; }
+
+.mission-card-client img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
 .mission-card-req {
     position: absolute;
-    top: 45%; left: 50%;
+    top: 45%;
+    left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    display: flex; justify-content: center; align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.mission-card-req img { max-width: 22px; max-height: 22px; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
+
+.mission-card-req img {
+    max-width: 22px;
+    max-height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
 
 .mission-card-reward {
     background: #f1c40f;
@@ -493,8 +562,9 @@ body, html {
     border-radius: 6px;
     border: 1px solid #d4ac0d;
     position: absolute;
-    bottom: -6px; right: -5px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    bottom: -6px;
+    right: -5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     white-space: nowrap;
     z-index: 3;
 }
@@ -574,7 +644,8 @@ body, html {
     opacity: 1 !important;
 }
 
-.grid-cell, .cell {
+.grid-cell,
+.cell {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
     position: relative !important;
@@ -584,16 +655,18 @@ body, html {
     background-size: cover !important;
     background-position: center !important;
     background: transparent !important;
-    border: 1px dashed rgba(0,0,0,0.2) !important;
+    border: 1px dashed rgba(0, 0, 0, 0.2) !important;
 }
 
-.cell img, .grid-cell img {
+.cell img,
+.grid-cell img {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
     display: block !important;
     position: relative !important;
-    top: auto !important; left: auto !important;
+    top: auto !important;
+    left: auto !important;
     transform: none !important;
     background: transparent !important;
     border-radius: 0 !important;
@@ -605,31 +678,45 @@ body, html {
    9. OBJETS (Items)
    ============================================================ */
 .item {
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     background: transparent;
-    border: none; box-shadow: none;
-    display: flex; justify-content: center; align-items: center;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: grab;
     user-select: none;
     transition: transform 0.1s;
     position: relative;
-    filter: drop-shadow(0 4px 3px rgba(0,0,0,0.25));
+    filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
 }
 
-.item:active { cursor: grabbing; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3)); }
+.item:active {
+    cursor: grabbing;
+    filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.3));
+}
 
 .item img {
-    width: 85% !important; height: 85% !important;
+    width: 85% !important;
+    height: 85% !important;
     object-fit: contain !important;
     max-width: 100% !important;
-    display: block; margin: auto;
+    display: block;
+    margin: auto;
 }
 
 .item-text {
     pointer-events: none;
-    display: flex; justify-content: center; align-items: center;
-    width: 100%; height: 100%;
-    text-align: center; position: relative; z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* ============================================================
@@ -641,6 +728,7 @@ body, html {
     position: relative;
     pointer-events: auto;
 }
+
 .fog-burned::after {
     content: '';
     position: absolute;
@@ -650,13 +738,18 @@ body, html {
     z-index: 5;
     pointer-events: none;
 }
-.fog-burned img { filter: grayscale(50%) brightness(70%); z-index: 1; }
+
+.fog-burned img {
+    filter: grayscale(50%) brightness(70%);
+    z-index: 1;
+}
 
 /* Niveau 2 : Vieux Papier — totalement caché */
 .fog-solid {
     position: relative;
     pointer-events: none;
 }
+
 .fog-solid::after {
     content: '';
     position: absolute;
@@ -666,14 +759,36 @@ body, html {
     z-index: 10;
     pointer-events: none;
 }
-.fog-solid img { display: none !important; }
+
+.fog-solid img {
+    display: none !important;
+}
 
 /* --- Animation de déverrouillage (papier brûlé qui s'efface) --- */
 @keyframes burnReveal {
-    0%   { opacity: 1; transform: scale(1); filter: brightness(1); }
-    40%  { opacity: 0.8; transform: scale(1.05); filter: brightness(1.8) saturate(2); }
-    70%  { opacity: 0.4; transform: scale(1.1) rotate(2deg); filter: brightness(2.5) saturate(3); }
-    100% { opacity: 0; transform: scale(1.2); filter: brightness(3); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    40% {
+        opacity: 0.8;
+        transform: scale(1.05);
+        filter: brightness(1.8) saturate(2);
+    }
+
+    70% {
+        opacity: 0.4;
+        transform: scale(1.1) rotate(2deg);
+        filter: brightness(2.5) saturate(3);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+        filter: brightness(3);
+    }
 }
 
 /* Classe appliquée dynamiquement par JS lors du déverrouillage */
@@ -696,7 +811,7 @@ body, html {
     align-items: center !important;
     gap: 16px !important;
     z-index: 200 !important;
-    background: rgba(0,0,0,0.25) !important;
+    background: rgba(0, 0, 0, 0.25) !important;
     backdrop-filter: blur(4px) !important;
 }
 
@@ -705,8 +820,8 @@ body, html {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     color: white;
     font-size: 16px;
     font-weight: 900;
@@ -718,13 +833,17 @@ body, html {
     transition: background 0.2s, transform 0.15s;
     flex-shrink: 0;
 }
-#btn-back-to-menu:active { transform: scale(0.92); background: rgba(255,255,255,0.3); }
+
+#btn-back-to-menu:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.3);
+}
 
 .control-btn {
     padding: 8px 16px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     color: white;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     cursor: pointer;
     font-size: 13px;
@@ -738,7 +857,8 @@ body, html {
 #inventory-modal {
     display: none;
     position: fixed;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 400px;
@@ -746,37 +866,73 @@ body, html {
     background-color: #2c3e50;
     border: 2px solid silver;
     border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     z-index: 9999;
     padding: 15px;
     color: white;
     flex-direction: column;
 }
-#inventory-modal[style*="display: flex"] { display: flex !important; }
 
-.inventory-content   { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
-.inventory-content::-webkit-scrollbar       { width: 6px; }
-.inventory-content::-webkit-scrollbar-track { background: #1a252f; border-radius: 3px; }
-.inventory-content::-webkit-scrollbar-thumb { background: silver; border-radius: 3px; }
+#inventory-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+.inventory-content {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 5px;
+}
+
+.inventory-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.inventory-content::-webkit-scrollbar-track {
+    background: #1a252f;
+    border-radius: 3px;
+}
+
+.inventory-content::-webkit-scrollbar-thumb {
+    background: silver;
+    border-radius: 3px;
+}
 
 .inventory-header {
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid silver;
-    padding-bottom: 10px; margin-bottom: 15px;
-    font-weight: bold; font-size: 18px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 18px;
     flex-shrink: 0;
 }
-.inventory-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; font-weight: bold; }
 
-.inventory-grid { display: grid; grid-template-columns: repeat(8,1fr); gap: 4px; }
+.inventory-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+}
 
 .inventory-slot {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
     aspect-ratio: 1/1;
-    display: flex; justify-content: center; align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     container-type: inline-size;
 }
@@ -786,13 +942,15 @@ body, html {
    ============================================================ */
 #message {
     position: fixed;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     color: #fff;
     padding: 10px 20px;
     border-radius: 20px;
-    font-weight: 900; font-size: 18px;
+    font-weight: 900;
+    font-size: 18px;
     z-index: 9999;
     pointer-events: none;
     opacity: 0;
@@ -803,12 +961,17 @@ body, html {
    14. CONFETTIS
    ============================================================ */
 .confetti-container {
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 9999; display: none;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
 }
+
 .confetti {
     position: absolute;
-    width: 10px; height: 10px;
+    width: 10px;
+    height: 10px;
     background-color: #f00;
     animation: fall 3s linear infinite;
 }
@@ -816,12 +979,17 @@ body, html {
 /* ============================================================
    15. SPAWN HIGHLIGHT (Éclair au-dessus d'un générateur)
    ============================================================ */
-.spawn-highlight { position: relative; }
+.spawn-highlight {
+    position: relative;
+}
+
 .spawn-highlight::after {
     content: '⚡';
-    position: absolute; top: -15px; right: -10px;
+    position: absolute;
+    top: -15px;
+    right: -10px;
     font-size: 20px;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
     animation: bounce 1s infinite alternate;
 }
 
@@ -829,57 +997,210 @@ body, html {
    16. ANIMATIONS KEYFRAMES
    ============================================================ */
 @keyframes movePerforations {
-    from { background-position: 0 0; }
-    to   { background-position: 20px 0; }
-}
-@keyframes fillProgress {
-    0%   { width: 0%; }
-    100% { width: 100%; }
-}
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
-}
-@keyframes pulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-@keyframes fall {
-    to { transform: translateY(100vh) rotate(720deg); }
-}
-@keyframes bounce {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-5px); }
-}
-@keyframes shake {
-    0%   { transform: translateX(0); }
-    25%  { transform: translateX(-5px); }
-    50%  { transform: translateX(5px); }
-    75%  { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-@keyframes waveHand {
-    0%, 100% { transform: rotate(0deg); }
-    30%       { transform: rotate(20deg); }
-    60%       { transform: rotate(-10deg); }
-}
-@keyframes characterFloat {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-8px); }
-}
-@keyframes waveIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 20px 0;
+    }
 }
 
-.shake-animation { animation: shake 0.3s ease-in-out; }
+@keyframes fillProgress {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes waveHand {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    30% {
+        transform: rotate(20deg);
+    }
+
+    60% {
+        transform: rotate(-10deg);
+    }
+}
+
+@keyframes characterFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes waveIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.shake-animation {
+    animation: shake 0.3s ease-in-out;
+}
 
 /* ============================================================
    17. FONDS PAR NIVEAU
    ============================================================ */
-body.level-1 { background: linear-gradient(to bottom, #d7ccc8, #a1887f); }
-body.level-1::before { background: none; }
-body.level-2 { background: linear-gradient(to bottom, #bbdefb, #c8e6c9); }
-body.level-3 { background: linear-gradient(to bottom, #fff9c4, #ffcc80); }
-body.level-3::before { background: none; }
+body.level-1 {
+    background: linear-gradient(to bottom, #d7ccc8, #a1887f);
+}
+
+body.level-1::before {
+    background: none;
+}
+
+body.level-2 {
+    background: linear-gradient(to bottom, #bbdefb, #c8e6c9);
+}
+
+body.level-3 {
+    background: linear-gradient(to bottom, #fff9c4, #ffcc80);
+}
+
+body.level-3::before {
+    background: none;
+}
+
+/* Le conteneur global qui coupe l'écran en tranches */
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* La tranche du haut : Les clients */
+#client-orders-container {
+    flex: 0 0 25vh;
+    /* Prend exactement 25% de l'écran en haut */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Colle les clients vers le bas de cette tranche */
+    padding-bottom: 10px;
+    /* Petit espace avant la grille */
+    z-index: 10;
+    /* S'assure qu'ils restent au-dessus de tout */
+}
+
+/* La tranche du milieu : La grille */
+#game-grid {
+    flex: 1 1 auto;
+    /* Prend automatiquement toute la place restante au milieu */
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+    width: 96%;
+    margin: 0 auto;
+    align-content: start;
+    /* Pousse les cases vers le haut de la zone de grille */
+    z-index: 1;
+}
+
+/* Les cases */
+.grid-cell {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Le secret pour des carrés parfaits sur mobile ! */
+    position: relative;
+    /* Tes styles de fond habituels en dessous... */
+}
+
+/* La tranche du bas : La barre */
+#footer-bar {
+    /* (ou la classe de ta barre en bas) */
+    flex: 0 0 70px;
+    /* Hauteur fixe en bas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 15px;
+    z-index: 10;
+}
