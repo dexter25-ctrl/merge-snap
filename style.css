@@ -570,7 +570,7 @@ html {
 /* ============================================================
    8. ÉCRAN DE JEU — STRUCTURE FLEXBOX PRINCIPALE
    Hiérarchie stricte en tranches verticales :
-   [header 55px fixe] → [clients 25vh] → [grille flex:1] → [footer 70px]
+   [header 55px fixe] → [clients 25vh] → [grille flex:1]
    ============================================================ */
 
 /* Conteneur principal de l'écran de jeu */
@@ -798,58 +798,58 @@ html {
 }
 
 /* ============================================================
-   11. ZONE DE CONTRÔLES / FOOTER
-   Enfant flex naturel en bas de .app-container
+/* ============================================================
+   11. CONTRÔLES HAUT DE PAGE (Top Left)
+   Remplace le footer pour libérer de l'espace sur mobile.
    ============================================================ */
-#game-footer {
-    height: 70px !important;
-    flex-shrink: 0 !important;
-    padding-bottom: 10px !important;
-    position: relative !important;
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 16px !important;
-    z-index: 200 !important;
-    background: rgba(0, 0, 0, 0.25) !important;
-    backdrop-filter: blur(4px) !important;
+#top-left-controls {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000000; /* Doit être supérieur au header (99999) */
+    pointer-events: auto;
 }
 
-/* Bouton Retour Menu (BOGUE 3) */
-#btn-back-to-menu {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 2px solid rgba(255, 255, 255, 0.4);
+#top-left-controls button {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
     color: white;
-    font-size: 16px;
-    font-weight: 900;
-    cursor: pointer;
+    font-size: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(4px);
-    transition: background 0.2s, transform 0.15s;
-    flex-shrink: 0;
-}
-
-#btn-back-to-menu:active {
-    transform: scale(0.92);
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.control-btn {
-    padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    backdrop-filter: blur(6px);
     cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-    backdrop-filter: blur(4px);
+    transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    margin: 0;
+}
+
+#top-left-controls button:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Style spécifique pour le bouton Reset (Debug) */
+#btn-reset-debug {
+    border-color: rgba(231, 76, 60, 0.6) !important;
+    font-size: 14px !important;
+}
+
+/* Style spécifique pour le bouton Retour */
+#btn-back-to-menu {
+    font-weight: 900;
+}
+
+/* Style spécifique pour le bouton Inventaire */
+#inventory-btn {
+    font-size: 20px !important;
 }
 
 /* ============================================================
@@ -1150,7 +1150,7 @@ body.level-3::before {
 
 /* Les IDs #game-screen, #game-grid, #client-orders-container, #footer-bar
    ont été supprimés : ils n'existent pas dans le HTML.
-   Leurs rôles sont assurés par .app-container, #mission-area, #grid, #game-footer. */
+   Leurs rôles sont assurés par .app-container, #mission-area, #grid et #top-left-controls. */
 
 /* ============================================================
    CORRECTION ANTI-ÉTIREMENT (SPAGHETTI)

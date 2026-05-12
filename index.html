@@ -174,6 +174,13 @@
      ============================================= -->
 <div id="game-ui" class="app-container">
 
+    <!-- Contrôles d'accès rapide (Haut Gauche) -->
+    <div id="top-left-controls">
+        <button id="btn-back-to-menu" onclick="backToMainMenu()" title="Menu principal">←</button>
+        <button id="inventory-btn" onclick="openInventory()" title="Inventaire">📦</button>
+        <button id="btn-reset-debug" onclick="localStorage.clear(); window.location.reload();" title="Reset (Debug)">🔄</button>
+    </div>
+
     <!-- === HUD / En-tête === -->
     <header id="game-header">
         <!-- Niveau + Barre XP -->
@@ -236,19 +243,6 @@
         </div>
     </main>
 
-    <!-- === Contrôles bas de page === -->
-    <footer id="game-footer">
-        <!-- BOGUE 3 : Bouton Retour au menu principal -->
-        <button id="btn-back-to-menu" onclick="backToMainMenu()" title="Menu principal">←</button>
-
-        <button class="control-btn" id="inventory-btn" onclick="openInventory()">
-            📦 <br><span style="font-size:10px;">Stock</span>
-        </button>
-        <button onclick="localStorage.clear(); window.location.reload();"
-                style="padding:8px 14px;background:#e74c3c;color:white;border:none;
-                       border-radius:5px;cursor:pointer;font-size:13px;font-weight:bold;
-                       box-shadow:0 4px 6px rgba(0,0,0,0.3);">&#x1F504; Reset</button>
-    </footer>
 
     <!-- === Modal Inventaire === -->
     <div id="inventory-modal">
