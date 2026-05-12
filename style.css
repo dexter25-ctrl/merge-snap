@@ -635,7 +635,7 @@ html {
     display: grid !important;
     grid-template-columns: repeat(6, 1fr) !important;
     gap: 2px !important;
-    width: 100% !important;
+    width: 90% !important;
     align-content: start !important;
     background: transparent !important;
     visibility: visible !important;
@@ -645,7 +645,7 @@ html {
 /* Cases : carrés parfaits via aspect-ratio */
 .grid-cell,
 .cell {
-    width: 100% !important;
+    width: 90% !important;
     aspect-ratio: 1 / 1 !important;
     position: relative !important;
     display: flex !important;
