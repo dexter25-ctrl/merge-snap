@@ -580,10 +580,12 @@ html {
     background-position: center top !important;
     height: 100vh !important;
     width: 100vw !important;
-    display: none;                        /* affiché par .game-visible */
+    display: none;
+    /* affiché par .game-visible */
     flex-direction: column !important;
     overflow: hidden !important;
-    padding-top: 55px !important;         /* compense le header fixe */
+    padding-top: 55px !important;
+    /* compense le header fixe */
     box-sizing: border-box !important;
     position: relative !important;
 }
@@ -595,8 +597,10 @@ html {
 
 /* Zone grille : prend tout l'espace entre clients et footer */
 #grid-area {
-    flex: 1 1 auto !important;            /* ← grandit pour remplir */
-    min-height: 0 !important;            /* indispensable dans flex-column */
+    flex: 1 1 auto !important;
+    /* ← grandit pour remplir */
+    min-height: 0 !important;
+    /* indispensable dans flex-column */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -1146,3 +1150,28 @@ body.level-3::before {
 /* Les IDs #game-screen, #game-grid, #client-orders-container, #footer-bar
    ont été supprimés : ils n'existent pas dans le HTML.
    Leurs rôles sont assurés par .app-container, #mission-area, #grid, #game-footer. */
+
+/* ============================================================
+   CORRECTION ANTI-ÉTIREMENT (SPAGHETTI)
+   ============================================================ */
+#grid-area,
+.studio-container {
+    justify-content: flex-start !important;
+    /* Pousse tout vers le haut */
+}
+
+#grid,
+#game-grid {
+    align-content: start !important;
+    /* Empêche l'étirement global de la grille */
+    grid-auto-rows: min-content !important;
+    /* Bloque la hauteur des cases */
+}
+
+.grid-cell,
+.cell {
+    height: auto !important;
+    /* Annule tout ancien réglage qui forcerait la hauteur */
+    aspect-ratio: 1 / 1 !important;
+    /* Force le carré */
+}
